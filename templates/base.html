@@ -1,24 +1,133 @@
+{% load i18n %}
 <!DOCTYPE html>
-<html lang="{{ LANGUAGE_CODE|default:'en' }}" dir="{% if LANGUAGE_CODE == 'ar' %}rtl{% else %}ltr{% endif %}">
+<html lang="{{ LANGUAGE_CODE|default:'en' }}"
+      dir="{% if LANGUAGE_CODE == 'ar' %}rtl{% else %}ltr{% endif %}">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport"
+              content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+        <title>{% trans "Desk Pro 360" %}</title>
+        <!-- Tailwind CSS CDN -->
+        <script src="https://cdn.tailwindcss.com"></script>
+        <!-- Alpine.js for sidebar toggle -->
+        <script defer
+                src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+        <!-- HTMX -->
+        <script src="https://unpkg.com/htmx.org@2.0.3"></script>
+        <!-- Font Awesome -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/js/all.min.js"></script>
+        <style>
+            body {
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            }
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Desk Pro 360</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- HTMX -->
-    <script src="https://unpkg.com/htmx.org@2.0.3"></script>
-    <style>
-        /* Optional custom overrides */
-    </style>
-</head>
+            [dir="rtl"] {
+                font-family: 'Cairo', sans-serif;
+                text-align: right;
+            }
 
-<body class="bg-gray-100">
-    <div class="container mx-auto p-4">
-        {% block content %}
-        {% endblock %}
-    </div>
-</body>
+            /* Sidebar position based on direction */
+            @media(max-width: 768px) {
+            html[dir="rtl"] aside {
+                left: auto;
+                right: 0;
+            }
 
+            html[dir="rtl"] aside.transform.translate-x-0 {
+                transform: translateX(0) !important;
+            }
+
+            html[dir="rtl"] aside.-translate-x-full {
+                transform: translateX(100%) !important;
+            }
+            }
+
+            /* For LTR, default Tailwind classes work */
+            /* Optional: smooth transitions */
+            .sidebar-transition {
+                transition: transform 0.2s ease-in-out;
+            }
+        </style>
+    </head>
+    <body class="bg-gray-100" x-data="{ sidebarOpen: false }">
+        <div class="flex h-screen">
+            <!-- Sidebar (mobile: hidden by default, slide in) -->
+            <aside class="fixed inset-y-0 left-0 z-30 w-64 bg-white shadow-lg transform transition-transform duration-200 ease-in-out md:relative md:translate-x-0"
+                   :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'">
+                <div class="p-4 border-b">
+                    <h2 class="text-xl font-bold text-gray-800">{% trans "Desk Pro 360" %}</h2>
+                </div>
+                <nav class="mt-4">
+                    <a href="{% url 'dashboard' %}"
+                       class="block py-2 px-4 text-gray-700 hover:bg-gray-100"><i class="fa fa-tachometer"></i> {% trans "Dashboard" %}</a>
+                    {% if user.is_authenticated %}
+                        <!-- Client core navigation -->
+                        <a href="{% url 'category_list' %}"
+                           class="block py-2 px-4 text-gray-700 hover:bg-gray-100"> <i class="fa fa-tag"></i>{% trans "Categories" %}</a>
+                        <a href="{% url 'item_list' %}"
+                           class="block py-2 px-4 text-gray-700 hover:bg-gray-100"> <i class="fa fa-list-alt"></i> {% trans "Items" %}</a>
+                        <a href="{% url 'customer_list' %}"
+                           class="block py-2 px-4 text-gray-700 hover:bg-gray-100"> <i class="fa fa-user"></i> {% trans "Customers" %}</a>
+                        {% if user.role == 'dept_admin' %}
+                            <a href="{% url 'user_list' %}"
+                               class="block py-2 px-4 text-gray-700 hover:bg-gray-100"> <i class="fa fa-user-secret"></i> {% trans "Users" %}</a>
+                        {% endif %}
+                        <!-- Feature-based navigation (placeholders) -->
+                        {% if request.business.features.pos %}
+                            <a href="#"
+                               class="block py-2 px-4 text-gray-700 hover:bg-gray-100 gap-4"> <i class="fa fa-user"></i>{% trans "Point of Sale" %}</a>
+                        {% endif %}
+                        {% if request.business.features.appointments %}
+                            <a href="#"
+                               class="block py-2 px-4 text-gray-700 hover:bg-gray-100 gap-4"> <i class="fa fa-user"></i>{% trans "Appointments" %}</a>
+                        {% endif %}
+                        <!-- Super admin link (only for super_admin role) -->
+                        {% if user.role == 'super_admin' %}
+                            <a href="{% url 'super_admin:dashboard' %}"
+                               class="block py-2 px-4 text-red-600 hover:bg-gray-100 gap-4">{% trans "Super Admin Panel" %}</a>
+                        {% endif %}
+                    {% endif %}
+                </nav>
+            </aside>
+            <!-- Main content area -->
+            <div class="flex-1 flex flex-col overflow-y-auto w-full h-screen">
+                <!-- Top bar (mobile menu button + user info) -->
+                <header class="bg-white shadow-sm p-4 flex justify-between w-full flex-row">
+                    <div class="flex justify-end items-center flex-row flex-1 gap-6">
+                        {% if user.is_authenticated %}
+                            <span class="text-gray-700">{{ user.username }}</span>
+                            <form action="{% url 'logout' %}" method="post" class="inline">
+                                {% csrf_token %}
+                                <button type="submit" class="text-red-600 hover:underline">{% trans "Logout" %}</button>
+                            </form>
+                        {% else %}
+                            <a href="{% url 'login' %}" class="text-blue-600">{% trans "Login" %}</a>
+                        {% endif %}
+                        <!-- Language switcher -->
+                        <form action="{% url 'set_language' %}" method="post" class="inline">
+                            {% csrf_token %}
+                            <input name="next" type="hidden" value="{{ request.path }}">
+                            <select name="language"
+                                    onchange="this.form.submit()"
+                                    class="border rounded p-1 text-sm">
+                                {% get_current_language as CURRENT_LANG %}
+                                <option value="en" {% if CURRENT_LANG == 'en' %}selected{% endif %}>English</option>
+                                <option value="ar" {% if CURRENT_LANG == 'ar' %}selected{% endif %}>العربية</option>
+                            </select>
+                        </form>
+                    </div>
+                    <button @click="sidebarOpen = !sidebarOpen"
+                            class="md:hidden text-gray-600 focus:outline-none">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </header>
+                <!-- Page content -->
+                <main class="p-4">
+                    {% block content %}{% endblock %}
+                </main>
+            </div>
+        </div>
+    </body>
 </html>
