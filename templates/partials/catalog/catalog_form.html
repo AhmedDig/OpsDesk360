@@ -1,0 +1,44 @@
+{% load i18n %}
+<div class="bg-card rounded-xl shadow-md p-6 max-w-2xl mx-auto">
+    <h2 class="text-2xl font-bold mb-4">{{ title }}</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div class="mt-4 space-x-2 flex justify-center items-center">
+            <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">{% trans "Save" %}</button>
+            <a href="{% url 'catalog_list' %}" class="bg-hover text-primary px-4 py-2 rounded">{% trans "Cancel" %}</a>
+        </div>
+    </form>
+</div>
+<style>
+    form p {
+        display: flex !important;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        align-content: center;
+        justify-content: flex-start;
+        align-items: center;
+        width: 100%;
+    }
+
+    form label {
+        color: #1e3a8a !important;
+        font-size: 14px !important;
+        font-weight: bold !important;
+        margin: 10px !important;
+        padding: 10px !important;
+        display: block;
+        width: 50% !important;
+    }
+
+    form input,
+    textarea,
+    select {
+        margin: 10px !important;
+        padding: 10px !important;
+        display: block;
+        border: 1px solid #ccc !important;
+        border-radius: 10px !important;
+        width: 50% !important;
+    }
+</style>

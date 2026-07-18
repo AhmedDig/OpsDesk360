@@ -1,0 +1,171 @@
+{% load static %}
+<style>
+    @media (max-width: 640px) {
+
+        #net-status span,
+        #net-status button {
+            font-size: 0.55rem !important;
+        }
+
+        #net-status {
+            gap: 0.25rem !important;
+        }
+    }
+</style>
+<div id="net-status" class="flex space-x-4 w-full items-center justify-end gap-2">
+    <span id="net-icon" class="w-3 h-3 rounded-full bg-hover inline-block"></span>
+    <span id="net-status-text">Connecting...</span>
+    <span id="client-ip">IP: —</span>
+    <span id="net-latency">—</span>
+    <span id="storage-status">Storage: OK</span>
+    <span id="speed-result" class="text-primary"></span>
+    <button id="speed-test-btn"
+        class="bg-[var(--primary-700)] hover:bg-[var(--primary-900)] text-[var(--text-inverse)] px-2 py-0.5 rounded text-xs ml-2">Speed Test</button>
+
+</div>
+<script>
+    const PING_URL = "{% url 'network_ping' %}";
+    let sseSource = null;
+    let speedTestInProgress = false;
+
+    // List of 10 MB test files (CORS-enabled where possible)
+    const SPEED_TEST_URL = "https://speed.cloudflare.com/__down?bytes=10485760";
+
+    function getRandomTestUrl() {
+        return SPEED_TEST_URL + "?_=" + Date.now(); // cache bust
+    }
+
+    function getStorageStatus() {
+        try {
+            localStorage.setItem('__test', '1');
+            localStorage.removeItem('__test');
+            return true;
+        } catch (e) {
+            return false;
+        }
+    }
+
+    async function runSpeedTest() {
+        if (speedTestInProgress) return;
+        speedTestInProgress = true;
+        const speedSpan = document.getElementById('speed-result');
+        const btn = document.getElementById('speed-test-btn');
+        speedSpan.innerHTML = 'Measuring...';
+        btn.disabled = true;
+        const testUrl = getRandomTestUrl();
+        const start = performance.now();
+        try {
+            const response = await fetch(testUrl, { cache: 'no-store', mode: 'cors' });
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+            const blob = await response.blob();
+            const end = performance.now();
+            const durationSec = (end - start) / 1000;
+            const bitsLoaded = blob.size * 8;
+            let speedMbps = (bitsLoaded / durationSec / 1e6).toFixed(2);
+            if (durationSec < 0.01) speedMbps = '>1000';
+            speedSpan.innerHTML = `${speedMbps} Mbps`;
+        } catch (err) {
+            console.warn('Speed test failed:', err);
+            speedSpan.innerHTML = 'Failed (try again)';
+        } finally {
+            speedTestInProgress = false;
+            btn.disabled = false;
+            // Clear result after 10 seconds
+            setTimeout(() => {
+                if (speedSpan.innerHTML !== 'Measuring...') speedSpan.innerHTML = '';
+            }, 10000);
+        }
+    }
+
+    async function measureLatency() {
+        if (!navigator.onLine) return;
+        const start = performance.now();
+        try {
+            const res = await fetch(PING_URL + '?_=' + Date.now(), { cache: 'no-store' });
+            const end = performance.now();
+            if (res.ok) {
+                const latency = Math.round(end - start);
+                document.getElementById('net-latency').innerHTML = `${latency}ms`;
+            } else {
+                document.getElementById('net-latency').innerHTML = '❌';
+            }
+        } catch (e) {
+            document.getElementById('net-latency').innerHTML = '❌';
+        }
+    }
+
+    async function fetchPublicIP() {
+        const ipElement = document.getElementById('client-ip');
+        if (!ipElement) return;
+        ipElement.textContent = 'IP: ...';
+        const services = [
+            'https://api.ipify.org?format=json',
+            'https://api.my-ip.io/ip.json',
+            'https://ipapi.co/json/'
+        ];
+        for (const url of services) {
+            try {
+                const response = await fetch(url, { mode: 'cors' });
+                const data = await response.json();
+                let ip = null;
+                if (data.ip) ip = data.ip;
+                else if (data.query) ip = data.query;
+                if (ip) {
+                    ipElement.textContent = `IP: ${ip}`;
+                    return;
+                }
+            } catch (e) {
+                console.warn(`Failed to fetch from ${url}`, e);
+            }
+        }
+        ipElement.textContent = 'IP: unavailable';
+    }
+
+    function initSSE() {
+        if (sseSource) sseSource.close();
+        sseSource = new EventSource("/sse/network/");
+        sseSource.onopen = () => {
+            document.getElementById('net-icon').className = 'w-3 h-3 rounded-full bg-success0 inline-block';
+            document.getElementById('net-status-text').innerHTML = '🟢 Online';
+            measureLatency();
+        };
+        sseSource.onerror = () => {
+            document.getElementById('net-icon').className = 'w-3 h-3 rounded-full bg-red-500 inline-block';
+            document.getElementById('net-status-text').innerHTML = '❌ Server unreachable';
+            document.getElementById('net-latency').innerHTML = '❌';
+            setTimeout(initSSE, 5000);
+        };
+    }
+
+    function updateStorageAndLatency() {
+        const storageOk = getStorageStatus();
+        document.getElementById('storage-status').innerHTML = storageOk ? 'Storage: OK' : 'Storage: ❌';
+        if (navigator.onLine && sseSource && sseSource.readyState === EventSource.OPEN) {
+            measureLatency();
+        }
+    }
+
+    // Attach button event
+    document.addEventListener('DOMContentLoaded', () => {
+        const btn = document.getElementById('speed-test-btn');
+        if (btn) btn.addEventListener('click', runSpeedTest);
+    });
+
+    setInterval(updateStorageAndLatency, 30000);
+    initSSE();
+
+    window.addEventListener('online', () => {
+        initSSE();
+        measureLatency();
+        fetchPublicIP();
+    });
+    window.addEventListener('offline', () => {
+        document.getElementById('net-icon').className = 'w-3 h-3 rounded-full bg-warning inline-block';
+        document.getElementById('net-status-text').innerHTML = '❌ Offline';
+        document.getElementById('net-latency').innerHTML = '—';
+        if (sseSource) sseSource.close();
+        document.getElementById('client-ip').innerHTML = 'IP: Error';
+    });
+
+    fetchPublicIP();
+</script>

@@ -1,10 +1,24 @@
-{% extends 'base.html' %}
 {% load i18n %}
-{% block content %}
-<h2 class="text-2xl font-bold mb-4">{% trans "Login" %}</h2>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">{% trans "Login" %}</button>
-</form>
-{% endblock %}
+<div class="max-w-md mx-auto bg-[var(--bg-card)] p-6 rounded shadow">
+    <h2 class="text-2xl font-bold mb-4 text-center">{% trans "Login" %}</h2>
+    <form method="post">
+        {% csrf_token %}
+        <div class="mb-4">
+            <label for="username" class="block text-primary">{% trans "Username" %}</label>
+            <input type="text" name="username" id="username" class="w-full border rounded p-2" required
+                autocomplete="username">
+        </div>
+        <div class="mb-4">
+            <label for="password" class="block text-primary">{% trans "Password" %}</label>
+            <input type="password" name="password" id="password" class="w-full border rounded p-2" required
+                autocomplete="current-password">
+        </div>
+        <div class="mb-4">
+            <label for="client_domain" class="block text-primary">{% trans "Client Domain" %}</label>
+            <input type="text" name="client_domain" id="client_domain" class="w-full border rounded p-2" required
+                placeholder="e.g., menadigital, apple">
+        </div>
+        <button type="submit" style="border: 1px solid var(--border-color);"
+            class="w-full bg-[var(--bg-main)] text-[var(--text-primary)] py-2 rounded hover:bg-[var(--primary-600)] hover:text-[var(--text-inverse)] transition-all">{% trans "Login" %}</button>
+    </form>
+</div>

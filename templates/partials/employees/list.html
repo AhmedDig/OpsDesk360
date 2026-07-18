@@ -1,0 +1,54 @@
+{% load i18n %}
+{% block content %}
+<div class="flex justify-between items-center mb-4">
+    <h1 class="text-2xl font-bold">{% trans "Employees" %}</h1>
+    {% if user.role == 'dept_admin' or user.role == 'super_admin' %}
+    <a href="{% url 'employee_create' %}" class="bg-blue-500 text-white px-4 py-2 rounded">{% trans "+ New Employee" %}</a>
+    {% endif %}
+</div>
+
+<!-- Search -->
+<div class="mb-4">
+    <input type="text" name="q" placeholder="{% trans 'Search employees...' %}"
+           hx-get="{% url 'employee_list' %}" hx-trigger="keyup changed delay:300ms" hx-target="#main-content"
+           class="input input-bordered w-full max-w-xs" value="{{ q }}">
+</div>
+
+<table class="min-w-full bg-card border">
+    <thead>
+        <tr>
+            <th class="py-2 px-4 border">{% trans "Name" %}</th>
+            <th class="py-2 px-4 border">{% trans "Email" %}</th>
+            <th class="py-2 px-4 border">{% trans "Role" %}</th>
+            <th class="py-2 px-4 border">{% trans "Commission" %}</th>
+            <th class="py-2 px-4 border">{% trans "Status" %}</th>
+            <th class="py-2 px-4 border">{% trans "Actions" %}</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for profile in page_obj %}
+        <tr class="border-t">
+            <td class="py-2 px-4"><a href="{% url 'employee_detail' profile.pk %}" class="text-blue-600">{{ profile.full_name }}</a></td>
+            <td class="py-2 px-4">{{ profile.user.email }}</td>
+            <td class="py-2 px-4">{{ profile.user.get_role_display }}</td>
+            <td class="py-2 px-4">{{ profile.commission_rate }}%</td>
+            <td class="py-2 px-4">{{ profile.is_active|yesno:_("Active,Inactive") }}</td>
+            <td class="py-2 px-4">
+                {% if user.role == 'dept_admin' or user.role == 'super_admin' %}
+                <a href="{% url 'employee_edit' profile.pk %}" class="text-blue-600">{% trans "Edit" %}</a>
+                <a href="{% url 'employee_delete' profile.pk %}" class="text-red-600 ml-2"
+                   onclick="return confirm('{% trans "Delete?" %}')">{% trans "Delete" %}</a>
+                {% endif %}
+            </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="6" class="text-center py-4">{% trans "No employees found." %}</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+<div class="mt-4">
+    <span>{% trans "Page" %} {{ page_obj.number }} {% trans "of" %} {{ page_obj.paginator.num_pages }}</span>
+    {% if page_obj.has_previous %}<a href="?page=1">{% trans "First" %}</a> <a href="?page={{ page_obj.previous_page_number }}">{% trans "Previous" %}</a>{% endif %}
+    {% if page_obj.has_next %}<a href="?page={{ page_obj.next_page_number }}">{% trans "Next" %}</a> <a href="?page={{ page_obj.paginator.num_pages }}">{% trans "Last" %}</a>{% endif %}
+</div>
+{% endblock %}

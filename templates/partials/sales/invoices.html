@@ -1,0 +1,36 @@
+{% load i18n %}
+<div class="bg-card rounded-xl shadow-md p-4">
+    <h2 class="text-xl font-bold mb-4">{% trans "Sales Invoices" %}</h2>
+    <div class="overflow-x-auto">
+        <table class="min-w-full bg-card border">
+            <thead>
+                <tr>
+                    <th class="py-2 px-4 border">{% trans "Invoice #" %}</th>
+                    <th class="py-2 px-4 border">{% trans "Date" %}</th>
+                    <th class="py-2 px-4 border">{% trans "Customer" %}</th>
+                    <th class="py-2 px-4 border">{% trans "Total" %}</th>
+                    <th class="py-2 px-4 border">{% trans "Actions" %}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for sale in page_obj %}
+                <tr class="border-t">
+                    <td class="py-2 px-4">{{ sale.sale_id }}</td>
+                    <td class="py-2 px-4">{{ sale.sale_date|date:"Y-m-d H:i" }}</td>
+                    <td class="py-2 px-4">{{ sale.customer|default:_("Walk‑in") }}</td>
+                    <td class="py-2 px-4">{{ sale.final_amount }} ₪</td>
+                    <td class="py-2 px-4">
+                        <a href="{% url 'sale_detail' sale.id %}" class="text-blue-600">{% trans "View" %}</a>
+                        <a href="{% url 'return_sale' sale.id %}" class="text-red-600 ml-2">{% trans "Return" %}</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" class="text-center py-4">{% trans "No sales found" %}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="mt-4">{% include 'partials/pagination.html' with page_obj=page_obj %}</div>
+</div>

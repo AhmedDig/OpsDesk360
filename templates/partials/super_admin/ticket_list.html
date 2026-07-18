@@ -1,0 +1,39 @@
+{% load i18n %}
+    <h2 class="text-2xl font-bold mb-6">{% trans "Support Tickets" %}</h2>
+    <div class="overflow-x-auto">
+        <table class="min-w-full bg-card border rounded shadow">
+            <thead class="bg-main">
+                <tr>
+                    <th class="py-2 px-4 border">{% trans "Client" %}</th>
+                    <th class="py-2 px-4 border">{% trans "Subject" %}</th>
+                    <th class="py-2 px-4 border">{% trans "Urgency" %}</th>
+                    <th class="py-2 px-4 border">{% trans "Status" %}</th>
+                    <th class="py-2 px-4 border">{% trans "Created" %}</th>
+                    <th class="py-2 px-4 border">{% trans "Actions" %}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for ticket in tickets %}
+                    <tr class="border-t hover:bg-main">
+                        <td class="py-2 px-4">{{ ticket.business.subdomain }}</td>
+                        <td class="py-2 px-4">{{ ticket.subject }}</td>
+                        <td class="py-2 px-4">
+                            <span class="px-2 py-1 rounded text-xs {% if ticket.urgency == 'critical' %}bg-red-100 text-red-800{% elif ticket.urgency == 'high' %}bg-orange-100 text-orange-800{% else %}bg-hover text-primary{% endif %}">
+                                {{ ticket.urgency }}
+                            </span>
+                        </td>
+                        <td class="py-2 px-4">{{ ticket.status }}</td>
+                        <td class="py-2 px-4">{{ ticket.created_at|date:"Y-m-d H:i" }}</td>
+                        <td class="py-2 px-4">
+                            <a href="{% url 'super_admin:ticket_update' ticket.id %}"
+                               class="text-blue-600 hover:underline">{% trans "Update" %}</a>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="6" class="text-center py-4 text-muted">{% trans "No tickets yet." %}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>

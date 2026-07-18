@@ -6,7 +6,7 @@ class BusinessForm(forms.ModelForm):
     class Meta:
         model = Business
         fields = [
-            "subdomain",
+            "client_domain",
             "status",
             "plan",
             "features",
@@ -14,13 +14,18 @@ class BusinessForm(forms.ModelForm):
             "payment_method",
             "trial_ends",
         ]
+        widgets = {
+            "features": forms.Textarea(attrs={"rows": 4, "class": "font-mono"}),
+            "limits": forms.Textarea(attrs={"rows": 3, "class": "font-mono"}),
+            "trial_ends": forms.DateInput(attrs={"type": "date"}),
+        }
 
 
 class FeatureToggleForm(forms.ModelForm):
     class Meta:
         model = Business
         fields = ["features"]
-        widgets = {"features": forms.Textarea(attrs={"rows": 5})}
+        widgets = {"features": forms.Textarea(attrs={"rows": 5, "class": "font-mono"})}
 
 
 class PaymentForm(forms.ModelForm):

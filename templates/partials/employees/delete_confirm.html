@@ -1,0 +1,11 @@
+{% load i18n %}
+<h1 class="text-2xl font-bold text-red-600 mb-4">{% trans "Delete Employee" %}</h1>
+<p>{% trans "Are you sure you want to deactivate" %} <strong>{{ profile.full_name }}</strong>?</p>
+<form method="post" action="{% url 'employee_delete' profile.pk %}" 
+      hx-post="{% url 'employee_delete' profile.pk %}" hx-target="#main-content" hx-swap="innerHTML">
+    {% csrf_token %}
+    <div class="mt-4">
+        <button type="submit" class="bg-red-600 text-white px-4 py-2 rounded">{% trans "Yes, Deactivate" %}</button>
+        <a href="{% url 'employee_list' %}" class="bg-gray-300 text-gray-700 px-4 py-2 rounded ml-2">{% trans "Cancel" %}</a>
+    </div>
+</form>

@@ -1,0 +1,21 @@
+{% load i18n %}
+<div class="flex justify-between items-center mt-4">
+    <div>
+        {% if page_obj.has_previous %}
+        <a href="?page=1" class="px-3 py-1 border rounded hover:bg-hover">{% trans "First" %}</a>
+        <a href="?page={{ page_obj.previous_page_number }}"
+            class="px-3 py-1 border rounded hover:bg-hover ml-1">{% trans "Previous" %}</a>
+        {% endif %}
+    </div>
+    <div>
+        <span>{% trans "Page" %} {{ page_obj.number }} {% trans "of" %} {{ page_obj.paginator.num_pages }}</span>
+    </div>
+    <div>
+        {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}"
+            class="px-3 py-1 border rounded hover:bg-hover">{% trans "Next" %}</a>
+        <a href="?page={{ page_obj.paginator.num_pages }}"
+            class="px-3 py-1 border rounded hover:bg-hover ml-1">{% trans "Last" %}</a>
+        {% endif %}
+    </div>
+</div>

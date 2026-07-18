@@ -1,0 +1,42 @@
+{% load i18n %}
+    <h2 class="text-2xl font-bold mb-6">{% trans "Super Admin Dashboard" %}</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="bg-card p-6 rounded shadow">
+            <h3 class="text-lg font-semibold text-secondary">{% trans "Total Clients" %}</h3>
+            <p class="text-4xl font-bold text-blue-600">{{ total_clients }}</p>
+        </div>
+        <div class="bg-card p-6 rounded shadow">
+            <h3 class="text-lg font-semibold text-secondary">{% trans "Active Clients" %}</h3>
+            <p class="text-4xl font-bold text-green-600">{{ active_clients }}</p>
+        </div>
+        <div class="bg-card p-6 rounded shadow">
+            <h3 class="text-lg font-semibold text-secondary">{% trans "Open Tickets" %}</h3>
+            <p class="text-4xl font-bold text-red-600">{{ total_tickets }}</p>
+        </div>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+        <div class="bg-card p-4 rounded shadow">
+            <h3 class="text-xl font-bold mb-2">{% trans "Recent Clients" %}</h3>
+            <ul class="divide-y">
+                {% for client in recent_clients %}
+                    <li class="py-2">{{ client.subdomain }} <span class="text-sm text-muted">({{ client.status }})</span></li>
+                {% empty %}
+                    <li class="py-2 text-muted">{% trans "No clients yet." %}</li>
+                {% endfor %}
+            </ul>
+            <a href="{% url 'super_admin:client_list' %}"
+               class="text-blue-600 text-sm mt-2 inline-block">{% trans "View all" %} →</a>
+        </div>
+        <div class="bg-card p-4 rounded shadow">
+            <h3 class="text-xl font-bold mb-2">{% trans "Recent Tickets" %}</h3>
+            <ul class="divide-y">
+                {% for ticket in recent_tickets %}
+                    <li class="py-2">{{ ticket.subject }} <span class="text-sm text-muted">({{ ticket.status }})</span></li>
+                {% empty %}
+                    <li class="py-2 text-muted">{% trans "No tickets." %}</li>
+                {% endfor %}
+            </ul>
+            <a href="{% url 'super_admin:ticket_list' %}"
+               class="text-blue-600 text-sm mt-2 inline-block">{% trans "View all" %} →</a>
+        </div>
+    </div>

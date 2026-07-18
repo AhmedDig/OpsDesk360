@@ -1,0 +1,40 @@
+{% load i18n %}
+<div class="bg-card rounded-xl shadow-md p-4">
+    <div class="flex justify-between items-center mb-4">
+        <h2 class="text-xl font-bold">{% trans "Gift Cards" %}</h2>
+        <a href="{% url 'gift_card_create' %}" class="bg-blue-600 text-white px-3 py-1 rounded">+
+            {% trans "New Gift Card" %}</a>
+    </div>
+    <table class="min-w-full bg-card border">
+        <thead>
+            <tr>
+                <th>{% trans "Code" %}</th>
+                <th>{% trans "Initial Balance" %}</th>
+                <th>{% trans "Current Balance" %}</th>
+                <th>{% trans "Issued To" %}</th>
+                <th>{% trans "Expires" %}</th>
+                <th>{% trans "Actions" %}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for card in cards %}
+            <tr class="border-t">
+                <td class="py-2 px-4">{{ card.code }}</td>
+                <td class="py-2 px-4">{{ card.initial_balance }} ₪</td>
+                <td class="py-2 px-4">{{ card.current_balance }} ₪</td>
+                <td class="py-2 px-4">{{ card.issued_to|default:"—" }}</td>
+                <td class="py-2 px-4">{{ card.expires_at|date:"Y-m-d"|default:"—" }}</td>
+                <td class="py-2 px-4">
+                    <a href="{% url 'gift_card_redeem' card.id %}" class="text-green-600">{% trans "Redeem" %}</a>
+                    <a href="{% url 'gift_card_delete' card.id %}" class="text-red-600 ml-2"
+                        onclick="return confirm('{% trans "Delete?" %}')">{% trans "Delete" %}</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6" class="text-center py-4">{% trans "No gift cards" %}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>

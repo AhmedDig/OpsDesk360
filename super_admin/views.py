@@ -3,40 +3,38 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import messages
 from .models import Business, PaymentRecord, Ticket
 from .forms import BusinessForm, FeatureToggleForm, PaymentForm, TicketForm
-from core.tenant_utils import create_tenant_database  # we'll implement later
+from core.utils import htmx_render
 
 
 def is_super_admin(user):
-    return user.is_authenticated and user.role == "super_admin"
+    return user.is_authenticated and user.is_superuser
 
 
 @login_required
 @user_passes_test(is_super_admin)
 def dashboard(request):
-    # Placeholder counts; adjust when models are ready
     total_clients = Business.objects.count()
     active_clients = Business.objects.filter(status="active").count()
     total_tickets = Ticket.objects.filter(status="open").count()
     recent_clients = Business.objects.order_by("-created_at")[:5]
     recent_tickets = Ticket.objects.order_by("-created_at")[:5]
-    return render(
-        request,
-        "super_admin/dashboard.html",
-        {
-            "total_clients": total_clients,
-            "active_clients": active_clients,
-            "total_tickets": total_tickets,
-            "recent_clients": recent_clients,
-            "recent_tickets": recent_tickets,
-        },
-    )
+    context = {
+        "total_clients": total_clients,
+        "active_clients": active_clients,
+        "total_tickets": total_tickets,
+        "recent_clients": recent_clients,
+        "recent_tickets": recent_tickets,
+    }
+    return htmx_render(request, "partials/super_admin/dashboard.html", context)
 
 
 @login_required
 @user_passes_test(is_super_admin)
 def client_list(request):
     clients = Business.objects.all()
-    return render(request, "super_admin/client_list.html", {"clients": clients})
+    return htmx_render(
+        request, "partials/super_admin/client_list.html", {"clients": clients}
+    )
 
 
 @login_required
@@ -46,24 +44,19 @@ def client_create(request):
         form = BusinessForm(request.POST)
         if form.is_valid():
             business = form.save(commit=False)
-            import hashlib, time
+            import re
 
-            unique_id = hashlib.md5(
-                f"{business.subdomain}{time.time()}".encode()
-            ).hexdigest()[:16]
-            business.database_name = f"deskpro_client_{unique_id}"
+            db_name = re.sub(r"[^a-zA-Z0-9_]", "_", business.client_domain.lower())
+            business.database_name = db_name
             business.save()
-            try:
-                create_tenant_database(business.database_name)  # placeholder function
-                messages.success(request, f"Client {business.subdomain} created.")
-                return redirect("super_admin:client_list")
-            except Exception as e:
-                messages.error(request, f"DB creation failed: {e}")
-                business.delete()
+            messages.success(request, f"Client {business.client_domain} created.")
+            return redirect("super_admin:client_list")
     else:
         form = BusinessForm()
-    return render(
-        request, "super_admin/client_form.html", {"form": form, "title": "Add Client"}
+    return htmx_render(
+        request,
+        "partials/super_admin/client_form.html",
+        {"form": form, "title": "Add Client"},
     )
 
 
@@ -79,8 +72,10 @@ def client_edit(request, client_id):
             return redirect("super_admin:client_list")
     else:
         form = BusinessForm(instance=client)
-    return render(
-        request, "super_admin/client_form.html", {"form": form, "title": "Edit Client"}
+    return htmx_render(
+        request,
+        "partials/super_admin/client_form.html",
+        {"form": form, "title": "Edit Client"},
     )
 
 
@@ -91,7 +86,7 @@ def client_toggle_status(request, client_id):
     client.status = "suspended" if client.status == "active" else "active"
     client.save()
     messages.success(
-        request, f"Client {client.subdomain} status changed to {client.status}."
+        request, f"Client {client.client_domain} status changed to {client.status}."
     )
     return redirect("super_admin:client_list")
 
@@ -108,8 +103,10 @@ def client_features(request, client_id):
             return redirect("super_admin:client_list")
     else:
         form = FeatureToggleForm(instance=client)
-    return render(
-        request, "super_admin/client_features.html", {"client": client, "form": form}
+    return htmx_render(
+        request,
+        "partials/super_admin/client_features.html",
+        {"client": client, "form": form},
     )
 
 
@@ -117,7 +114,9 @@ def client_features(request, client_id):
 @user_passes_test(is_super_admin)
 def payment_list(request):
     payments = PaymentRecord.objects.all().order_by("-recorded_at")
-    return render(request, "super_admin/payment_list.html", {"payments": payments})
+    return htmx_render(
+        request, "partials/super_admin/payment_list.html", {"payments": payments}
+    )
 
 
 @login_required
@@ -131,14 +130,18 @@ def payment_add(request):
             return redirect("super_admin:payment_list")
     else:
         form = PaymentForm()
-    return render(request, "super_admin/payment_form.html", {"form": form})
+    return htmx_render(
+        request, "partials/super_admin/payment_form.html", {"form": form}
+    )
 
 
 @login_required
 @user_passes_test(is_super_admin)
 def ticket_list(request):
     tickets = Ticket.objects.all().order_by("-created_at")
-    return render(request, "super_admin/ticket_list.html", {"tickets": tickets})
+    return htmx_render(
+        request, "partials/super_admin/ticket_list.html", {"tickets": tickets}
+    )
 
 
 @login_required
@@ -153,6 +156,13 @@ def ticket_update(request, ticket_id):
             return redirect("super_admin:ticket_list")
     else:
         form = TicketForm(instance=ticket)
-    return render(
-        request, "super_admin/ticket_form.html", {"form": form, "ticket": ticket}
+    return htmx_render(
+        request,
+        "partials/super_admin/ticket_form.html",
+        {"form": form, "ticket": ticket},
     )
+
+
+# Placeholder for platform settings
+def platform_settings_placeholder(request):
+    return htmx_render(request, "partials/super_admin/platform_settings.html", {})

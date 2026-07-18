@@ -1,0 +1,87 @@
+{% load i18n %}
+<div class="bg-card rounded-xl shadow-md p-4">
+    <div class="flex justify-between items-center mb-4">
+        <h2 class="text-xl font-bold">{% trans "Catalog" %}</h2>
+        <div class="space-x-2">
+            <a href="{% url 'catalog_create' %}" class="bg-blue-600 text-white px-4 py-2 rounded">+ {% trans "New Item" %}</a>
+            <a href="?low_stock=1" class="text-red-600">{% trans "Low Stock" %}</a>
+        </div>
+    </div>
+
+    <!-- Products table -->
+    <h3 class="text-lg font-semibold mt-4">{% trans "Products" %}</h3>
+    <div class="overflow-x-auto">
+        <table class="min-w-full bg-card border">
+            <thead>
+                <tr>
+                    <th class="py-2 px-4 border">{% trans "Image" %}</th>
+                    <th class="py-2 px-4 border">{% trans "Name" %}</th>
+                    <th class="py-2 px-4 border">{% trans "SKU" %}</th>
+                    <th class="py-2 px-4 border">{% trans "Price" %}</th>
+                    <th class="py-2 px-4 border">{% trans "Stock" %}</th>
+                    <th class="py-2 px-4 border">{% trans "Min" %}</th>
+                    <th class="py-2 px-4 border">{% trans "Status" %}</th>
+                    <th class="py-2 px-4 border">{% trans "Actions" %}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in products %}
+                <tr class="border-t {% if item.is_low_stock %}bg-red-50{% endif %}">
+                    <td class="py-2 px-4">
+                        {% if item.image %}<img src="{{ item.image.url }}" class="w-12 h-12 object-cover rounded">{% else %}<div class="w-12 h-12 bg-hover rounded"></div>{% endif %}
+                    </td>
+                    <td class="py-2 px-4">{% if LANGUAGE_CODE == 'ar' %}{{ item.name_ar }}{% else %}{{ item.name_en }}{% endif %}</td>
+                    <td class="py-2 px-4">{{ item.sku }}</td>
+                    <td class="py-2 px-4">{{ item.selling_price }} ₪</td>
+                    <td class="py-2 px-4">{{ item.stock_quantity }}</td>
+                    <td class="py-2 px-4">{{ item.min_stock }}</td>
+                    <td class="py-2 px-4">
+                        {% if item.is_low_stock %}<span class="text-red-600">{% trans "Low Stock" %}</span>{% else %}<span class="text-green-600">{% trans "OK" %}</span>{% endif %}
+                    </td>
+                    <td class="py-2 px-4 space-x-2">
+                        <a href="{% url 'catalog_edit' item.id %}" class="text-blue-600">{% trans "Edit" %}</a>
+                        <a href="{% url 'catalog_adjust_stock' item.id %}" class="text-green-600">{% trans "Adjust Stock" %}</a>
+                        <a href="{% url 'catalog_delete' item.id %}" class="text-red-600" onclick="return confirm('{% trans "Delete?" %}')">{% trans "Delete" %}</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="8" class="text-center py-4">{% trans "No products found" %}</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Services table -->
+    <h3 class="text-lg font-semibold mt-6">{% trans "Services" %}</h3>
+    <div class="overflow-x-auto">
+        <table class="min-w-full bg-card border">
+            <thead>
+                <tr>
+                    <th class="py-2 px-4 border">{% trans "Image" %}</th>
+                    <th class="py-2 px-4 border">{% trans "Name" %}</th>
+                    <th class="py-2 px-4 border">{% trans "SKU" %}</th>
+                    <th class="py-2 px-4 border">{% trans "Price" %}</th>
+                    <th class="py-2 px-4 border">{% trans "Actions" %}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in services %}
+                <tr class="border-t">
+                    <td class="py-2 px-4">
+                        {% if item.image %}<img src="{{ item.image.url }}" class="w-12 h-12 object-cover rounded">{% else %}<div class="w-12 h-12 bg-hover rounded"></div>{% endif %}
+                    </td>
+                    <td class="py-2 px-4">{% if LANGUAGE_CODE == 'ar' %}{{ item.name_ar }}{% else %}{{ item.name_en }}{% endif %}</td>
+                    <td class="py-2 px-4">{{ item.sku }}</td>
+                    <td class="py-2 px-4">{{ item.selling_price }} ₪</td>
+                    <td class="py-2 px-4 space-x-2">
+                        <a href="{% url 'catalog_edit' item.id %}" class="text-blue-600">{% trans "Edit" %}</a>
+                        <a href="{% url 'catalog_delete' item.id %}" class="text-red-600" onclick="return confirm('{% trans "Delete?" %}')">{% trans "Delete" %}</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="5" class="text-center py-4">{% trans "No services found" %}</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>

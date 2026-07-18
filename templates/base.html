@@ -1,133 +1,263 @@
+{% load tailwind_tags %}
+{% tailwind_css %}
 {% load i18n %}
+{% load static %}
 <!DOCTYPE html>
-<html lang="{{ LANGUAGE_CODE|default:'en' }}"
-      dir="{% if LANGUAGE_CODE == 'ar' %}rtl{% else %}ltr{% endif %}">
+<html lang="{{ LANGUAGE_CODE|default:'en' }}" dir="{% if LANGUAGE_CODE == 'ar' %}rtl{% else %}ltr{% endif %}">
+
     <head>
         <meta charset="UTF-8">
-        <meta name="viewport"
-              content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-        <title>{% trans "Desk Pro 360" %}</title>
-        <!-- Tailwind CSS CDN -->
-        <script src="https://cdn.tailwindcss.com"></script>
-        <!-- Alpine.js for sidebar toggle -->
-        <script defer
-                src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-        <!-- HTMX -->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+        <title>{% trans "OpsDesk360" %}</title>
+        <link rel="icon" type="image/svg" href="{% static 'img/favicon.svg' %}">
+        <link rel="manifest" href="{% static 'img/manifest.json' %}">
+        <link href="{% static 'css/theme.css' %}" rel="stylesheet">
+        <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
         <script src="https://unpkg.com/htmx.org@2.0.3"></script>
-        <!-- Font Awesome -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/js/all.min.js"></script>
         <style>
             body {
-                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                font-family: 'Montserrat', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             }
 
             [dir="rtl"] {
-                font-family: 'Cairo', sans-serif;
+                font-family: 'Cairo', Tahoma, 'Segoe UI', Arial !important;
                 text-align: right;
             }
 
-            /* Sidebar position based on direction */
-            @media(max-width: 768px) {
-            html[dir="rtl"] aside {
-                left: auto;
-                right: 0;
+            /* Layout container */
+            .app-container {
+                display: flex;
+                flex-direction: column;
+                height: 100vh;
             }
 
-            html[dir="rtl"] aside.transform.translate-x-0 {
-                transform: translateX(0) !important;
+            .main-aside-wrapper {
+                display: flex;
+                flex: 1;
+                overflow: hidden;
+                position: relative;
+                flex-direction: row;
+                /* ensures row direction regardless of dir */
             }
 
-            html[dir="rtl"] aside.-translate-x-full {
-                transform: translateX(100%) !important;
-            }
+            /* Main content area */
+            .main-content {
+                flex: 1;
+                overflow-y: auto;
             }
 
-            /* For LTR, default Tailwind classes work */
-            /* Optional: smooth transitions */
-            .sidebar-transition {
+            /* ===== SIDEBAR (mobile defaults) ===== */
+            .sidebar {
+                position: fixed;
+                top: 0;
+                bottom: 0;
+                width: 16rem;
+                box-shadow: var(--modal-shadow);
                 transition: transform 0.2s ease-in-out;
+                z-index: 40;
+                overflow-y: auto;
+            }
+
+            /* LTR: sidebar on left, hidden by default */
+            html[dir="ltr"] .sidebar {
+                left: 0;
+                transform: translateX(-100%);
+            }
+
+            /* RTL: sidebar on right, hidden by default */
+            html[dir="rtl"] .sidebar {
+                right: 0;
+                transform: translateX(100%);
+            }
+
+            /* When open, slide in */
+            html[dir="ltr"] .sidebar.open {
+                transform: translateX(0);
+            }
+
+            html[dir="rtl"] .sidebar.open {
+                transform: translateX(0);
+            }
+
+            html[dir="ltr"] #toast-container {
+                bottom: 4%;
+                right: 1%;
+            }
+
+            html[dir="rtl"] #toast-container {
+                bottom: 4%;
+                left: 1%;
+            }
+
+            /* ===== DESKTOP (≥768px) ===== */
+            @media (min-width: 1280px) {
+                .sidebar {
+                    position: relative;
+                    /* no longer fixed */
+                    transform: translateX(0) !important;
+                    /* always visible */
+                    order: -1;
+                    /* puts sidebar first in row */
+                }
+
+                .main-content {
+                    order: 0;
+                    /* main content second */
+                }
+
+                .main-aside-wrapper {
+                    flex-direction: row;
+                }
+            }
+
+            /* Loading indicator */
+            .htmx-indicator {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                z-index: 9999;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .htmx-request .htmx-indicator {
+                display: flex;
             }
         </style>
     </head>
-    <body class="bg-gray-100" x-data="{ sidebarOpen: false }">
-        <div class="flex h-screen">
-            <!-- Sidebar (mobile: hidden by default, slide in) -->
-            <aside class="fixed inset-y-0 left-0 z-30 w-64 bg-white shadow-lg transform transition-transform duration-200 ease-in-out md:relative md:translate-x-0"
-                   :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'">
-                <div class="p-4 border-b">
-                    <h2 class="text-xl font-bold text-gray-800">{% trans "Desk Pro 360" %}</h2>
-                </div>
-                <nav class="mt-4">
-                    <a href="{% url 'dashboard' %}"
-                       class="block py-2 px-4 text-gray-700 hover:bg-gray-100"><i class="fa fa-tachometer"></i> {% trans "Dashboard" %}</a>
-                    {% if user.is_authenticated %}
-                        <!-- Client core navigation -->
-                        <a href="{% url 'category_list' %}"
-                           class="block py-2 px-4 text-gray-700 hover:bg-gray-100"> <i class="fa fa-tag"></i>{% trans "Categories" %}</a>
-                        <a href="{% url 'item_list' %}"
-                           class="block py-2 px-4 text-gray-700 hover:bg-gray-100"> <i class="fa fa-list-alt"></i> {% trans "Items" %}</a>
-                        <a href="{% url 'customer_list' %}"
-                           class="block py-2 px-4 text-gray-700 hover:bg-gray-100"> <i class="fa fa-user"></i> {% trans "Customers" %}</a>
-                        {% if user.role == 'dept_admin' %}
-                            <a href="{% url 'user_list' %}"
-                               class="block py-2 px-4 text-gray-700 hover:bg-gray-100"> <i class="fa fa-user-secret"></i> {% trans "Users" %}</a>
-                        {% endif %}
-                        <!-- Feature-based navigation (placeholders) -->
-                        {% if request.business.features.pos %}
-                            <a href="#"
-                               class="block py-2 px-4 text-gray-700 hover:bg-gray-100 gap-4"> <i class="fa fa-user"></i>{% trans "Point of Sale" %}</a>
-                        {% endif %}
-                        {% if request.business.features.appointments %}
-                            <a href="#"
-                               class="block py-2 px-4 text-gray-700 hover:bg-gray-100 gap-4"> <i class="fa fa-user"></i>{% trans "Appointments" %}</a>
-                        {% endif %}
-                        <!-- Super admin link (only for super_admin role) -->
-                        {% if user.role == 'super_admin' %}
-                            <a href="{% url 'super_admin:dashboard' %}"
-                               class="block py-2 px-4 text-red-600 hover:bg-gray-100 gap-4">{% trans "Super Admin Panel" %}</a>
-                        {% endif %}
-                    {% endif %}
-                </nav>
-            </aside>
-            <!-- Main content area -->
-            <div class="flex-1 flex flex-col overflow-y-auto w-full h-screen">
-                <!-- Top bar (mobile menu button + user info) -->
-                <header class="bg-white shadow-sm p-4 flex justify-between w-full flex-row">
-                    <div class="flex justify-end items-center flex-row flex-1 gap-6">
-                        {% if user.is_authenticated %}
-                            <span class="text-gray-700">{{ user.username }}</span>
-                            <form action="{% url 'logout' %}" method="post" class="inline">
-                                {% csrf_token %}
-                                <button type="submit" class="text-red-600 hover:underline">{% trans "Logout" %}</button>
-                            </form>
-                        {% else %}
-                            <a href="{% url 'login' %}" class="text-blue-600">{% trans "Login" %}</a>
-                        {% endif %}
-                        <!-- Language switcher -->
-                        <form action="{% url 'set_language' %}" method="post" class="inline">
-                            {% csrf_token %}
-                            <input name="next" type="hidden" value="{{ request.path }}">
-                            <select name="language"
-                                    onchange="this.form.submit()"
-                                    class="border rounded p-1 text-sm">
-                                {% get_current_language as CURRENT_LANG %}
-                                <option value="en" {% if CURRENT_LANG == 'en' %}selected{% endif %}>English</option>
-                                <option value="ar" {% if CURRENT_LANG == 'ar' %}selected{% endif %}>العربية</option>
-                            </select>
-                        </form>
-                    </div>
-                    <button @click="sidebarOpen = !sidebarOpen"
-                            class="md:hidden text-gray-600 focus:outline-none">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                        </svg>
-                    </button>
-                </header>
-                <!-- Page content -->
-                <main class="p-4">
-                    {% block content %}{% endblock %}
-                </main>
+
+    <body x-data="{ sidebarOpen: false }"
+        data-default-url="{% if user.is_superuser %}{% url 'super_admin:dashboard' %}{% else %}{% url 'dashboard' %}{% endif %}"
+        class="bg-[var(--bg-main)] text-[var(--text-primary)]">
+        <div class="app-container">
+            <!-- Header partial -->
+            {% include 'partials/header.html' %}
+
+            <div class="main-aside-wrapper">
+                <!-- Main content (loaded via HTMX) -->
+                <main id="main-content" class="main-content p-4 pb-16"></main>
+
+                <!-- Sidebar partial (inside its own aside with dynamic class) -->
+                {% if user.is_authenticated %}
+                <aside class="bg-[var(--bg-sidebar)] text-[var(--text-primary)] sidebar"
+                    :class="{ 'open': sidebarOpen }">
+                    {% include 'partials/sidebar.html' %}
+                </aside>
+                {% endif %}
             </div>
+
+            <!-- Footer partial -->
+            <footer
+                class="fixed bottom-0 left-0 right-0 bg-[var(--bg-sidebar)] text-[var(--text-primary)] text-xs p-1
+                flex justify-between items-center z-50 shadow-[var(--modal-shadow)]">
+                {% include 'partials/network_footer.html' %}
+            </footer>
         </div>
+
+        <div class="htmx-indicator">
+            <div class="bg-white p-4 rounded shadow text-lg">{% trans "Loading..." %}</div>
+        </div>
+
+        <!-- Toast Container -->
+        <div id="toast-container"
+            class="fixed z-[10000] flex flex-col gap-3 pointer-events-none max-w-md w-full px-4 sm:px-6">
+        </div>
+
+        <!-- Django messages to be processed by JS -->
+        {% if messages %}
+        <div id="django-messages" style="display: none;">
+            {% for message in messages %}
+            <div class="django-message" data-type="{{ message.tags|default:'info' }}">{{ message|escapejs }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <script>
+
+            window.showToast = function (message, type = 'info') {
+                const container = document.getElementById('toast-container');
+                if (!container) return;
+
+                const toast = document.createElement('div');
+                const isRTL = document.documentElement.dir === 'rtl' || document.body.dir === 'rtl';
+                const translateClass = isRTL ? '-translate-x-full' : 'translate-x-full';
+
+                toast.className = `flex items-center w-full p-4 text-gray-900 bg-white rounded-xl shadow-xl border border-gray-100 transition-all duration-300 transform ${translateClass} opacity-0 pointer-events-auto backdrop-blur-md bg-white/95`;
+
+                let iconClass = 'fa-info-circle text-blue-500';
+                let bgIconClass = 'bg-blue-50';
+
+                const cleanType = type.toLowerCase().trim();
+                if (cleanType === 'success') {
+                    iconClass = 'fa-check-circle text-emerald-500';
+                    bgIconClass = 'bg-emerald-50';
+                } else if (cleanType === 'error' || cleanType === 'danger') {
+                    iconClass = 'fa-exclamation-circle text-rose-500';
+                    bgIconClass = 'bg-rose-50';
+                } else if (cleanType === 'warning') {
+                    iconClass = 'fa-exclamation-triangle text-amber-500';
+                    bgIconClass = 'bg-amber-50';
+                }
+
+                toast.innerHTML = `
+                    <div class="inline-flex items-center justify-center flex-shrink-0 w-9 h-9 ${bgIconClass} rounded-xl transition-all duration-300">
+                        <i class="fa ${iconClass} text-lg"></i>
+                    </div>
+                    <div class="ms-3 text-sm font-medium text-gray-800 leading-snug pr-4">${message}</div>
+                    <button type="button" class="ms-auto -mx-1.5 -my-1.5 bg-transparent text-gray-400 hover:text-gray-900 rounded-xl focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex items-center justify-center h-8 w-8 transition-colors" aria-label="Close">
+                        <span class="sr-only">Close</span>
+                        <i class="fa fa-times text-sm"></i>
+                    </button>
+                `;
+
+                const closeBtn = toast.querySelector('button');
+                closeBtn.addEventListener('click', () => dismissToast(toast));
+
+                container.appendChild(toast);
+
+                toast.offsetHeight; // trigger reflow
+                toast.classList.remove(translateClass, 'opacity-0');
+
+                const timeoutId = setTimeout(() => dismissToast(toast), 4000);
+
+                function dismissToast(el) {
+                    clearTimeout(timeoutId);
+                    el.classList.add(translateClass, 'opacity-0');
+                    el.addEventListener('transitionend', () => {
+                        el.remove();
+                    });
+                }
+            };
+
+            document.addEventListener('DOMContentLoaded', function () {
+                let initialUrl = '{{ initial_url|default:"/" }}';
+                if (initialUrl === '/') {
+                    let defaultUrl = document.body.getAttribute('data-default-url');
+                    if (defaultUrl) {
+                        htmx.ajax('GET', defaultUrl, '#main-content');
+                    }
+                } else {
+                    htmx.ajax('GET', initialUrl, '#main-content');
+                }
+
+                // Render Django messages as toasts from the hidden container
+                const msgContainer = document.getElementById('django-messages');
+                if (msgContainer) {
+                    msgContainer.querySelectorAll('.django-message').forEach(el => {
+                        window.showToast(el.innerHTML, el.getAttribute('data-type'));
+                    });
+                }
+            });
+
+            function showUpgradeModal(featureName, description) {
+                window.showToast(`<strong>{% trans "Upgrade Required" %}:</strong> ${featureName}<br><span class="text-xs text-gray-500">${description}</span>`, 'warning');
+            }
+        </script>
     </body>
+
 </html>

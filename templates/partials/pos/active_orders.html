@@ -1,0 +1,33 @@
+{% load i18n %}
+<div class="flex overflow-x-auto space-x-3 pb-2">
+    {% for order in orders %}
+    <div class="flex-shrink-0 w-48 border rounded-lg p-2 cursor-pointer hover:bg-hover {% if request.session.active_order_id == order.id %} ring-2 ring-blue-500 bg-blue-50{% endif %}"
+        hx-get="{% url 'switch_order' order.id %}" hx-target="#cart-section" hx-swap="outerHTML">
+        <div class="font-bold text-sm">{{ order.ticket_number }}</div>
+        <div class="text-xs">{{ order.customer|default:_("Walk‑in") }}</div>
+        <div class="text-xs font-semibold">{{ order.total_amount }} ₪</div>
+        {% if order.notes %}
+        <div class="text-xs text-muted truncate">{{ order.notes|truncatechars:20 }}</div>
+        {% endif %}
+        <button class="text-red-500 text-xs mt-1"
+            onclick="event.stopPropagation(); showDeleteModal('{{ order.id }}', '{{ order.ticket_number|escapejs }}')">
+            {% trans "Delete" %}
+        </button>
+    </div>
+    {% empty %}
+    <div class="flex flex-col justify-start h-full w-full p-4">
+        <p class="text-muted">{% trans "No active orders..." %}</p>
+        <div class="bg-green-50 hover:bg-green-100 rounded-xl p-3 text-center transition flex flex-col items-center w-1/6 self-center">
+            <button hx-post="{% url 'create_order' %}" hx-target="#active-orders-list"
+                class="bg-transparent text-green-600 px-3 py-1 rounded text-xl flex flex-col"> <svg
+                    class="svg-inline--fa fa-circle-plus text-green-600 text-2xl" aria-hidden="true" focusable="false"
+                    data-prefix="fas" data-icon="circle-plus" role="img" xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 512 512" data-fa-i2svg="">
+                    <path fill="currentColor"
+                        d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM232 344V280H168c-13.3 0-24-10.7-24-24s10.7-24 24-24h64V168c0-13.3 10.7-24 24-24s24 10.7 24 24v64h64c13.3 0 24 10.7 24 24s-10.7 24-24 24H280v64c0 13.3-10.7 24-24 24s-24-10.7-24-24z">
+                    </path>
+                </svg> {% trans "Add Order" %}</button>
+        </div>
+    </div>
+    {% endfor %}
+</div>

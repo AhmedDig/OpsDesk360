@@ -1,0 +1,63 @@
+{% load i18n %}
+<div class="p-4">
+    <div class="flex justify-between items-center mb-4">
+        <h1 class="text-2xl font-bold">{{ profile.full_name }}</h1>
+        {% if can_manage %}
+        <a href="{% url 'employee_edit' profile.pk %}" class="bg-blue-500 text-white px-4 py-2 rounded">{% trans "Edit" %}</a>
+        {% endif %}
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+        <div class="stats shadow">
+            <div class="stat">
+                <div class="stat-title">{% trans "Total Sales" %}</div>
+                <div class="stat-value">{{ total_sales|floatformat:2 }}</div>
+            </div>
+        </div>
+        <div class="stats shadow">
+            <div class="stat">
+                <div class="stat-title">{% trans "Commission Earned" %}</div>
+                <div class="stat-value text-primary">{{ total_commission|floatformat:2 }}</div>
+            </div>
+        </div>
+        <div class="stats shadow">
+            <div class="stat">
+                <div class="stat-title">{% trans "Status" %}</div>
+                <div class="stat-value text-{% if profile.is_active %}success{% else %}error{% endif %}">
+                    {{ profile.is_active|yesno:_("Active,Inactive") }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Clock In/Out (only for self) -->
+    {% if is_self %}
+    <div class="mb-4">
+        <button id="clock-btn" class="btn btn-outline" 
+                hx-post="{% url 'employee_clock' %}" hx-vals='{"action": "in"}' hx-trigger="click" hx-swap="none">
+            <i class="fas fa-clock"></i> {% trans "Clock In" %}
+        </button>
+    </div>
+    {% endif %}
+
+    <!-- Time Logs -->
+    <div class="mt-6">
+        <h3 class="text-lg font-semibold mb-2">{% trans "Recent Time Logs" %}</h3>
+        <div class="overflow-x-auto">
+            <table class="table table-sm">
+                <thead><tr><th>{% trans "Clock In" %}</th><th>{% trans "Clock Out" %}</th><th>{% trans "Duration" %}</th></tr></thead>
+                <tbody>
+                    {% for log in time_logs|slice:":10" %}
+                    <tr>
+                        <td>{{ log.clock_in|date:"Y-m-d H:i" }}</td>
+                        <td>{{ log.clock_out|date:"Y-m-d H:i"|default:"—" }}</td>
+                        <td>{{ log.duration|default:"—" }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="3" class="text-center">{% trans "No time logs." %}</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

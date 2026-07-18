@@ -1,0 +1,14 @@
+{% load i18n %}
+<div class="bg-card rounded-xl shadow-md p-4">
+    <h2 class="text-xl font-bold mb-4">{% trans "Low Stock Items" %}</h2>
+    <ul class="divide-y">
+        {% for item in items %}
+        <li class="py-2 flex justify-between">
+            <span>{{ item.name_en }} ({{ item.stock_quantity }})</span>
+            <a href="{% url 'inventory_adjust' item.id %}" class="text-blue-600">{% trans "Restock" %}</a>
+        </li>
+        {% empty %}
+        <li class="py-2 text-muted">{% trans "No low stock items" %}</li>
+        {% endfor %}
+    </ul>
+</div>

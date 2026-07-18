@@ -1,0 +1,115 @@
+{% load i18n %}
+<div id="cart-section" data-order-id="{{ order.id }}">
+    {% if order %}
+    <div class="flex flex-col gap-2 mb-2 border-b pb-1">
+        <div class="font-bold text-primary">
+            {% trans "Order ID" %} {{ order.ticket_number }}
+        </div>
+        <div class="relative">
+            {% if order.customer %}
+            <div class="text-sm text-muted">Customer: {{ order.customer.first_name_en }}
+                {{ order.customer.last_name_en }}</div>
+            {% endif %}
+            <input type="text" id="customer-search" name="q" placeholder="{% trans 'Search customer' %}"
+                class="w-full border rounded p-1" hx-get="{% url 'customer_search' %}"
+                hx-trigger="keyup changed delay:300ms" hx-target="#customer-suggestions" hx-swap="innerHTML"
+                hx-include="this"
+                hx-on::after-request="document.getElementById('customer-suggestions').classList.remove('hidden')"
+                autocomplete="off">
+            <input type="hidden" name="customer" id="selected-customer">
+            <input type="hidden" id="current-order-id" value="{{ order.id }}">
+            <div id="customer-suggestions"
+                class="absolute bg-[var(--bg-card)] border rounded hidden w-full z-10 max-h-40 overflow-y-auto shadow-lg">
+            </div>
+        </div>
+        <input type="text" id="order-note" name="note" placeholder="{% trans 'Note' %}" value="{{ order.notes }}"
+            class="w-full border rounded p-1" hx-post="{% url 'update_order_note' order.id %}"
+            hx-trigger="change" hx-include="this" hx-target="#cart-section" hx-swap="outerHTML">
+    </div>
+    <div class="space-y-2 max-h-96 overflow-y-auto">
+        {% for item in cart_items %}
+        <div class="flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <input type="checkbox" class="split-checkbox" data-item-id="{{ item.id }}">
+                <span>{{ item.name }}</span>
+                <div class="flex justify-between items-center" data-unit-price="{{ item.unit_price }}"></div>
+            </div>
+            <div class="flex items-center gap-2">
+                <input type="number" name="quantity" value="{{ item.quantity }}"
+                    class="w-16 border rounded p-1 text-center" hx-post="{% url 'update_cart_item' %}"
+                    hx-vals='{"item_id": "{{ item.id }}"}' hx-trigger="change" hx-target="#cart-section"
+                    hx-swap="outerHTML">
+                <span>{{ item.total }} ₪</span>
+                <button class="text-red-500" hx-post="{% url 'remove_cart_item' %}"
+                    hx-vals='{"item_id": "{{ item.id }}"}' hx-target="#cart-section" hx-swap="outerHTML"><i
+                        class="fa fa-trash"></i></button>
+            </div>
+        </div>
+        {% endfor %}
+        <div class="flex justify-between font-bold border-b pb-1">
+            <span>{% trans "Subtotal" %}</span>
+            <span id="subtotal">{{ subtotal }} ₪</span>
+        </div>
+        <div class="mt-4">
+            <form id="checkout-form" method="post" action="{% url 'checkout' %}" class="mt-4 space-y-2">
+                {% csrf_token %}
+                <div class="grid grid-cols-2 gap-2 border-b pb-1">
+                    <label class="text-end">{% trans 'Discount' %}</label>
+                    <input type="number" name="discount" value="{{ order.discount|floatformat:'i' }}"
+                        class="border rounded p-1" hx-post="{% url 'update_order_discount' order.id %}"
+                        hx-trigger="change" hx-target="#cart-section" hx-swap="outerHTML">
+
+                    <label class="text-end">{% trans 'Tax' %} (%)</label>
+                    <input type="number" name="tax" value="{{ order.tax|floatformat:'i' }}" class="border rounded p-1"
+                        hx-post="{% url 'update_order_tax' order.id %}" hx-trigger="change" hx-target="#cart-section"
+                        hx-swap="outerHTML">
+                    <label class="text-end">{% trans 'Payment method' %}</label>
+                    <select name="payment_method" class="w-full border rounded p-1">
+                        <option value="cash">{% trans 'Cash' %}</option>
+                        <option value="credit_card">{% trans 'Credit Card' %}</option>
+                        <option value="debit_card">{% trans 'Debit Card' %}</option>
+                        <option value="check">{% trans 'Check' %}</option>
+                        <option value="bank_transfer">{% trans 'Bank Transfer' %}</option>
+                        <option value="other">{% trans 'Other' %}</option>
+                    </select>
+                </div>
+                <div class="flex justify-between font-bold">
+                    <span>{% trans "Total" %}</span>
+                    <span>{{ order.final_amount|floatformat:2 }} ₪</span>
+                </div>
+
+                <!-- Buttons inside the form -->
+                <div class="grid grid-cols-2 gap-2">
+                    <button id="split-selected-btn" type="button" hx-post="{% url 'split_order' order.id %}"
+                        hx-target="#cart-section" hx-swap="outerHTML"
+                        hx-vals='js:{"item_ids": Array.from(document.querySelectorAll(".split-checkbox:checked")).map(cb => cb.dataset.itemId)}'
+                        class="w-full bg-yellow-500 text-white py-2 rounded">
+                        {% trans "Split Order" %}
+                    </button>
+                    <button type="submit"
+                        class="w-full bg-green-600 text-white py-2 rounded">{% trans "Checkout" %}</button>
+                </div>
+            </form>
+        </div>
+        {% else %}
+        <div class="text-center text-muted py-10">{% trans "Select an order to start selling" %}</div>
+        {% endif %}
+    </div>
+
+    <script>
+        function selectCustomer(id, name) {
+            document.getElementById('selected-customer').value = id;
+            document.getElementById('customer-search').value = name;
+            document.getElementById('customer-suggestions').classList.add('hidden');
+
+            // Update the order's customer
+            const orderId = document.getElementById('current-order-id')?.value;
+            if (orderId && id) {
+                htmx.ajax('POST', `/pos/orders/customer/${orderId}/`, {
+                    values: { customer_id: id },
+                    target: '#cart-section',
+                    swap: 'innerHTML'
+                });
+            }
+        }
+    </script>

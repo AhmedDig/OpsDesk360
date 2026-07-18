@@ -1,0 +1,43 @@
+{% load i18n %}
+    <div class="flex justify-between items-center mb-6">
+        <h2 class="text-2xl font-bold">{% trans "Clients" %}</h2>
+        <a href="{% url 'super_admin:client_create' %}"
+           class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">+ {% trans "Add Client" %}</a>
+    </div>
+    <div class="overflow-x-auto">
+        <table class="min-w-full bg-card border rounded shadow">
+            <thead class="bg-main">
+                <tr>
+                    <th class="py-2 px-4 border">{% trans "Subdomain" %}</th>
+                    <th class="py-2 px-4 border">{% trans "Status" %}</th>
+                    <th class="py-2 px-4 border">{% trans "Plan" %}</th>
+                    <th class="py-2 px-4 border">{% trans "Actions" %}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for client in clients %}
+                    <tr class="border-t hover:bg-main">
+                        <td class="py-2 px-4">{{ client.subdomain }}</td>
+                        <td class="py-2 px-4">
+                            <span class="px-2 py-1 rounded text-sm {% if client.status == 'active' %}bg-green-100 text-green-800{% else %}bg-red-100 text-red-800{% endif %}">
+                                {{ client.status }}
+                            </span>
+                        </td>
+                        <td class="py-2 px-4">{{ client.plan }}</td>
+                        <td class="py-2 px-4 space-x-2">
+                            <a href="{% url 'super_admin:client_edit' client.id %}"
+                               class="text-blue-600 hover:underline">{% trans "Edit" %}</a>
+                            <a href="{% url 'super_admin:client_toggle_status' client.id %}"
+                               class="text-orange-600 hover:underline">{% trans "Toggle Status" %}</a>
+                            <a href="{% url 'super_admin:client_features' client.id %}"
+                               class="text-green-600 hover:underline">{% trans "Features" %}</a>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="4" class="text-center py-4 text-muted">{% trans "No clients yet." %}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>

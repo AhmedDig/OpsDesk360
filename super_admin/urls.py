@@ -21,4 +21,9 @@ urlpatterns = [
     path("payments/add/", views.payment_add, name="payment_add"),
     path("tickets/", views.ticket_list, name="ticket_list"),
     path("tickets/<int:ticket_id>/update/", views.ticket_update, name="ticket_update"),
+    path(
+        "platform-settings/",
+        views.platform_settings_placeholder,
+        name="platform_settings",
+    ),
 ]

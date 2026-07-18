@@ -1,0 +1,41 @@
+{% load i18n %}
+<div class="bg-card rounded-xl shadow-md p-4">
+    <div class="flex justify-between items-center mb-4">
+        <h2 class="text-xl font-bold">{% trans "Discounts" %}</h2>
+        <a href="{% url 'discount_create' %}" class="bg-blue-600 text-white px-3 py-1 rounded">+
+            {% trans "New Discount" %}</a>
+    </div>
+    <table class="min-w-full bg-card border">
+        <thead>
+            <tr>
+                <th>{% trans "Code" %}</th>
+                <th>{% trans "Type" %}</th>
+                <th>{% trans "Value" %}</th>
+                <th>{% trans "Valid" %}</th>
+                <th>{% trans "Used" %}</th>
+                <th>{% trans "Actions" %}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for discount in discounts %}
+            <tr class="border-t">
+                <td class="py-2 px-4">{{ discount.code }}</td>
+                <td class="py-2 px-4">{{ discount.get_discount_type_display }}</td>
+                <td class="py-2 px-4">{{ discount.value }}{% if discount.discount_type == 'percentage' %}%{% else %}
+                    ₪{% endif %}</td>
+                <td class="py-2 px-4">{{ discount.valid_from|date:"Y-m-d" }} – {{ discount.valid_to|date:"Y-m-d" }}</td>
+                <td class="py-2 px-4">{{ discount.used_count }}/{{ discount.usage_limit }}</td>
+                <td class="py-2 px-4">
+                    <a href="{% url 'discount_edit' discount.id %}" class="text-blue-600">{% trans "Edit" %}</a>
+                    <a href="{% url 'discount_delete' discount.id %}" class="text-red-600 ml-2"
+                        onclick="return confirm('{% trans "Delete?" %}')">{% trans "Delete" %}</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6" class="text-center py-4">{% trans "No discounts" %}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,26 @@
+{% load i18n %}
+<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
+    {% for item in items %}
+    <div class="border rounded-lg p-2 text-center">
+        <div class="font-bold">
+            {% if LANGUAGE_CODE == 'ar' %}
+            {{ item.name_ar }}
+            {% else %}
+            {{ item.name_en }}
+            {% endif %}
+        </div>
+        <div class="text-green-600">{{ item.selling_price }} ₪</div>
+        <div class="text-xs text-muted">{% trans "Stock" %}: {{ item.stock_quantity }}</div>
+        <div class="mt-2 flex gap-1 justify-center flex-1 flex-wrap">
+            <input type="number" value="1" min="1" class="qty-input w-16 border rounded p-1 flex-1" id="qty-{{ item.id }}">
+            <button class="bg-blue-600 text-white px-2 py-1 rounded text-sm" hx-post="{% url 'add_to_cart' %}"
+                hx-vals='js:{"item_id": {{ item.id }}, "quantity": document.getElementById("qty-{{ item.id }}").value}'
+                hx-target="#cart-section" hx-swap="outerHTML">
+                {% trans "Add" %}
+            </button>
+        </div>
+    </div>
+    {% empty %}
+    <p class="col-span-full text-muted">{% trans "No products available" %}</p>
+    {% endfor %}
+</div>

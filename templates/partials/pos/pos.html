@@ -1,0 +1,231 @@
+{% load i18n %}
+{% load static %}
+
+<div class="flex flex-col h-full gap-4">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- Left: product catalog -->
+        <div class="bg-[var(--bg-card)] rounded-xl shadow-[var(--card-shadow)] p-3">
+            <div class="flex border-b mb-3">
+                {% if products %}
+                <button
+                    class="tab-button py-2 px-4 font-semibold {% if services %}border-b-2 border-blue-600 text-blue-600{% else %}text-secondary hover:text-blue-600{% endif %}"
+                    data-tab="products" hx-get="{% url 'product_grid' %}" hx-target="#items-grid" hx-swap="innerHTML">
+                    {% trans "Products" %}
+                </button>
+                {% endif %}
+                {% if services %}
+                <button
+                    class="tab-button py-2 px-4 font-semibold {% if products %}text-secondary hover:text-blue-600{% else %}border-b-2 border-blue-600 text-blue-600{% endif %}"
+                    data-tab="services" hx-get="{% url 'service_grid' %}" hx-target="#items-grid" hx-swap="innerHTML">
+                    {% trans "Services" %}
+                </button>
+                {% endif %}
+            </div>
+            <div id="items-grid">
+                {% if products %}
+                {% include 'partials/pos/product_list.html' with items=products %}
+                {% elif services %}
+                {% include 'partials/pos/service_list.html' with items=services %}
+                {% else %}
+                <p class="text-muted text-center py-10">{% trans "No products or services available" %}</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Right: cart -->
+        <div class="bg-[var(--bg-card)] rounded-xl shadow-[var(--card-shadow)] p-3" id="cart-section">
+            <!-- cart partial will be loaded here -->
+        </div>
+    </div>
+
+    <!-- Bottom: active orders -->
+    <div class="bg-[var(--bg-card)] rounded-xl shadow-[var(--card-shadow)] p-3">
+        <div class="flex justify-between items-center mb-2">
+            <h3 class="font-bold">{% trans "Active Orders" %}</h3>
+            <button hx-post="{% url 'create_order' %}" hx-target="#active-orders-list"
+                class="bg-green-600 text-white px-3 py-1 rounded text-sm">+ {% trans "New Order" %}</button>
+        </div>
+        <div id="active-orders-list" hx-get="{% url 'active_orders_list' %}" hx-trigger="load"></div>
+    </div>
+</div>
+
+<!-- Delete modal -->
+<div id="deleteOrderModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden items-center justify-center z-50"
+    onclick="if(event.target===this) closeDeleteModal()">
+    <div class="bg-[var(--bg-card)] rounded-xl p-6 max-w-md w-full mx-4 shadow-[var(--card-shadow)]">
+        <p class="mb-4">{% trans "Delete order" %} <span id="deleteTicketNumber"></span>?</p>
+        <div class="flex justify-end space-x-2">
+            <button id="confirmDeleteBtn" class="bg-red-600 text-white px-4 py-2 rounded">{% trans "Delete" %}</button>
+            <button onclick="closeDeleteModal()"
+                class="bg-hover text-primary px-4 py-2 rounded">{% trans "Cancel" %}</button>
+        </div>
+    </div>
+</div>
+
+<script src="{% static 'js/offline.js' %}"></script>
+
+<script>
+    // Set active tab class correctly after HTMX swaps
+    document.body.addEventListener('htmx:afterSwap', function (evt) {
+        if (evt.detail.target.id === 'items-grid') {
+            // Get the tab button that triggered the swap (if any)
+            // Instead of complex detection, we rely on the click handler to set the active class.
+            // But to be safe, we can look at the current grid content and set the active tab accordingly.
+            const productsGrid = document.querySelector('#items-grid .product-card');
+            const servicesGrid = document.querySelector('#items-grid .service-card');
+            const productsTab = document.querySelector('.tab-button[data-tab="products"]');
+            const servicesTab = document.querySelector('.tab-button[data-tab="services"]');
+            if (productsTab && servicesTab) {
+                // If we have both tabs, we can't easily know which one is active from the grid,
+                // so we assume the tab that was clicked already has the correct class.
+                // No automatic change.
+            }
+        }
+    });
+
+    // Handle manual clicks for tab styling
+    document.querySelectorAll('.tab-button').forEach(btn => {
+        btn.addEventListener('click', function () {
+            // Remove active styles from all tabs
+            document.querySelectorAll('.tab-button').forEach(b => {
+                b.classList.remove('border-b-2', 'border-blue-600', 'text-blue-600');
+                b.classList.add('text-secondary');
+            });
+            // Add active styles to the clicked tab
+            this.classList.add('border-b-2', 'border-blue-600', 'text-blue-600');
+            this.classList.remove('text-secondary');
+        });
+    });
+
+    document.addEventListener('htmx:configRequest', (e) => {
+        const csrf = document.querySelector('[name=csrfmiddlewaretoken]')?.value;
+        if (csrf) e.detail.headers['X-CSRFToken'] = csrf;
+    });
+
+    function refreshActiveOrders() {
+        htmx.ajax('GET', '{% url "active_orders_list" %}', '#active-orders-list');
+    }
+
+    // Refresh the currently active product/service grid
+    function refreshActiveGrid() {
+        const activeTab = document.querySelector('.tab-button.border-blue-600');
+        if (activeTab) {
+            const url = activeTab.getAttribute('hx-get');
+            if (url) {
+                htmx.ajax('GET', url, '#items-grid');
+            }
+        } else {
+            // Fallback: refresh products if no active tab found
+            htmx.ajax('GET', '{% url "product_grid" %}', '#items-grid');
+        }
+    }
+
+    document.body.addEventListener('htmx:afterSwap', (evt) => {
+        if (evt.detail.target.id === 'cart-section') {
+            refreshActiveOrders();
+            // Refresh product grid after cart changes (stock may have been updated)
+            refreshActiveGrid();
+        }
+    });
+
+    // Toast handling (same as before, keep it)
+    window.showToast = function (message, type = 'info') {
+        const container = document.getElementById('toast-container');
+        if (!container) return;
+        const toast = document.createElement('div');
+        const isRTL = document.documentElement.dir === 'rtl' || document.body.dir === 'rtl';
+        const translateClass = isRTL ? '-translate-x-full' : 'translate-x-full';
+        toast.className = `flex items-center w-full p-4 text-primary bg-card rounded-xl shadow-xl border border-gray-100 transition-all duration-300 transform ${translateClass} opacity-0 pointer-events-auto backdrop-blur-md bg-card/95`;
+        let iconClass = 'fa-info-circle text-blue-500';
+        let bgIconClass = 'bg-blue-50';
+        const cleanType = type.toLowerCase().trim();
+        if (cleanType === 'success') {
+            iconClass = 'fa-check-circle text-emerald-500';
+            bgIconClass = 'bg-emerald-50';
+        } else if (cleanType === 'error' || cleanType === 'danger') {
+            iconClass = 'fa-exclamation-circle text-rose-500';
+            bgIconClass = 'bg-rose-50';
+        } else if (cleanType === 'warning') {
+            iconClass = 'fa-exclamation-triangle text-amber-500';
+            bgIconClass = 'bg-amber-50';
+        }
+        toast.innerHTML = `
+            <div class="inline-flex items-center justify-center flex-shrink-0 w-9 h-9 ${bgIconClass} rounded-xl transition-all duration-300">
+                <i class="fa ${iconClass} text-lg"></i>
+            </div>
+            <div class="ms-3 text-sm font-medium text-primary leading-snug pr-4">${message}</div>
+            <button type="button" class="ms-auto -mx-1.5 -my-1.5 bg-transparent text-muted hover:text-primary rounded-xl focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-hover inline-flex items-center justify-center h-8 w-8 transition-colors" aria-label="Close">
+                <span class="sr-only">Close</span>
+                <i class="fa fa-times text-sm"></i>
+            </button>
+        `;
+        const closeBtn = toast.querySelector('button');
+        closeBtn.addEventListener('click', () => dismissToast(toast));
+        container.appendChild(toast);
+        toast.offsetHeight;
+        toast.classList.remove(translateClass, 'opacity-0');
+        const timeoutId = setTimeout(() => dismissToast(toast), 4000);
+        function dismissToast(el) {
+            clearTimeout(timeoutId);
+            el.classList.add(translateClass, 'opacity-0');
+            el.addEventListener('transitionend', () => {
+                el.remove();
+            });
+        }
+    };
+
+    document.body.addEventListener('htmx:afterRequest', (evt) => {
+        const toastMsg = evt.detail.xhr.getResponseHeader('X-Toast-Message');
+        if (toastMsg) showToast(toastMsg);
+    });
+
+    document.body.addEventListener('htmx:responseError', function (evt) {
+        if (evt.detail.xhr.status === 400) {
+            try {
+                const error = JSON.parse(evt.detail.xhr.responseText);
+                window.showToast(error.error || 'An error occurred', 'error');
+            } catch (e) {
+                window.showToast('An error occurred', 'error');
+            }
+        }
+    });
+
+    // Delete modal logic
+    let orderToDelete = null;
+    window.showDeleteModal = function (id, ticket) {
+        orderToDelete = id;
+        document.getElementById('deleteTicketNumber').innerText = ticket;
+        const modal = document.getElementById('deleteOrderModal');
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+    };
+    window.closeDeleteModal = function () {
+        const modal = document.getElementById('deleteOrderModal');
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+        orderToDelete = null;
+    };
+    document.getElementById('confirmDeleteBtn')?.addEventListener('click', function () {
+        if (orderToDelete) {
+            fetch(`/pos/orders/delete/${orderToDelete}/`, {
+                method: 'POST',
+                headers: { 'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]')?.value }
+            })
+                .then(r => r.json())
+                .then(data => {
+                    if (data.success) {
+                        refreshActiveOrders();
+                        refreshActiveGrid();
+                        document.getElementById('cart-section').innerHTML = '<div class="text-center text-muted py-10">{% trans "Select an order to start selling" %}</div>';
+                        window.showToast('{% trans "Order deleted" %}', 'success');
+                    } else {
+                        window.showToast('{% trans "Delete failed" %}', 'error');
+                    }
+                })
+                .catch(() => {
+                    window.showToast('{% trans "Delete failed" %}', 'error');
+                });
+        }
+        closeDeleteModal();
+    });
+</script>

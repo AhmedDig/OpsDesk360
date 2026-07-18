@@ -1,0 +1,13 @@
+{% load i18n %}
+    <h2 class="text-2xl font-bold mb-2">{% trans "Update Ticket" %}: {{ ticket.subject }}</h2>
+    <p class="text-secondary mb-6">{% trans "Client" %}: {{ ticket.business.subdomain }}</p>
+    <form method="post" class="bg-card p-6 rounded shadow max-w-2xl">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div class="mt-6 space-x-2">
+            <button type="submit"
+                    class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">{% trans "Update Ticket" %}</button>
+            <a href="{% url 'super_admin:ticket_list' %}"
+               class="bg-hover text-primary px-4 py-2 rounded hover:bg-gray-400">{% trans "Back" %}</a>
+        </div>
+    </form>

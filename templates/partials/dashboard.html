@@ -1,0 +1,110 @@
+{% load i18n %}
+<div class="space-y-6">
+    <!-- Summary cards -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="bg-[var(--bg-card)] rounded-xl shadow-[var(--card-shadow)] p-4">
+            <div class="text-primary text-sm">{% trans "Total Items" %}</div>
+            <div class="text-3xl font-bold">{{ total_items }}</div>
+        </div>
+        <div class="bg-[var(--bg-card)] rounded-xl shadow-[var(--card-shadow)] p-4">
+            <div class="text-primary text-sm">{% trans "Total Customers" %}</div>
+            <div class="text-3xl font-bold">{{ total_customers }}</div>
+        </div>
+        <div class="bg-[var(--bg-card)] rounded-xl shadow-[var(--card-shadow)] p-4">
+            <div class="text-primary text-sm">{% trans "Today's Sales" %}</div>
+            <div class="text-3xl font-bold">{{ today_sales_total|floatformat:2 }} ₪</div>
+            <div class="text-xs text-primary">{{ today_sales_count }} {% trans "transactions" %}</div>
+        </div>
+    </div>
+
+    <!-- Low stock alert -->
+    <div class="bg-[var(--bg-card)] rounded-xl shadow-[var(--card-shadow)] p-4">
+        <div class="flex justify-between items-center mb-3">
+            <h3 class="text-lg font-bold text-[var(--danger)]">{% trans "Low Stock Alert" %}</h3>
+            <span
+                class="bg-[var(--danger)] text-[var(--bg-card)] px-2 py-1 rounded-full text-xs">{{ low_stock_count }}</span>
+        </div>
+        {% if low_stock_items %}
+        <ul class="divide-y">
+            {% for item in low_stock_items %}
+            <li class="py-2 flex justify-between items-center">
+                <div>
+                    <span class="font-medium"> {% if LANGUAGE_CODE == 'ar' %}
+                        {{ item.name_ar }}
+                        {% else %}
+                        {{ item.name_en }}
+                        {% endif %}</span>
+                    <span class="text-xs text-primary ml-2">{% trans "Stock" %}: {{ item.stock_quantity }}</span>
+                </div>
+                <a href="{% url 'catalog_adjust_stock' item.id %}"
+                    class="text-blue-600 text-sm">{% trans "Restock" %}</a>
+            </li>
+            {% endfor %}
+        </ul>
+        {% if low_stock_count > 10 %}
+        <div class="mt-2 text-center">
+            <a href="{% url 'catalog_list' %}?low_stock=1" class="text-blue-600 text-sm">{% trans "View all" %} →</a>
+        </div>
+        {% endif %}
+        {% else %}
+        <p class="text-primary">{% trans "All stock levels are healthy" %}</p>
+        {% endif %}
+    </div>
+    <!-- Top Products (Today) -->
+    <div class="bg-[var(--bg-card)] rounded-xl shadow-[var(--card-shadow)] p-4 mt-4">
+        <h3 class="text-lg font-bold mb-2">{% trans "Today's Top Products" %}</h3>
+        <ul class="divide-y">
+            {% for product in top_products %}
+            <li class="py-2 flex justify-between">
+                <span> {% if LANGUAGE_CODE == 'ar' %}
+                    {{ product.item__name_ar }}
+                    {% else %}
+                    {{ product.item__name_en }}
+                    {% endif %}</span>
+                <span>{{ product.total_qty }} {% trans "sold" %}</span>
+            </li>
+            {% empty %}
+            <li class="py-2 text-primary">{% trans "No sales today" %}</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <!-- Recent Sales -->
+    <div class="bg-[var(--bg-card)] rounded-xl shadow-[var(--card-shadow)] p-4 mt-4">
+        <h3 class="text-lg font-bold mb-2">{% trans "Recent Sales" %}</h3>
+        <ul class="divide-y">
+            {% for sale in recent_sales %}
+            <li class="py-2 flex justify-between">
+                <a href="{% url 'sale_detail' sale.id %}" class="text-blue-600">{{ sale.sale_id }}</a>
+                <span>{{ sale.final_amount }} ₪</span>
+            </li>
+            {% empty %}
+            <li class="py-2 text-primary">{% trans "No recent sales" %}</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <!-- Quick links -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <a href="{% url 'catalog_create' %}"
+            class="bg-[var(--bg-card)] hover:bg-[var(--bg-hover)] rounded-xl p-3 text-center transition shadow-[var(--card-shadow)]">
+            <i class="fa fa-plus-circle text-blue-600 text-2xl"></i>
+            <div class="text-sm mt-1 text-[var(--text-primary)]">{% trans "Add Product" %}</div>
+        </a>
+        <a href="{% url 'pos_home' %}"
+            class="bg-[var(--bg-card)] hover:bg-[var(--bg-hover)] rounded-xl p-3 text-center transition shadow-[var(--card-shadow)]">
+            <i class="fa fa-shopping-cart text-green-600 text-2xl"></i>
+            <div class="text-sm mt-1 text-[var(--text-primary)]">{% trans "New Sale" %}</div>
+        </a>
+        <a href="{% url 'catalog_list' %}"
+            class="bg-[var(--bg-card)] hover:bg-[var(--bg-hover)] rounded-xl p-3 text-center transition shadow-[var(--card-shadow)]">
+            <i class="fa fa-boxes text-purple-600 text-2xl"></i>
+            <div class="text-sm mt-1 text-[var(--text-primary)]">{% trans "Manage Catalog" %}</div>
+        </a>
+        <a href="{% url 'customer_create' %}"
+            class="bg-[var(--bg-card)] hover:bg-[var(--bg-hover)] rounded-xl p-3 text-center transition shadow-[var(--card-shadow)]">
+            <i class="fa fa-user-plus text-yellow-600 text-2xl"></i>
+            <div class="text-sm mt-1 text-[var(--text-primary)]">{% trans "Add Customer" %}</div>
+        </a>
+    </div>
+</div>
