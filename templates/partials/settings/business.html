@@ -1,0 +1,126 @@
+{% load i18n %}
+<div class="bg-card p-6 rounded shadow">
+    <h2 class="text-xl font-bold mb-4">{% trans "Business Settings" %}</h2>
+    <form method="post" enctype="multipart/form-data" hx-post="{% url 'settings_business' %}"
+        hx-target="#settings-content" hx-swap="innerHTML">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+                <label for="{{ form.business_name.id_for_label }}"
+                    class="block text-sm font-medium">{{ form.business_name.label }}</label>
+                {{ form.business_name }}
+                {{ form.business_name.errors }}
+            </div>
+            <div>
+                <label for="{{ form.country.id_for_label }}"
+                    class="block text-sm font-medium">{{ form.country.label }}</label>
+                {{ form.country }}
+                {{ form.country.errors }}
+            </div>
+            <div>
+                <label for="{{ form.industry.id_for_label }}"
+                    class="block text-sm font-medium">{{ form.industry.label }}</label>
+                {{ form.industry }}
+                {{ form.industry.errors }}
+            </div>
+            <div>
+                <label for="{{ form.legal_structure.id_for_label }}"
+                    class="block text-sm font-medium">{{ form.legal_structure.label }}</label>
+                {{ form.legal_structure }}
+                {{ form.legal_structure.errors }}
+            </div>
+            <div>
+                <label for="{{ form.tax_registration_number.id_for_label }}"
+                    class="block text-sm font-medium">{{ form.tax_registration_number.label }}</label>
+                {{ form.tax_registration_number }}
+                {{ form.tax_registration_number.errors }}
+            </div>
+            <div>
+                <label for="{{ form.currency.id_for_label }}"
+                    class="block text-sm font-medium">{{ form.currency.label }}</label>
+                {{ form.currency }}
+                {{ form.currency.errors }}
+            </div>
+            <div>
+                <label for="{{ form.tax_rate.id_for_label }}"
+                    class="block text-sm font-medium">{{ form.tax_rate.label }}</label>
+                {{ form.tax_rate }}
+                {{ form.tax_rate.errors }}
+            </div>
+            <div>
+                <label for="{{ form.timezone.id_for_label }}"
+                    class="block text-sm font-medium">{{ form.timezone.label }}</label>
+                {{ form.timezone }}
+                {{ form.timezone.errors }}
+            </div>
+            <div class="col-span-2">
+                <label for="{{ form.address.id_for_label }}"
+                    class="block text-sm font-medium">{{ form.address.label }}</label>
+                {{ form.address }}
+                {{ form.address.errors }}
+            </div>
+            <div>
+                <label for="{{ form.phone.id_for_label }}"
+                    class="block text-sm font-medium">{{ form.phone.label }}</label>
+                {{ form.phone }}
+                {{ form.phone.errors }}
+            </div>
+            <div>
+                <label for="{{ form.logo.id_for_label }}"
+                    class="block text-sm font-medium">{{ form.logo.label }}</label>
+                {% if profile.logo %}
+                <div class="mb-2">
+                    <img src="{{ profile.logo.url }}" alt="Current Logo" class="max-h-16">
+                </div>
+                {% endif %}
+                {{ form.logo }}
+                {{ form.logo.errors }}
+            </div>
+            <div class="col-span-2">
+                <label for="{{ form.receipt_footer.id_for_label }}"
+                    class="block text-sm font-medium">{{ form.receipt_footer.label }}</label>
+                {{ form.receipt_footer }}
+                {{ form.receipt_footer.errors }}
+            </div>
+            <div>
+                <label for="{{ form.low_stock_threshold.id_for_label }}"
+                    class="block text-sm font-medium">{{ form.low_stock_threshold.label }}</label>
+                {{ form.low_stock_threshold }}
+                {{ form.low_stock_threshold.errors }}
+            </div>
+            <div>
+                <label for="{{ form.invoice_prefix.id_for_label }}"
+                    class="block text-sm font-medium">{{ form.invoice_prefix.label }}</label>
+                {{ form.invoice_prefix }}
+                {{ form.invoice_prefix.errors }}
+            </div>
+            <div class="col-span-2 border-t pt-4">
+                <h3 class="text-lg font-semibold mb-2">{% trans "Feature Toggles" %}</h3>
+                <div class="grid grid-cols-3 gap-4">
+                    <div>
+                        <label for="{{ form.loyalty_enabled.id_for_label }}"
+                            class="block text-sm font-medium">{{ form.loyalty_enabled.label }}</label>
+                        {{ form.loyalty_enabled }}
+                        {{ form.loyalty_enabled.errors }}
+                    </div>
+                    <div>
+                        <label for="{{ form.appointments_enabled.id_for_label }}"
+                            class="block text-sm font-medium">{{ form.appointments_enabled.label }}</label>
+                        {{ form.appointments_enabled }}
+                        {{ form.appointments_enabled.errors }}
+                    </div>
+                    <div>
+                        <label for="{{ form.multi_branch_enabled.id_for_label }}"
+                            class="block text-sm font-medium">{{ form.multi_branch_enabled.label }}</label>
+                        {{ form.multi_branch_enabled }}
+                        {{ form.multi_branch_enabled.errors }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="mt-4">
+            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">{% trans "Save Settings" %}</button>
+        </div>
+    </form>
+</div>

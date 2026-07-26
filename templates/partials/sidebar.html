@@ -12,10 +12,20 @@
             <div class="sidebar-group-content mt-1 hidden">
                 {% for item in group.items %}
                 {% if item.locked %}
-                <div class="block py-2 px-4 text-primary hover:bg-hover cursor-pointer locked-feature"
-                    onclick="showUpgradeModal('{{ item.name }}', '{{ item.description }}')">
-                    <i class="fa fa-{{ item.icon }}"></i> {{ item.name }}
-                    <span class="text-xs text-primary ml-2">{% trans "(Locked)" %}</span>
+                <div class="locked-feature" onclick="showUpgradeModal('{{ item.name }}', '{{ item.description }}')">
+                    <a href="{{ item.url }}" hx-get="{{ item.url }}" hx-target="#main-content" hx-push-url="true"
+                        class="sidebar-link block py-2 px-4 text-primary hover:bg-hover" data-url="{{ item.url }}">
+                        <i class="fa fa-{{ item.icon }}"></i> {{ item.name }}
+                        <span class="text-xs">{% trans "(Locked)" %}</span>
+                    </a>
+                </div>
+                {% elif item.coming_soon %}
+                <div class="coming-soon" onclick="showComingSoonModal('{{ item.name }}', '{{ item.description }}')">
+                    <a href="{{ item.url }}" hx-get="{{ item.url }}" hx-target="#main-content" hx-push-url="true"
+                        class="sidebar-link block py-2 px-4 text-primary hover:bg-hover" data-url="{{ item.url }}">
+                        <i class="fa fa-{{ item.icon }}"></i> {{ item.name }}
+                        <span class="text-xs">{% trans "(Coming Soon)" %}</span>
+                    </a>
                 </div>
                 {% else %}
                 <a href="{{ item.url }}" hx-get="{{ item.url }}" hx-target="#main-content" hx-push-url="true"

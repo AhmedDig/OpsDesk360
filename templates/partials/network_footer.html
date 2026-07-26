@@ -126,7 +126,7 @@
         sseSource = new EventSource("/sse/network/");
         sseSource.onopen = () => {
             document.getElementById('net-icon').className = 'w-3 h-3 rounded-full bg-success0 inline-block';
-            document.getElementById('net-status-text').innerHTML = '🟢 Online';
+            document.getElementById('net-status-text').innerHTML = '✔️ Online';
             measureLatency();
         };
         sseSource.onerror = () => {

@@ -1,4 +1,6 @@
 from django import forms
+from django.contrib.auth import password_validation
+from django.contrib.auth.forms import PasswordChangeForm
 from .models import (
     Category,
     Item,
@@ -8,6 +10,8 @@ from .models import (
     Discount,
     GiftCard,
     EmployeeProfile,
+    PlatformSettings,
+    BusinessProfile,
 )
 from django.utils.translation import gettext_lazy as _
 
@@ -67,7 +71,7 @@ class UserCreateForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ["username", "email", "role", "full_name_ar", "full_name_en", "phone"]
+        fields = ["username", "email", "role", "full_name_ar", "full_name_en", "phone", "business"]
 
     def save(self, commit=True):
         user = super().save(commit=False)
@@ -168,3 +172,73 @@ class EmployeeForm(forms.ModelForm):
 
         self.instance.user = user
         return super().save(commit=commit)
+
+
+class UserProfileForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ["first_name", "last_name", "email", "phone", "language"]
+        widgets = {
+            "language": forms.Select(choices=[("en", "English"), ("ar", "Arabic")]),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Make email read-only if you want to prevent changes (optional)
+        # self.fields['email'].widget.attrs['readonly'] = True
+
+
+class CustomPasswordChangeForm(PasswordChangeForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Customize labels, placeholders if needed
+        self.fields["old_password"].label = _("Current password")
+        self.fields["new_password1"].label = _("New password")
+        self.fields["new_password2"].label = _("Confirm new password")
+
+
+class PlatformSettingsForm(forms.ModelForm):
+    # Feature toggle checkboxes (dynamically created)
+    feature_appointments = forms.BooleanField(label="Appointments", required=False)
+    feature_loyalty = forms.BooleanField(label="Loyalty", required=False)
+    feature_multi_branch = forms.BooleanField(label="Multi-Branch", required=False)
+
+    class Meta:
+        model = PlatformSettings
+        exclude = ["created_at", "updated_at", "feature_flags"]  # hide JSON field
+        widgets = {
+            "smtp_password": forms.PasswordInput(render_value=True),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Pre-populate checkboxes from current feature_flags
+        if self.instance and self.instance.pk:
+            flags = self.instance.feature_flags or {}
+            self.fields["feature_appointments"].initial = flags.get(
+                "appointments", False
+            )
+            self.fields["feature_loyalty"].initial = flags.get("loyalty", False)
+            self.fields["feature_multi_branch"].initial = flags.get(
+                "multi_branch", False
+            )
+
+    def clean_feature_flags(self):
+        data = self.cleaned_data["feature_flags"]
+        if isinstance(data, str):
+            try:
+                return json.loads(data)
+            except json.JSONDecodeError:
+                raise forms.ValidationError("Invalid JSON format.")
+        return data
+
+
+class BusinessProfileForm(forms.ModelForm):
+    class Meta:
+        model = BusinessProfile
+        exclude = ["business", "created_at", "updated_at", "is_approved"]
+        widgets = {
+            "address": forms.Textarea(attrs={"rows": 3}),
+            "receipt_footer": forms.Textarea(attrs={"rows": 2}),
+            "tax_rate": forms.NumberInput(attrs={"step": "0.01"}),
+        }

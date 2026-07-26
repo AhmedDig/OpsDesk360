@@ -1,0 +1,79 @@
+{% load i18n %}
+<div class="bg-card p-6 rounded shadow">
+    <h2 class="text-xl font-bold mb-4">{% trans "Account Settings" %}</h2>
+
+    <form method="post" hx-post="{% url 'settings_account' %}" hx-target="#settings-content" hx-swap="innerHTML">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+                <label for="{{ form.first_name.id_for_label }}"
+                    class="block text-sm font-medium">{{ form.first_name.label }}</label>
+                {{ form.first_name }}
+                {{ form.first_name.errors }}
+            </div>
+            <div>
+                <label for="{{ form.last_name.id_for_label }}"
+                    class="block text-sm font-medium">{{ form.last_name.label }}</label>
+                {{ form.last_name }}
+                {{ form.last_name.errors }}
+            </div>
+            <div>
+                <label for="{{ form.email.id_for_label }}"
+                    class="block text-sm font-medium">{{ form.email.label }}</label>
+                {{ form.email }}
+                {{ form.email.errors }}
+            </div>
+            <div>
+                <label for="{{ form.phone.id_for_label }}"
+                    class="block text-sm font-medium">{{ form.phone.label }}</label>
+                {{ form.phone }}
+                {{ form.phone.errors }}
+            </div>
+            <div>
+                <label for="{{ form.language.id_for_label }}"
+                    class="block text-sm font-medium">{{ form.language.label }}</label>
+                {{ form.language }}
+                {{ form.language.errors }}
+            </div>
+        </div>
+        <div class="mt-4">
+            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">{% trans "Update Profile" %}</button>
+        </div>
+    </form>
+
+    <!-- Password Change Section -->
+    <div class="mt-8 border-t pt-4" id="password-section">
+        <h3 class="text-lg font-semibold mb-4">{% trans "Change Password" %}</h3>
+        <form method="post" hx-post="{% url 'change_password_ajax' %}" hx-target="#password-section"
+            hx-swap="outerHTML">
+            {% csrf_token %}
+            {{ password_form.non_field_errors }}
+            <div class="space-y-3 max-w-md">
+                <div>
+                    <label for="{{ password_form.old_password.id_for_label }}"
+                        class="block text-sm font-medium">{{ password_form.old_password.label }}</label>
+                    {{ password_form.old_password }}
+                    {{ password_form.old_password.errors }}
+                </div>
+                <div>
+                    <label for="{{ password_form.new_password1.id_for_label }}"
+                        class="block text-sm font-medium">{{ password_form.new_password1.label }}</label>
+                    {{ password_form.new_password1 }}
+                    {{ password_form.new_password1.errors }}
+                    <div class="text-xs text-gray-500 mt-1">{{ password_form.new_password1.help_text }}</div>
+                </div>
+                <div>
+                    <label for="{{ password_form.new_password2.id_for_label }}"
+                        class="block text-sm font-medium">{{ password_form.new_password2.label }}</label>
+                    {{ password_form.new_password2 }}
+                    {{ password_form.new_password2.errors }}
+                </div>
+            </div>
+            <div class="mt-4">
+                <button type="submit"
+                    class="bg-green-600 text-white px-4 py-2 rounded">{% trans "Change Password" %}</button>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,128 @@
+{% load i18n %}
+<div class="bg-card p-6 rounded shadow">
+    <h2 class="text-xl font-bold mb-4">{% trans "Platform Settings" %}</h2>
+    <form method="post" hx-post="{% url 'settings_platform' %}" hx-target="#settings-content" hx-swap="innerHTML">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+                <label for="{{ form.site_name.id_for_label }}"
+                    class="block text-sm font-medium">{{ form.site_name.label }}</label>
+                {{ form.site_name }}
+                {{ form.site_name.errors }}
+            </div>
+            <div>
+                <label for="{{ form.default_currency.id_for_label }}"
+                    class="block text-sm font-medium">{{ form.default_currency.label }}</label>
+                {{ form.default_currency }}
+                {{ form.default_currency.errors }}
+            </div>
+            <div>
+                <label for="{{ form.default_timezone.id_for_label }}"
+                    class="block text-sm font-medium">{{ form.default_timezone.label }}</label>
+                {{ form.default_timezone }}
+                {{ form.default_timezone.errors }}
+            </div>
+            <div>
+                <label for="{{ form.default_language.id_for_label }}"
+                    class="block text-sm font-medium">{{ form.default_language.label }}</label>
+                {{ form.default_language }}
+                {{ form.default_language.errors }}
+            </div>
+
+            <!-- Feature Toggles (using form fields) -->
+            <div class="col-span-2 border-t pt-4">
+                <h3 class="text-lg font-semibold mb-2">{% trans "Feature Toggles" %}</h3>
+                <div class="grid grid-cols-3 gap-4">
+                    <div>
+                        <label for="{{ form.feature_appointments.id_for_label }}" class="block text-sm font-medium">
+                            {{ form.feature_appointments.label }}
+                        </label>
+                        {{ form.feature_appointments }}
+                        {{ form.feature_appointments.errors }}
+                    </div>
+                    <div>
+                        <label for="{{ form.feature_loyalty.id_for_label }}" class="block text-sm font-medium">
+                            {{ form.feature_loyalty.label }}
+                        </label>
+                        {{ form.feature_loyalty }}
+                        {{ form.feature_loyalty.errors }}
+                    </div>
+                    <div>
+                        <label for="{{ form.feature_multi_branch.id_for_label }}" class="block text-sm font-medium">
+                            {{ form.feature_multi_branch.label }}
+                        </label>
+                        {{ form.feature_multi_branch }}
+                        {{ form.feature_multi_branch.errors }}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Access Control -->
+            <div class="col-span-2 border-t pt-4">
+                <h3 class="text-lg font-semibold mb-2">{% trans "Access Control" %}</h3>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label for="{{ form.allow_business_registration.id_for_label }}"
+                            class="block text-sm font-medium">{{ form.allow_business_registration.label }}</label>
+                        {{ form.allow_business_registration }}
+                        {{ form.allow_business_registration.errors }}
+                    </div>
+                    <div>
+                        <label for="{{ form.require_approval.id_for_label }}"
+                            class="block text-sm font-medium">{{ form.require_approval.label }}</label>
+                        {{ form.require_approval }}
+                        {{ form.require_approval.errors }}
+                    </div>
+                    <div>
+                        <label for="{{ form.maintenance_mode.id_for_label }}"
+                            class="block text-sm font-medium">{{ form.maintenance_mode.label }}</label>
+                        {{ form.maintenance_mode }}
+                        {{ form.maintenance_mode.errors }}
+                    </div>
+                </div>
+            </div>
+
+            <!-- SMTP Settings -->
+            <div class="col-span-2 border-t pt-4">
+                <h3 class="text-lg font-semibold mb-2">{% trans "Email Settings (SMTP)" %}</h3>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label for="{{ form.smtp_host.id_for_label }}"
+                            class="block text-sm font-medium">{{ form.smtp_host.label }}</label>
+                        {{ form.smtp_host }}
+                        {{ form.smtp_host.errors }}
+                    </div>
+                    <div>
+                        <label for="{{ form.smtp_port.id_for_label }}"
+                            class="block text-sm font-medium">{{ form.smtp_port.label }}</label>
+                        {{ form.smtp_port }}
+                        {{ form.smtp_port.errors }}
+                    </div>
+                    <div>
+                        <label for="{{ form.smtp_username.id_for_label }}"
+                            class="block text-sm font-medium">{{ form.smtp_username.label }}</label>
+                        {{ form.smtp_username }}
+                        {{ form.smtp_username.errors }}
+                    </div>
+                    <div>
+                        <label for="{{ form.smtp_password.id_for_label }}"
+                            class="block text-sm font-medium">{{ form.smtp_password.label }}</label>
+                        {{ form.smtp_password }}
+                        {{ form.smtp_password.errors }}
+                    </div>
+                    <div>
+                        <label for="{{ form.smtp_use_tls.id_for_label }}"
+                            class="block text-sm font-medium">{{ form.smtp_use_tls.label }}</label>
+                        {{ form.smtp_use_tls }}
+                        {{ form.smtp_use_tls.errors }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-4">
+            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">{% trans "Save Settings" %}</button>
+        </div>
+    </form>
+</div>

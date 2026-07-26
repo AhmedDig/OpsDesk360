@@ -5,6 +5,6 @@
     {% csrf_token %}
     {{ form.as_p }}
     <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded mt-2">{% trans "Save" %}</button>
-    <a href="{% url 'category_list' %}" class="bg-hover text-primary px-4 py-2 rounded mt-2 inline-block">{% trans "Cancel" %}</a>
+    <a href="{% url 'customer_list' %}" class="bg-hover text-primary px-4 py-2 rounded mt-2 inline-block">{% trans "Cancel" %}</a>
 </form>
 {% endblock %}

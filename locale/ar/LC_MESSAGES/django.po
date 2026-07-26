@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-15 20:38+0300\n"
+"POT-Creation-Date: 2026-07-26 16:33+0000\n"
 "PO-Revision-Date: 2026-06-07 20:00+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,215 +18,332 @@ msgstr ""
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
 "&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
 
-#: config/settings.py:80
+#: config/settings.py:98
 msgid "English"
 msgstr "الإنجليزية"
 
-#: config/settings.py:80
+#: config/settings.py:98
 msgid "Arabic"
 msgstr "العربية"
 
-#: core/context_processors.py:34 core/context_processors.py:150
+#: core/context_processors.py:43 core/context_processors.py:46
 msgid "Dashboard"
 msgstr "لوحة التحكم"
 
-#: core/context_processors.py:35
-msgid "Main"
-msgstr "الرئيسية"
+#: core/context_processors.py:47
+msgid "Admin Dashboard"
+msgstr "المشرف العام"
 
-#: core/context_processors.py:39
-msgid "POS"
-msgstr "نقطة البيع"
-
-
-#: core/context_processors.py:40 
-#: templates/partials/catalog/catalog_list.html:4
-msgid "Catalog"
-msgstr "الكاتلوج"
-
-#: core/context_processors.py:41 templates/partials/core/customer_list.html:4
-msgid "Customers"
-msgstr "العملاء"
-
-#: core/context_processors.py:42
-msgid "Employees"
-msgstr "الموظفون"
-
-#: core/context_processors.py:44
-msgid "Core Operations"
-msgstr "العمليات الأساسية"
-
-# Sales sub-items
 #: core/context_processors.py:48
-msgid "Invoices"
-msgstr "الفواتير"
-
-#: core/context_processors.py:49 templates/partials/sales/discounts.html:4
-msgid "Discounts"
-msgstr "الخصومات"
-
-#: core/context_processors.py:50 templates/partials/sales/gift_cards.html:4
-msgid "Gift Cards"
-msgstr "بطاقات الهدايا"
-
-#: core/context_processors.py:52
-msgid "Sales"
-msgstr "المبيعات"
-
-#: core/context_processors.py:58 core/context_processors.py:63
-msgid "Appointments"
-msgstr "المواعيد"
-
-#: core/context_processors.py:63
-msgid "Schedule, staff view, reminders"
-msgstr "جدول المواعيد، عرض الموظفين، تذكيرات"
-
-#: core/context_processors.py:67 core/context_processors.py:71
-msgid "Reports & Analytics"
-msgstr "التقارير والتحليلات"
-
-#: core/context_processors.py:72
-msgid "Sales, inventory, profitability, taxes"
-msgstr "المبيعات، المخزون، الربحية، الضرائب"
-
-#: core/context_processors.py:77 core/context_processors.py:80
-msgid "Loyalty Program"
-msgstr "برنامج الولاء"
-
-#: core/context_processors.py:80
-msgid "Points, rewards, tiers"
-msgstr "النقاط، المكافآت، المستويات"
-
-#: core/context_processors.py:83 core/context_processors.py:86
-msgid "Marketing"
-msgstr "التسويق"
-
-#: core/context_processors.py:86
-msgid "Campaigns, email/SMS, reviews"
-msgstr "الحملات، البريد الإلكتروني/الرسائل القصيرة، التقييمات"
-
-#: core/context_processors.py:89 core/context_processors.py:92
-msgid "Accounting"
-msgstr "المحاسبة"
-
-#: core/context_processors.py:92
-msgid "Expenses, profit/loss"
-msgstr "المصروفات، الأرباح/الخسائر"
-
-#: core/context_processors.py:96 core/context_processors.py:101
-msgid "Multi‑Branch"
-msgstr "الفروع المتعددة"
-
-#: core/context_processors.py:102
-msgid "Inventory transfer, cross‑location reports"
-msgstr "نقل المخزون، تقارير متعددة المواقع"
-
-#: core/context_processors.py:108
-msgid "Business Management"
-msgstr "إدارة الأعمال"
-
-#: core/context_processors.py:113
-msgid "Company Settings"
-msgstr "إعدادات الشركة"
-
-#: core/context_processors.py:115
-msgid "User Management"
-msgstr "إدارة المستخدمين"
-
-#: core/context_processors.py:120
-msgid "Integrations"
-msgstr "التكاملات"
-
-#: core/context_processors.py:121
-msgid "Backup & Restore"
-msgstr "النسخ الاحتياطي والاستعادة"
-
-#: core/context_processors.py:124
-msgid "System & Settings"
-msgstr "النظام والإعدادات"
-
-#: core/context_processors.py:130
-msgid "Medical Records"
-msgstr "السجلات الطبية"
-
-#: core/context_processors.py:131
-msgid "For clinics: EHR, appointments, prescriptions"
-msgstr "للمراكز الطبية: السجلات الطبية، المواعيد، الوصفات الطبية"
-
-#: core/context_processors.py:134
-msgid "Field Service"
-msgstr "الخدمات الميدانية"
-
-#: core/context_processors.py:134
-msgid "Work orders, technician dispatch"
-msgstr "أوامر العمل، إرسال الفنيين"
-
-#: core/context_processors.py:135
-msgid "E‑Commerce"
-msgstr "التجارة الإلكترونية"
-
-#: core/context_processors.py:135
-msgid "Online store, sync inventory"
-msgstr "المتجر الإلكتروني، مزامنة المخزون"
-
-#: core/context_processors.py:137
-msgid "Rental Management"
-msgstr "إدارة التأجير"
-
-#: core/context_processors.py:138
-msgid "Pricing, availability, agreements"
-msgstr "التسعير، التوفر، الاتفاقيات"
-
-#: core/context_processors.py:141
-msgid "Restaurant"
-msgstr "المطاعم"
-
-#: core/context_processors.py:141
-msgid "Tables, split bills, kitchen display"
-msgstr "طاولات، تقسيم الفواتير، شاشة المطبخ"
-
-#: core/context_processors.py:144
-msgid "Add‑On Modules (Locked)"
-msgstr "الوحدات الإضافية (مغلقة)"
-
-#: core/context_processors.py:151
 #: templates/partials/super_admin/client_list.html:3
 msgid "Clients"
 msgstr "العملاء"
 
-#: core/context_processors.py:152
+#: core/context_processors.py:49
 #: templates/partials/super_admin/payment_list.html:3
-#, fuzzy
-#| msgid "Payment method"
 msgid "Payments"
 msgstr "طريقة الدفع"
 
-#: core/context_processors.py:153
+#: core/context_processors.py:50
 #: templates/partials/super_admin/ticket_list.html:2
 msgid "Support Tickets"
 msgstr "تذاكر الدعم"
 
-#: core/context_processors.py:154
+#: core/context_processors.py:51 templates/partials/settings/platform.html:3
 msgid "Platform Settings"
-msgstr "إعدادات المنصة"
+msgstr "اعدادات المنصة"
 
-#: core/context_processors.py:156
-msgid "Super Admin"
-msgstr "المشرف العام"
+#: core/context_processors.py:54
+msgid "Main"
+msgstr "الرئيسية"
 
-#: templates/base.html:11 #: templates/base.html:140
+#: core/context_processors.py:59
+msgid "POS"
+msgstr "نقطة البيع"
+
+#: core/context_processors.py:60 templates/partials/catalog/catalog_list.html:4
+msgid "Catalog"
+msgstr "الكاتلوج"
+
+#: core/context_processors.py:61 templates/partials/core/category_list.html:4
+msgid "Categories"
+msgstr "التصنيفات"
+
+#: core/context_processors.py:62 templates/partials/core/customer_list.html:4
+msgid "Customers"
+msgstr "العملاء"
+
+#: core/context_processors.py:63 templates/partials/employees/list.html:4
+msgid "Employees"
+msgstr "الموظفون"
+
+#: core/context_processors.py:65
+msgid "Core Operations"
+msgstr "العمليات الأساسية"
+
+# Sales sub-items
+#: core/context_processors.py:69
+msgid "Invoices"
+msgstr "الفواتير"
+
+#: core/context_processors.py:70 templates/partials/sales/discounts.html:4
+msgid "Discounts"
+msgstr "الخصومات"
+
+#: core/context_processors.py:71 templates/partials/sales/gift_cards.html:4
+msgid "Gift Cards"
+msgstr "بطاقات الهدايا"
+
+#: core/context_processors.py:73
+msgid "Sales"
+msgstr "المبيعات"
+
+#: core/context_processors.py:80 core/context_processors.py:89
+#: core/views.py:1472
+msgid "Appointments"
+msgstr "المواعيد"
+
+#: core/context_processors.py:81 core/context_processors.py:90
+msgid "Schedule, staff view, reminders"
+msgstr "جدول المواعيد، عرض الموظفين، تذكيرات"
+
+#: core/context_processors.py:98 core/context_processors.py:107
+#: core/views.py:1474
+msgid "Reports & Analytics"
+msgstr "التقارير والتحليلات"
+
+#: core/context_processors.py:99 core/context_processors.py:108
+msgid "Sales, inventory, profitability, taxes"
+msgstr "المبيعات، المخزون، الربحية، الضرائب"
+
+#: core/context_processors.py:116 core/context_processors.py:122
+msgid "Loyalty Program"
+msgstr "برنامج الولاء"
+
+#: core/context_processors.py:116 core/context_processors.py:123
+msgid "Points, rewards, tiers"
+msgstr "النقاط، المكافآت، المستويات"
+
+#: core/context_processors.py:131 core/context_processors.py:140
+#: core/views.py:1475
+msgid "Marketing"
+msgstr "التسويق"
+
+#: core/context_processors.py:132 core/context_processors.py:141
+msgid "Campaigns, email/SMS, reviews"
+msgstr "الحملات، البريد الإلكتروني/الرسائل القصيرة، التقييمات"
+
+#: core/context_processors.py:149 core/context_processors.py:155
+#: core/views.py:1476
+msgid "Accounting"
+msgstr "المحاسبة"
+
+#: core/context_processors.py:149 core/context_processors.py:156
+msgid "Expenses, profit/loss"
+msgstr "المصروفات، الأرباح/الخسائر"
+
+#: core/context_processors.py:164 core/context_processors.py:173
+msgid "Multi‑Branch"
+msgstr "الفروع المتعددة"
+
+#: core/context_processors.py:165 core/context_processors.py:174
+msgid "Inventory transfer, cross‑location reports"
+msgstr "نقل المخزون، تقارير متعددة المواقع"
+
+#: core/context_processors.py:181
+msgid "Business Management"
+msgstr "إدارة الأعمال"
+
+#: core/context_processors.py:186
+msgid "Company Settings"
+msgstr "إعدادات الشركة"
+
+#: core/context_processors.py:188
+msgid "User Management"
+msgstr "إدارة المستخدمين"
+
+#: core/context_processors.py:193
+msgid "Integrations"
+msgstr "التكاملات"
+
+#: core/context_processors.py:194
+msgid "Backup & Restore"
+msgstr "النسخ الاحتياطي والاستعادة"
+
+#: core/context_processors.py:197
+msgid "System & Settings"
+msgstr "النظام والإعدادات"
+
+#: core/context_processors.py:203 core/views.py:1478
+msgid "Medical Records"
+msgstr "السجلات الطبية"
+
+#: core/context_processors.py:204
+msgid "For clinics: EHR, appointments, prescriptions"
+msgstr "للمراكز الطبية: السجلات الطبية، المواعيد، الوصفات الطبية"
+
+#: core/context_processors.py:209 core/views.py:1479
+msgid "Field Service"
+msgstr "الخدمات الميدانية"
+
+#: core/context_processors.py:210
+msgid "Work orders, technician dispatch"
+msgstr "أوامر العمل، إرسال الفنيين"
+
+#: core/context_processors.py:215
+msgid "E‑Commerce"
+msgstr "التجارة الإلكترونية"
+
+#: core/context_processors.py:216
+msgid "Online store, sync inventory"
+msgstr "المتجر الإلكتروني، مزامنة المخزون"
+
+#: core/context_processors.py:221 core/views.py:1481
+msgid "Rental Management"
+msgstr "إدارة التأجير"
+
+#: core/context_processors.py:222
+msgid "Pricing, availability, agreements"
+msgstr "التسعير، التوفر، الاتفاقيات"
+
+#: core/context_processors.py:227 core/views.py:1482
+msgid "Restaurant"
+msgstr "المطاعم"
+
+#: core/context_processors.py:228
+msgid "Tables, split bills, kitchen display"
+msgstr "طاولات، تقسيم الفواتير، شاشة المطبخ"
+
+#: core/context_processors.py:234
+msgid "Add‑On Modules (Locked)"
+msgstr "الوحدات الإضافية (مغلقة)"
+
+#: core/forms.py:123
+msgid "First Name"
+msgstr "الإسم الأول"
+
+#: core/forms.py:124
+msgid "Last Name"
+msgstr "إسم العائلة"
+
+#: core/forms.py:125
+msgid "Email"
+msgstr "البريد الإلكتروني"
+
+#: core/forms.py:126
+msgid "Phone"
+msgstr "الهاتف"
+
+#: core/forms.py:127 templates/partials/core/user_list.html:16
+#: templates/partials/employees/list.html:40
+msgid "Role"
+msgstr "الدور"
+
+#: core/forms.py:131 templates/registration/login.html:12
+msgid "Password"
+msgstr "كلمة المرور"
+
+#: core/forms.py:132
+msgid "Set a password for the new employee."
+msgstr "تعيين كلمة مرور للموظف الجديد."
+
+#: core/forms.py:195
+msgid "Current password"
+msgstr "كلمة المرور الحالية"
+
+#: core/forms.py:196
+msgid "New password"
+msgstr "كلمة المرور الجديدة"
+
+#: core/forms.py:197
+msgid "Confirm new password"
+msgstr "تأكيد كلمة المرور الجديدة"
+
+#: core/views.py:162
+msgid "You don't have permission to modify platform settings."
+msgstr "ليس لديك الصلاحية لتعديل إعدادات المنصة."
+
+#: core/views.py:185
+msgid "Platform settings updated."
+msgstr "اعدادات المنصة"
+
+#: core/views.py:213
+msgid "Business settings updated."
+msgstr "تم تحديث إعدادات الشركة."
+
+#: core/views.py:237
+msgid "Account settings updated."
+msgstr "تم تحديث إعدادات الحساب."
+
+#: core/views.py:261
+msgid "Password changed successfully."
+msgstr "تم تغيير كلمة المرور بنجاح."
+
+#: core/views.py:1107
+msgid "Please select at least one item to return."
+msgstr "يرجى إرسال نموذج واحد على الأقل."
+
+#: core/views.py:1138
+#, python-format
+msgid "Return processed. Refund amount: %(amount)s ₪"
+msgstr "تمت معالجة عملية الإرجاع. مبلغ الاسترداد: %(amount)s ₪"
+
+#: core/views.py:1306
+msgid "A user with this email already exists."
+msgstr "%(model_name)s بهذا %(field_label)s موجود مسبقاً."
+
+#: core/views.py:1310 core/views.py:1320 core/views.py:1336
+msgid "Add Employee"
+msgstr "الموظفون"
+
+#: core/views.py:1316
+msgid "Password is required for new employees."
+msgstr "كلمة المرور مطلوبة للموظفين الجدد."
+
+#: core/views.py:1329
+msgid "Employee created successfully."
+msgstr "تم إنشاء الموظف بنجاح."
+
+#: core/views.py:1350
+msgid "Employee updated."
+msgstr "الموظفون"
+
+#: core/views.py:1357
+msgid "Edit Employee"
+msgstr "الموظفون"
+
+#: core/views.py:1372
+msgid "Employee deactivated."
+msgstr "تم إلغاء تنشيط الموظف."
+
+#: core/views.py:1473
+msgid "Loyalty Points"
+msgstr "برنامج الولاء"
+
+#: core/views.py:1477
+msgid "Multi-Branch"
+msgstr "الفروع المتعددة"
+
+#: core/views.py:1480
+msgid "E-Commerce"
+msgstr "التجارة الإلكترونية"
+
+#: templates/base.html:11
 msgid "OpsDesk360"
 msgstr "أوبس ديسك 360"
 
-#: templates/base.html:155
-#, fuzzy
-#| msgid "Measuring..."
+#: templates/base.html:154 templates/partials/settings/container.html:34
 msgid "Loading..."
-msgstr "جاري القياس..."
+msgstr "جاري التحميل..."
 
-#: templates/base.html:249
+#: templates/base.html:263
 msgid "Upgrade Required"
 msgstr "الترقية مطلوبة"
+
+#: templates/base.html:266
+#: templates/partials/super_admin/platform_settings.html:4
+msgid "Coming Soon"
+msgstr "قريباً"
 
 # Inventory sub-items
 #: templates/partials/accounting/expenses.html:2
@@ -244,7 +361,6 @@ msgstr "الترقية مطلوبة"
 #: templates/partials/employees/commissions.html:2
 #: templates/partials/employees/hours.html:2
 #: templates/partials/employees/roles.html:2
-#: templates/partials/loyalty/points.html:2
 #: templates/partials/loyalty/rewards.html:2
 #: templates/partials/loyalty/tiers.html:2
 #: templates/partials/marketing/campaigns.html:2
@@ -256,7 +372,6 @@ msgstr "الترقية مطلوبة"
 #: templates/partials/reports/profitability.html:2
 #: templates/partials/reports/sales_report.html:2
 #: templates/partials/reports/taxes.html:2
-#: templates/partials/sales/returns.html:2
 #: templates/partials/system/backup_restore.html:2
 #: templates/partials/system/company_settings.html:2
 #: templates/partials/system/integrations.html:2
@@ -279,7 +394,6 @@ msgstr "مستويات المخزون"
 #: templates/partials/employees/commissions.html:3
 #: templates/partials/employees/hours.html:3
 #: templates/partials/employees/roles.html:3
-#: templates/partials/loyalty/points.html:3
 #: templates/partials/loyalty/rewards.html:3
 #: templates/partials/loyalty/tiers.html:3
 #: templates/partials/marketing/campaigns.html:3
@@ -291,7 +405,6 @@ msgstr "مستويات المخزون"
 #: templates/partials/reports/profitability.html:3
 #: templates/partials/reports/sales_report.html:3
 #: templates/partials/reports/taxes.html:3
-#: templates/partials/sales/returns.html:3
 #: templates/partials/system/backup_restore.html:3
 #: templates/partials/system/company_settings.html:3
 #: templates/partials/system/integrations.html:3
@@ -304,8 +417,8 @@ msgstr "هذه الميزة ستأتي قريبا."
 #: templates/partials/catalog/stock_adjust.html:11
 #: templates/partials/core/category_form.html:7
 #: templates/partials/core/customer_form.html:7
-#: templates/partials/core/item_form.html:7
 #: templates/partials/core/user_form.html:7
+#: templates/partials/employees/form.html:9
 #: templates/partials/super_admin/client_form.html:7
 msgid "Save"
 msgstr "حفظ"
@@ -315,126 +428,107 @@ msgstr "حفظ"
 #: templates/partials/catalog/stock_adjust.html:12
 #: templates/partials/core/category_form.html:9
 #: templates/partials/core/customer_form.html:8
-#: templates/partials/core/item_form.html:8
-#: templates/partials/core/user_form.html:9 templates/partials/pos/pos.html:59
+#: templates/partials/core/user_form.html:9
+#: templates/partials/employees/delete_confirm.html:9
+#: templates/partials/employees/form.html:11 templates/partials/pos/pos.html:60
+#: templates/partials/sales/returns.html:25
 #: templates/partials/super_admin/client_form.html:8
 #: templates/partials/super_admin/payment_form.html:10
 msgid "Cancel"
 msgstr "إلغاء"
 
-#: templates/partials/catalog/catalog_list.html:7
-#: templates/partials/core/item_list.html:6
+#: templates/partials/catalog/catalog_list.html:8
 msgid "New Item"
 msgstr "صنف جديد"
 
-#: templates/partials/catalog/catalog_list.html:8
-#: templates/partials/catalog/catalog_list.html:44
+#: templates/partials/catalog/catalog_list.html:9
+#: templates/partials/catalog/catalog_list.html:40
 msgid "Low Stock"
 msgstr "المخزون المنخفض"
 
-#: templates/partials/catalog/catalog_list.html:15
-#: venv/lib/python3.12/site-packages/django/db/models/fields/files.py:420
-msgid "Image"
-msgstr "صورة"
+#: templates/partials/catalog/catalog_list.html:14
+#: templates/partials/pos/pos.html:13
+msgid "Products"
+msgstr "المنتجات"
 
-#: templates/partials/catalog/catalog_list.html:16
-#, fuzzy
-#| msgid "Name (EN)"
-msgid "Name"
-msgstr "الاسم (إنجليزي)"
+#: templates/partials/catalog/catalog_list.html:30
+msgid "Category"
+msgstr "التصنيفات"
 
-#: templates/partials/catalog/catalog_list.html:17
-#: templates/partials/sales/discounts.html:12
-msgid "Type"
-msgstr "نوع"
-
-#: templates/partials/catalog/catalog_list.html:18
-#: templates/partials/core/item_list.html:13
-msgid "SKU"
-msgstr "رمز التخزين"
-
-#: templates/partials/catalog/catalog_list.html:19
-#: templates/partials/core/item_list.html:14
+#: templates/partials/catalog/catalog_list.html:36
+#: templates/partials/catalog/catalog_list.html:76
 #: templates/partials/pos/receipt.html:14
-#: templates/partials/sales/sale_detail.html:13
+#: templates/partials/sales/sale_detail.html:26
 msgid "Price"
 msgstr "السعر"
 
-#: templates/partials/catalog/catalog_list.html:20
-#: templates/partials/dashboard.html:32
-#: templates/partials/pos/product_list.html:7
+#: templates/partials/catalog/catalog_list.html:37
+#: templates/partials/dashboard.html:37
+#: templates/partials/pos/product_list.html:13
 msgid "Stock"
 msgstr "المخزون"
 
-#: templates/partials/catalog/catalog_list.html:21
-#, fuzzy
-#| msgid "Main"
+#: templates/partials/catalog/catalog_list.html:38
 msgid "Min"
 msgstr "الرئيسية"
 
-#: templates/partials/catalog/catalog_list.html:22
-#: templates/partials/super_admin/client_list.html:12
-#: templates/partials/super_admin/ticket_list.html:10
-msgid "Status"
-msgstr "الحالة"
-
-#: templates/partials/catalog/catalog_list.html:23
-#: templates/partials/core/category_list.html:16
-#: templates/partials/core/customer_list.html:16
-#: templates/partials/core/item_list.html:16
-#: templates/partials/sales/discounts.html:16
-#: templates/partials/sales/gift_cards.html:16
-#: templates/partials/sales/invoices.html:12
-#: templates/partials/super_admin/client_list.html:14
-#: templates/partials/super_admin/ticket_list.html:12
-msgid "Actions"
-msgstr "إجراءات"
-
-#: templates/partials/catalog/catalog_list.html:46
+#: templates/partials/catalog/catalog_list.html:41
 msgid "OK"
 msgstr "جيد"
 
-#: templates/partials/catalog/catalog_list.html:50
-#: templates/partials/core/category_list.html:27
+#: templates/partials/catalog/catalog_list.html:45
+#: templates/partials/catalog/catalog_list.html:80
+#: templates/partials/core/category_list.html:29
 #: templates/partials/core/customer_list.html:28
-#: templates/partials/core/item_list.html:28
+#: templates/partials/core/user_list.html:21
+#: templates/partials/employees/detail.html:6
+#: templates/partials/employees/list.html:48
 #: templates/partials/sales/discounts.html:29
 #: templates/partials/super_admin/client_list.html:29
 msgid "Edit"
 msgstr "تعديل"
 
-#: templates/partials/catalog/catalog_list.html:52
+#: templates/partials/catalog/catalog_list.html:47
 #: templates/partials/catalog/inventory_adjust.html:4
 #: templates/partials/catalog/stock_adjust.html:3
 msgid "Adjust Stock"
 msgstr "تعديل المخزون"
 
-#: templates/partials/catalog/catalog_list.html:54
-#: templates/partials/core/category_list.html:29
-#: templates/partials/core/customer_list.html:29
-#: templates/partials/core/item_list.html:30
+#: templates/partials/catalog/catalog_list.html:49
+#: templates/partials/catalog/catalog_list.html:82
+#: templates/partials/core/category_list.html:31
+#: templates/partials/core/customer_list.html:30
+#: templates/partials/employees/list.html:50
 #: templates/partials/sales/discounts.html:31
 #: templates/partials/sales/gift_cards.html:30
 msgid "Delete?"
 msgstr "هل تريد الحذف؟"
 
-#: templates/partials/catalog/catalog_list.html:54
-#: templates/partials/core/category_list.html:29
-#: templates/partials/core/customer_list.html:29
-#: templates/partials/core/item_list.html:30
+#: templates/partials/catalog/catalog_list.html:49
+#: templates/partials/catalog/catalog_list.html:82
+#: templates/partials/core/category_list.html:31
+#: templates/partials/core/customer_list.html:30
+#: templates/partials/employees/list.html:50
 #: templates/partials/pos/active_orders.html:14
-#: templates/partials/pos/pos.html:57
+#: templates/partials/pos/pos.html:58
 #: templates/partials/sales/discounts.html:31
 #: templates/partials/sales/gift_cards.html:30
 #: venv/lib/python3.12/site-packages/django/forms/formsets.py:499
 msgid "Delete"
 msgstr "حذف"
 
-#: templates/partials/catalog/catalog_list.html:59
-#, fuzzy
-#| msgid "No items yet."
-msgid "No items found"
+#: templates/partials/catalog/catalog_list.html:53
+msgid "No products found"
 msgstr "لا توجد أصناف بعد."
+
+#: templates/partials/catalog/catalog_list.html:58
+#: templates/partials/pos/pos.html:20
+msgid "Services"
+msgstr "الخدمات"
+
+#: templates/partials/catalog/catalog_list.html:86
+msgid "No services found"
+msgstr "لا يوجد مبيعات"
 
 #: templates/partials/catalog/inventory_adjust.html:8
 #: templates/partials/catalog/stock_adjust.html:7
@@ -446,6 +540,7 @@ msgid "Low Stock Items"
 msgstr "المنتجات ذات المخزون المنخفض"
 
 #: templates/partials/catalog/low_stock.html:8
+#: templates/partials/dashboard.html:40
 msgid "Restock"
 msgstr "إعادة التخزين"
 
@@ -453,96 +548,47 @@ msgstr "إعادة التخزين"
 msgid "No low stock items"
 msgstr "لا توجد عناصر منخفضة المخزون"
 
-#: templates/partials/core/category_list.html:4
-msgid "Categories"
-msgstr "التصنيفات"
+#: templates/partials/coming_soon.html:5
+msgid "Coming soon..."
+msgstr "قريباً"
+
+#: templates/partials/coming_soon.html:7 templates/partials/locked.html:7
+msgid "The "
+msgstr "إن ميزة "
+
+#: templates/partials/coming_soon.html:11
+msgid " feature is under development."
+msgstr " قيد التطوير حالياً."
+
+#: templates/partials/coming_soon.html:13
+msgid "We will notify you when it's ready."
+msgstr "سنقوم بإخطارك عندما تكون جاهزة."
 
 #: templates/partials/core/category_list.html:7
-msgid "+ New Category"
+#: templates/partials/core/category_list.html:11
+msgid "New Category"
 msgstr "+ تصنيف جديد"
 
-#: templates/partials/core/category_list.html:13
-#: templates/partials/core/customer_list.html:12
-#: templates/partials/core/item_list.html:12
-msgid "Name (EN)"
-msgstr "الاسم (إنجليزي)"
-
-#: templates/partials/core/category_list.html:14
-msgid "Name (AR)"
-msgstr "الاسم (عربي)"
-
-#: templates/partials/core/category_list.html:15
-#: templates/partials/core/item_list.html:15
-#: templates/partials/core/user_list.html:13
+#: templates/partials/core/category_list.html:24
+#: templates/partials/core/user_list.html:18
 msgid "Active"
 msgstr "نشط"
 
-#: templates/partials/core/category_list.html:24
-#: templates/partials/core/user_list.html:22
+#: templates/partials/core/category_list.html:25
+#: templates/partials/core/user_list.html:19
 msgid "Yes,No"
 msgstr "نعم , لا"
 
-#: templates/partials/core/category_list.html:35
+#: templates/partials/core/category_list.html:36
 msgid "No categories yet."
 msgstr "لا توجد تصنيفات بعد."
 
-#: templates/partials/core/category_list.html:41
-#: templates/partials/core/customer_list.html:41
-#: templates/partials/core/item_list.html:42
-#: templates/partials/pagination.html:11
-msgid "Page"
-msgstr "صفحة"
-
-#: templates/partials/core/category_list.html:41
-#: templates/partials/core/customer_list.html:41
-#: templates/partials/core/item_list.html:42
-#: templates/partials/pagination.html:11
-msgid "of"
-msgstr "من"
-
-#: templates/partials/core/category_list.html:42
-#: templates/partials/core/customer_list.html:42
-#: templates/partials/core/item_list.html:43
-#: templates/partials/pagination.html:5
-msgid "First"
-msgstr "الأولى"
-
-#: templates/partials/core/category_list.html:43
-#: templates/partials/core/customer_list.html:42
-#: templates/partials/core/item_list.html:44
-#: templates/partials/pagination.html:7
-msgid "Previous"
-msgstr "السابقة"
-
-#: templates/partials/core/category_list.html:44
-#: templates/partials/core/customer_list.html:43
-#: templates/partials/core/item_list.html:45
-#: templates/partials/pagination.html:16
-msgid "Next"
-msgstr "التالي"
-
-#: templates/partials/core/category_list.html:45
-#: templates/partials/core/customer_list.html:43
-#: templates/partials/core/item_list.html:46
-#: templates/partials/pagination.html:18
-msgid "Last"
-msgstr "الأخيرة"
-
-#: templates/partials/core/customer_list.html:6
+#: templates/partials/core/customer_list.html:7
 msgid "New Customer"
 msgstr "عميل جديد"
 
-#: templates/partials/core/customer_list.html:13
-msgid "Phone"
-msgstr "الهاتف"
-
-#: templates/partials/core/customer_list.html:14
-#: templates/partials/core/user_list.html:11
-msgid "Email"
-msgstr "البريد الإلكتروني"
-
 # Loyalty sub-items
-#: templates/partials/core/customer_list.html:15
+#: templates/partials/core/customer_list.html:24
 msgid "Points"
 msgstr "النقاط"
 
@@ -550,17 +596,7 @@ msgstr "النقاط"
 msgid "No customers yet."
 msgstr "لا يوجد عملاء بعد."
 
-#: templates/partials/core/item_list.html:4
-msgid "Items"
-msgstr "الأصناف"
-
-#: templates/partials/core/item_list.html:36
-msgid "No items yet."
-msgstr "لا توجد أصناف بعد."
-
 #: templates/partials/core/user_list.html:4
-#, fuzzy
-#| msgid "New User"
 msgid "Users"
 msgstr "مستخدم جديد"
 
@@ -568,16 +604,12 @@ msgstr "مستخدم جديد"
 msgid "New User"
 msgstr "مستخدم جديد"
 
-#: templates/partials/core/user_list.html:10
-#: templates/registration/login.html:9
-msgid "Username"
-msgstr "اسم المستخدم"
+#: templates/partials/core/user_list.html:14
+#: templates/partials/settings/container.html:18
+msgid "Business"
+msgstr "الشركة"
 
-#: templates/partials/core/user_list.html:12
-msgid "Role"
-msgstr "الدور"
-
-#: templates/partials/core/user_list.html:26
+#: templates/partials/core/user_list.html:24
 msgid "No users yet."
 msgstr "لا يوجد مستخدمون بعد."
 
@@ -601,73 +633,184 @@ msgstr "الحركات"
 msgid "Low Stock Alert"
 msgstr "تنبيه المخزون المنخفض"
 
-#: templates/partials/dashboard.html:41
+#: templates/partials/dashboard.html:46
 #: templates/partials/super_admin/dashboard.html:28
 #: templates/partials/super_admin/dashboard.html:40
 msgid "View all"
 msgstr "عرض الكل"
 
-#: templates/partials/dashboard.html:45
+#: templates/partials/dashboard.html:50
 msgid "All stock levels are healthy"
 msgstr "جميع مستويات المخزون بصحة جيدة"
 
-#: templates/partials/dashboard.html:50
+#: templates/partials/dashboard.html:55
 msgid "Today's Top Products"
 msgstr "أعلى المنتجات مبيعًا لهذا اليوم"
 
-#: templates/partials/dashboard.html:55
+#: templates/partials/dashboard.html:64
 msgid "sold"
 msgstr "مباع"
 
-#: templates/partials/dashboard.html:58
+#: templates/partials/dashboard.html:67
 msgid "No sales today"
 msgstr "لا توجد مبيعات اليوم"
 
-#: templates/partials/dashboard.html:65
+#: templates/partials/dashboard.html:74
 msgid "Recent Sales"
 msgstr "المبيعات الأخيرة"
 
-#: templates/partials/dashboard.html:73
+#: templates/partials/dashboard.html:82
 msgid "No recent sales"
 msgstr "لا توجد مبيعات حديثة"
 
-#: templates/partials/dashboard.html:82
+#: templates/partials/dashboard.html:92
 msgid "Add Product"
 msgstr " إضافة منتج"
 
-#: templates/partials/dashboard.html:86 templates/partials/pos/receipt.html:39
+#: templates/partials/dashboard.html:97 templates/partials/pos/receipt.html:39
 msgid "New Sale"
 msgstr "صنف جديد"
 
-#: templates/partials/dashboard.html:91
+#: templates/partials/dashboard.html:102
 msgid "Manage Catalog"
 msgstr "إدارة التصنيفات"
 
-#: templates/partials/dashboard.html:96
+#: templates/partials/dashboard.html:107
 msgid "Add Customer"
 msgstr "العملاء"
 
-#: templates/partials/header.html:8
+#: templates/partials/employees/delete_confirm.html:2
+msgid "Delete Employee"
+msgstr "الموظفون"
+
+#: templates/partials/employees/delete_confirm.html:3
+msgid "Are you sure you want to deactivate"
+msgstr "هل تريد المتابعة؟"
+
+#: templates/partials/employees/delete_confirm.html:8
+msgid "Yes, Deactivate"
+msgstr "نعم، إلغاء التنشيط"
+
+#: templates/partials/employees/detail.html:13
+msgid "Total Sales"
+msgstr "مبيعات اليوم"
+
+#: templates/partials/employees/detail.html:19
+msgid "Commission Earned"
+msgstr "العمولة المكتسبة"
+
+#: templates/partials/employees/detail.html:25
+#: templates/partials/sales/sale_detail.html:8
+#: templates/partials/super_admin/client_list.html:12
+#: templates/partials/super_admin/ticket_list.html:10
+msgid "Status"
+msgstr "الحالة"
+
+#: templates/partials/employees/detail.html:27
+#: templates/partials/employees/list.html:35
+msgid "Active,Inactive"
+msgstr "نشط,غير نشط"
+
+#: templates/partials/employees/detail.html:38
+#: templates/partials/employees/detail.html:48
+msgid "Clock In"
+msgstr "تسجيل الحضور"
+
+#: templates/partials/employees/detail.html:45
+msgid "Recent Time Logs"
+msgstr "التذاكر الجديدة"
+
+#: templates/partials/employees/detail.html:48
+msgid "Clock Out"
+msgstr "تسجيل الانصراف"
+
+#: templates/partials/employees/detail.html:48
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1868
+msgid "Duration"
+msgstr "المدة"
+
+#: templates/partials/employees/detail.html:57
+msgid "No time logs."
+msgstr "لا توجد تذاكر."
+
+#: templates/partials/employees/list.html:8
+msgid "New Employee"
+msgstr "الموظفون"
+
+#: templates/partials/employees/list.html:14
+msgid "Search employees..."
+msgstr "البحث عن موظفين..."
+
+#: templates/partials/employees/list.html:42
+msgid "Commission"
+msgstr "العمولة"
+
+#: templates/partials/employees/list.html:56
+msgid "No employees found."
+msgstr "لا يوجد مبيعات"
+
+#: templates/partials/employees/list.html:62
+#: templates/partials/pagination.html:11
+msgid "Page"
+msgstr "صفحة"
+
+#: templates/partials/employees/list.html:62
+#: templates/partials/pagination.html:11
+msgid "of"
+msgstr "من"
+
+#: templates/partials/employees/list.html:63
+#: templates/partials/pagination.html:5
+msgid "First"
+msgstr "الأولى"
+
+#: templates/partials/employees/list.html:64
+#: templates/partials/pagination.html:7
+msgid "Previous"
+msgstr "السابقة"
+
+#: templates/partials/employees/list.html:65
+#: templates/partials/pagination.html:16
+msgid "Next"
+msgstr "التالي"
+
+#: templates/partials/employees/list.html:66
+#: templates/partials/pagination.html:18
+msgid "Last"
+msgstr "الأخيرة"
+
+#: templates/partials/header.html:36
+msgid "Profile"
+msgstr "الملف الشخصي"
+
+#: templates/partials/header.html:38
+#: templates/partials/settings/container.html:3
+msgid "Settings"
+msgstr "إعدادات الشركة"
+
+#: templates/partials/header.html:43
 msgid "Logout"
 msgstr "تسجيل الخروج"
 
-#: templates/partials/header.html:11 templates/registration/login.html:5
-#: templates/registration/login.html:20
+#: templates/partials/header.html:59 templates/registration/login.html:3
+#: templates/registration/login.html:22
 msgid "Login"
 msgstr "تسجيل الدخول"
 
-#: templates/partials/placeholder.html:4
-#: templates/partials/super_admin/platform_settings.html:4
-msgid "Coming Soon"
-msgstr "قريباً"
+#: templates/partials/locked.html:5
+msgid "FEATURE LOCKED"
+msgstr "ميزة مغلقة"
 
-#: templates/partials/placeholder.html:5
-#: templates/partials/super_admin/platform_settings.html:5
-msgid "This feature is under development and will be available in a future update."
-msgstr "هذه الميزة قيد التطوير وستكون متاحة في تحديث مستقبلي."
+#: templates/partials/locked.html:11
+msgid " feature is <span class='text-[var(--danger-600)]'>Locked.</span>"
+msgstr " <span class='text-[var(--danger-600)]'>مغلقة.</span>"
+
+#: templates/partials/locked.html:13
+msgid "Please contact your system administrator to enable it."
+msgstr "يرجى التواصل مع مسؤول النظام لتفعيلها."
 
 #: templates/partials/pos/active_orders.html:7
-#: templates/partials/sales/invoices.html:20
+#: templates/partials/sales/invoices.html:22
 #: templates/partials/sales/sale_detail.html:5
 msgid "Walk‑in"
 msgstr "بدون عميل"
@@ -684,114 +827,111 @@ msgstr " طلب جديد"
 msgid "Order ID"
 msgstr "الطلب رقم"
 
-#: templates/partials/pos/cart_partial.html:8
+#: templates/partials/pos/cart_partial.html:13
 msgid "Search customer"
 msgstr "البحث عن عميل"
 
-#: templates/partials/pos/cart_partial.html:12
+#: templates/partials/pos/cart_partial.html:25
 msgid "Note"
 msgstr "ملاحظات"
 
-#: templates/partials/pos/cart_partial.html:37
+#: templates/partials/pos/cart_partial.html:50
 #: templates/partials/pos/receipt.html:30
-#: templates/partials/sales/sale_detail.html:29
+#: templates/partials/sales/sale_detail.html:42
 msgid "Subtotal"
 msgstr "الإجمالي"
 
-#: templates/partials/pos/cart_partial.html:46
+#: templates/partials/pos/cart_partial.html:57
 #: templates/partials/pos/receipt.html:31
-#: templates/partials/sales/sale_detail.html:30
+#: templates/partials/sales/sale_detail.html:43
 msgid "Discount"
 msgstr "خصم"
 
-#: templates/partials/pos/cart_partial.html:55
+#: templates/partials/pos/cart_partial.html:62
+#: templates/partials/pos/receipt.html:32
+#: templates/partials/sales/sale_detail.html:44
+msgid "Tax"
+msgstr "ضريبة"
+
+#: templates/partials/pos/cart_partial.html:66
 msgid "Payment method"
 msgstr "طريقة الدفع"
 
-#: templates/partials/pos/cart_partial.html:57
+#: templates/partials/pos/cart_partial.html:68
 msgid "Cash"
 msgstr "نقدي"
 
-#: templates/partials/pos/cart_partial.html:58
+#: templates/partials/pos/cart_partial.html:69
 msgid "Credit Card"
 msgstr "بطاقات الهدايا"
 
-#: templates/partials/pos/cart_partial.html:59
+#: templates/partials/pos/cart_partial.html:70
 msgid "Debit Card"
 msgstr "بطاقات الهدايا"
 
-#: templates/partials/pos/cart_partial.html:60
-#| msgid "Checkout"
+#: templates/partials/pos/cart_partial.html:71
 msgid "Check"
 msgstr "إنهاء الشراء"
 
 # Multi‑Branch sub-items
-#: templates/partials/pos/cart_partial.html:61
+#: templates/partials/pos/cart_partial.html:72
 msgid "Bank Transfer"
 msgstr "نقل المخزون"
 
-#: templates/partials/pos/cart_partial.html:62
+#: templates/partials/pos/cart_partial.html:73
 msgid "Other"
 msgstr "أخرى"
 
-#: templates/partials/pos/cart_partial.html:66
+#: templates/partials/pos/cart_partial.html:77
 #: templates/partials/pos/receipt.html:15
-#: templates/partials/sales/invoices.html:11
-#: templates/partials/sales/sale_detail.html:14
+#: templates/partials/sales/invoices.html:25
+#: templates/partials/sales/sale_detail.html:27
 msgid "Total"
 msgstr "الإجمالي"
 
-#: templates/partials/pos/cart_partial.html:72
+#: templates/partials/pos/cart_partial.html:87
 msgid "Split Order"
 msgstr "إقتسام الطلب"
 
-#: templates/partials/pos/cart_partial.html:73
+#: templates/partials/pos/cart_partial.html:90
 msgid "Checkout"
 msgstr "إنهاء الشراء"
 
-#: templates/partials/pos/cart_partial.html:79
-#: templates/partials/pos/pos.html:216
+#: templates/partials/pos/cart_partial.html:95
+#: templates/partials/pos/pos.html:219
 msgid "Select an order to start selling"
 msgstr "حدد طلبًا لبدء البيع"
 
-#: templates/partials/pos/pos.html:12
-msgid "Products"
-msgstr "المنتجات"
-
-#: templates/partials/pos/pos.html:19
-msgid "Services"
-msgstr "الخدمات"
-
-#: templates/partials/pos/pos.html:29
+#: templates/partials/pos/pos.html:30
 msgid "No products or services available"
 msgstr "لا توجد منتجات متاحة."
 
-#: templates/partials/pos/pos.html:43
+#: templates/partials/pos/pos.html:44
 msgid "Active Orders"
 msgstr "أوامر الشراء"
 
-#: templates/partials/pos/pos.html:45
+#: templates/partials/pos/pos.html:46
 msgid "New Order"
 msgstr "طلب جديد"
 
-#: templates/partials/pos/pos.html:55
+#: templates/partials/pos/pos.html:56
 msgid "Delete order"
 msgstr "حذف الطلب"
 
-#: templates/partials/pos/pos.html:217
+#: templates/partials/pos/pos.html:220
 msgid "Order deleted"
 msgstr "تم حذف الطلب"
 
-#: templates/partials/pos/pos.html:219 templates/partials/pos/pos.html:223
+#: templates/partials/pos/pos.html:222 templates/partials/pos/pos.html:226
 msgid "Delete failed"
 msgstr "فشل الحذف"
 
-#: templates/partials/pos/product_list.html:15
-#: templates/partials/pos/service_list.html:14
+#: templates/partials/pos/product_list.html:19
+#: templates/partials/pos/service_list.html:18
 msgid "Add"
 msgstr "أضافة"
 
-#: templates/partials/pos/product_list.html:20
+#: templates/partials/pos/product_list.html:24
 msgid "No products available"
 msgstr "لا توجد منتجات متاحة."
 
@@ -804,7 +944,6 @@ msgid "Sale ID"
 msgstr "المبيعات"
 
 #: templates/partials/pos/receipt.html:5
-#: templates/partials/sales/invoices.html:9
 #: templates/partials/sales/sale_detail.html:4
 #: templates/partials/super_admin/payment_list.html:15
 msgid "Date"
@@ -816,39 +955,27 @@ msgid "Cashier"
 msgstr "الصراف"
 
 #: templates/partials/pos/receipt.html:7
-#: templates/partials/sales/invoices.html:10
+#: templates/partials/sales/invoices.html:21
 #: templates/partials/sales/sale_detail.html:5
-#, fuzzy
-#| msgid "Customers"
 msgid "Customer"
 msgstr "العملاء"
 
 #: templates/partials/pos/receipt.html:12
-#: templates/partials/sales/sale_detail.html:11
-#, fuzzy
-#| msgid "Items"
+#: templates/partials/sales/sale_detail.html:24
 msgid "Item"
 msgstr "الأصناف"
 
 #: templates/partials/pos/receipt.html:13
-#: templates/partials/sales/sale_detail.html:12
+#: templates/partials/sales/sale_detail.html:25
 msgid "Qty"
 msgstr "الكمية"
 
-#: templates/partials/pos/receipt.html:32
-#: templates/partials/sales/sale_detail.html:31
-#: templates/partials/pos/cart_partial.html:51
-msgid "Tax"
-msgstr "ضريبة"
-
 #: templates/partials/pos/receipt.html:33
-#: templates/partials/sales/sale_detail.html:32
+#: templates/partials/sales/sale_detail.html:45
 msgid "Final Amount"
 msgstr "المبلغ النهائي"
 
 #: templates/partials/pos/receipt.html:34
-#, fuzzy
-#| msgid "Payment method"
 msgid "Payment Method"
 msgstr "طريقة الدفع"
 
@@ -856,15 +983,11 @@ msgstr "طريقة الدفع"
 msgid "Print Receipt"
 msgstr "طباعة الفاتورة"
 
-#: templates/partials/pos/service_list.html:19
-#, fuzzy
-#| msgid "No products available."
+#: templates/partials/pos/service_list.html:23
 msgid "No services available"
 msgstr "لا توجد منتجات متاحة."
 
 #: templates/partials/sales/discounts.html:6
-#, fuzzy
-#| msgid "Discount"
 msgid "New Discount"
 msgstr "خصم"
 
@@ -872,6 +995,10 @@ msgstr "خصم"
 #: templates/partials/sales/gift_cards.html:11
 msgid "Code"
 msgstr "الكود"
+
+#: templates/partials/sales/discounts.html:12
+msgid "Type"
+msgstr "نوع"
 
 #: templates/partials/sales/discounts.html:13
 msgid "Value"
@@ -885,15 +1012,18 @@ msgstr "صالح"
 msgid "Used"
 msgstr "مستخدم"
 
+#: templates/partials/sales/discounts.html:16
+#: templates/partials/sales/gift_cards.html:16
+#: templates/partials/super_admin/client_list.html:14
+#: templates/partials/super_admin/ticket_list.html:12
+msgid "Actions"
+msgstr "إجراءات"
+
 #: templates/partials/sales/discounts.html:36
-#, fuzzy
-#| msgid "Discounts"
 msgid "No discounts"
 msgstr "الخصومات"
 
 #: templates/partials/sales/gift_cards.html:6
-#, fuzzy
-#| msgid "Gift Cards"
 msgid "New Gift Card"
 msgstr "بطاقات الهدايا"
 
@@ -902,8 +1032,6 @@ msgid "Initial Balance"
 msgstr "الرصيد الأولي"
 
 #: templates/partials/sales/gift_cards.html:13
-#, fuzzy
-#| msgid "Currently"
 msgid "Current Balance"
 msgstr "الرصيد الحالي"
 
@@ -920,58 +1048,144 @@ msgid "Redeem"
 msgstr "استرداد"
 
 #: templates/partials/sales/gift_cards.html:35
-#, fuzzy
-#| msgid "Gift Cards"
 msgid "No gift cards"
 msgstr "بطاقات الهدايا"
 
 # Sales sub-items
-#: templates/partials/sales/invoices.html:3
-#, fuzzy
-#| msgid "Invoices"
+#: templates/partials/sales/invoices.html:4
 msgid "Sales Invoices"
 msgstr "الفواتير"
 
 # Sales sub-items
-#: templates/partials/sales/invoices.html:8
-#, fuzzy
-#| msgid "Invoices"
-msgid "Invoice #"
-msgstr "الفواتير"
-
-#: templates/partials/sales/invoices.html:23
-msgid "View"
-msgstr "عرض"
-
-#: templates/partials/sales/invoices.html:24
-#, fuzzy
-#| msgid "Returns"
-msgid "Return"
-msgstr "المرتجعات"
-
-#: templates/partials/sales/invoices.html:29
-msgid "No sales found"
-msgstr "لا يوجد مبيعات"
-
-# Sales sub-items
+#: templates/partials/sales/invoices.html:13
 #: templates/partials/sales/sale_detail.html:3
-#, fuzzy
-#| msgid "Invoices"
 msgid "Invoice"
 msgstr "الفواتير"
 
-#: templates/partials/sales/sale_detail.html:34
+#: templates/partials/sales/invoices.html:30
+msgid "Returned"
+msgstr "المرتجعات"
+
+#: templates/partials/sales/invoices.html:40
+#: templates/partials/sales/sale_detail.html:11
+msgid "Fully Returned"
+msgstr "المرتجعات"
+
+#: templates/partials/sales/invoices.html:43
+#: templates/partials/sales/sale_detail.html:14
+msgid "Partial Return"
+msgstr "المرتجعات"
+
+#: templates/partials/sales/invoices.html:46
+#: templates/partials/sales/sale_detail.html:17
+msgid "Completed"
+msgstr "مكتمل"
+
+#: templates/partials/sales/invoices.html:53
+msgid "View"
+msgstr "عرض"
+
+#: templates/partials/sales/invoices.html:56
+msgid "Return"
+msgstr "المرتجعات"
+
+#: templates/partials/sales/invoices.html:61
+msgid "No sales found"
+msgstr "لا يوجد مبيعات"
+
+#: templates/partials/sales/returns.html:3
+msgid "Return Items for Sale"
+msgstr "إرجاع أصناف لعملية البيع"
+
+#: templates/partials/sales/returns.html:7
+#: templates/partials/sales/sale_detail.html:58
+msgid "Select items to return:"
+msgstr "حدد الأصناف المراد إرجاعها:"
+
+#: templates/partials/sales/returns.html:15
+msgid "No items in this sale."
+msgstr "لا توجد أصناف بعد."
+
+#: templates/partials/sales/returns.html:20
+msgid "Reason for return"
+msgstr "سبب الإرجاع"
+
+#: templates/partials/sales/returns.html:24
+#: templates/partials/sales/sale_detail.html:74
+msgid "Process Return"
+msgstr "المرتجعات"
+
+#: templates/partials/sales/sale_detail.html:47
 #: templates/partials/super_admin/ticket_form.html:11
 msgid "Back"
 msgstr "رجوع"
 
-#: templates/partials/sales/sale_detail.html:36
+#: templates/partials/sales/sale_detail.html:49
 msgid "Print"
 msgstr "طباعة"
 
-#: templates/partials/sidebar.html:18
+#: templates/partials/sales/sale_detail.html:53
+msgid "Return Items"
+msgstr "المرتجعات"
+
+#: templates/partials/sales/sale_detail.html:66
+msgid "No items to return."
+msgstr "لا توجد أصناف بعد."
+
+#: templates/partials/sales/sale_detail.html:70
+msgid "Reason"
+msgstr "السبب"
+
+#: templates/partials/settings/account.html:3
+msgid "Account Settings"
+msgstr "إعدادات الحساب"
+
+#: templates/partials/settings/account.html:41
+msgid "Update Profile"
+msgstr "تحديث البيانات"
+
+#: templates/partials/settings/account.html:47
+#: templates/partials/settings/account.html:75
+msgid "Change Password"
+msgstr "كلمة المرور"
+
+#: templates/partials/settings/business.html:3
+msgid "Business Settings"
+msgstr "إعدادات النظام"
+
+#: templates/partials/settings/business.html:99
+#: templates/partials/settings/platform.html:35
+msgid "Feature Toggles"
+msgstr "تحكم في الميزات"
+
+#: templates/partials/settings/business.html:123
+#: templates/partials/settings/platform.html:125
+msgid "Save Settings"
+msgstr "حفظ إعدادات"
+
+#: templates/partials/settings/container.html:12
+msgid "Platform"
+msgstr "اعدادات المنصة"
+
+#: templates/partials/settings/container.html:24
+msgid "Account"
+msgstr "إعدادات الحساب"
+
+#: templates/partials/settings/platform.html:63
+msgid "Access Control"
+msgstr "التحكم بالوصول"
+
+#: templates/partials/settings/platform.html:88
+msgid "Email Settings (SMTP)"
+msgstr "إعدادات البريد الإلكتروني (SMTP)"
+
+#: templates/partials/sidebar.html:19
 msgid "(Locked)"
 msgstr "(مقفل)"
+
+#: templates/partials/sidebar.html:27
+msgid "(Coming Soon)"
+msgstr "قريباً"
 
 #: templates/partials/super_admin/client_features.html:3
 msgid "Feature Toggles for"
@@ -1011,14 +1225,12 @@ msgstr "الميزات"
 
 #: templates/partials/super_admin/client_list.html:38
 #: templates/partials/super_admin/dashboard.html:24
-#, fuzzy
-#| msgid "No items yet."
+msgid "No items yet."
+msgstr "لا يوجد عناصر"
 msgid "No clients yet."
-msgstr "لا توجد أصناف بعد."
+msgstr "لا يوجد عملاء بعد."
 
 #: templates/partials/super_admin/dashboard.html:2
-#, fuzzy
-#| msgid "Super Admin"
 msgid "Super Admin Dashboard"
 msgstr "المشرف العام"
 
@@ -1027,8 +1239,6 @@ msgid "Total Clients"
 msgstr "مجمل العملاء"
 
 #: templates/partials/super_admin/dashboard.html:9
-#, fuzzy
-#| msgid "Active"
 msgid "Active Clients"
 msgstr "العملاء النشطين"
 
@@ -1064,8 +1274,6 @@ msgid "Client"
 msgstr "العميل"
 
 #: templates/partials/super_admin/payment_list.html:12
-#, fuzzy
-#| msgid "Accounting"
 msgid "Amount"
 msgstr "المحاسبة"
 
@@ -1078,10 +1286,12 @@ msgid "Transaction ID"
 msgstr "معرف المعاملة"
 
 #: templates/partials/super_admin/payment_list.html:29
-#, fuzzy
-#| msgid "No categories yet."
 msgid "No payments recorded yet."
 msgstr "لا توجد تصنيفات بعد."
+
+#: templates/partials/super_admin/platform_settings.html:5
+msgid "This feature is under development and will be available in a future update."
+msgstr "هذه الميزة قيد التطوير وستكون متاحة في تحديث مستقبلي."
 
 #: templates/partials/super_admin/ticket_form.html:2
 #: templates/partials/super_admin/ticket_form.html:9
@@ -1089,10 +1299,8 @@ msgid "Update Ticket"
 msgstr "تحديث التذكرة"
 
 #: templates/partials/super_admin/ticket_list.html:8
-#, fuzzy
-#| msgid "A JSON object"
 msgid "Subject"
-msgstr "كائن JSON"
+msgstr "الموضوع"
 
 #: templates/partials/super_admin/ticket_list.html:9
 msgid "Urgency"
@@ -1107,14 +1315,12 @@ msgid "Update"
 msgstr "تحديث"
 
 #: templates/partials/super_admin/ticket_list.html:34
-#, fuzzy
-#| msgid "No items yet."
 msgid "No tickets yet."
 msgstr "لا توجد أصناف بعد."
 
-#: templates/registration/login.html:13
-msgid "Password"
-msgstr "كلمة المرور"
+#: templates/registration/login.html:7
+msgid "Username"
+msgstr "اسم المستخدم"
 
 #: templates/registration/login.html:17
 msgid "Client Domain"
@@ -1145,10 +1351,8 @@ msgid "deprecated"
 msgstr "تم الإلغاء"
 
 #: venv/lib/python3.12/site-packages/click/core.py:1209
-#, fuzzy
-#| msgid "Actions"
 msgid "Options"
-msgstr "إجراءات"
+msgstr "خيارات"
 
 #: venv/lib/python3.12/site-packages/click/core.py:1284
 #, python-brace-format
@@ -1170,10 +1374,8 @@ msgid "Aborted!"
 msgstr "تم الإلغاء!"
 
 #: venv/lib/python3.12/site-packages/click/core.py:1861
-#, fuzzy
-#| msgid "Commissions"
 msgid "Commands"
-msgstr "العمولات"
+msgstr "الطلبات"
 
 #: venv/lib/python3.12/site-packages/click/core.py:1892
 msgid "Missing command."
@@ -1195,7 +1397,8 @@ msgstr[4] ""
 msgstr[5] ""
 
 #: venv/lib/python3.12/site-packages/click/core.py:2624
-msgid "DeprecationWarning: The {param_type} {name!r} is deprecated.{extra_message}"
+msgid ""
+"DeprecationWarning: The {param_type} {name!r} is deprecated.{extra_message}"
 msgstr "تحذير من الاستخدام: تم إلغاء الأمر {name!r}.{extra_message}"
 
 #: venv/lib/python3.12/site-packages/click/core.py:3025
@@ -1213,9 +1416,12 @@ msgstr "لا يمكن تحديد الاسم للخيار with declarations {decl
 
 #: venv/lib/python3.12/site-packages/click/core.py:3067
 #, python-brace-format
-msgid "No options defined but a name was passed ({name}). Did you mean to declare "
+msgid ""
+"No options defined but a name was passed ({name}). Did you mean to declare "
 "an argument instead? Did you mean to pass '--{name}'?"
-msgstr "لا توجد خيارات معرفة ولكن تم تمرير اسم ({name}). هل تقصد تعريف حجة بدلاً من ذلك؟ هل تقصد تمرير '--{name}'؟"
+msgstr ""
+"لا توجد خيارات معرفة ولكن تم تمرير اسم ({name}). هل تقصد تعريف حجة بدلاً من "
+"ذلك؟ هل تقصد تمرير '--{name}'؟"
 
 #: venv/lib/python3.12/site-packages/click/core.py:3144
 #, python-brace-format
@@ -1233,8 +1439,10 @@ msgstr "ديناميكي"
 
 #: venv/lib/python3.12/site-packages/click/core.py:3503
 #, python-brace-format
-msgid "Arguments take exactly one parameter declaration, got {length}: {decls}."
-msgstr "الحجج تأخذ إعلانًا واحدًا للمعلمة بالضبط، تم الحصول على {length}: {decls}."
+msgid ""
+"Arguments take exactly one parameter declaration, got {length}: {decls}."
+msgstr ""
+"الحجج تأخذ إعلانًا واحدًا للمعلمة بالضبط، تم الحصول على {length}: {decls}."
 
 #: venv/lib/python3.12/site-packages/click/decorators.py:399
 msgid "Do you want to continue?"
@@ -1290,11 +1498,13 @@ msgstr "قيمة غير صالحة: {message}"
 msgid "Invalid value for {param_hint}: {message}"
 msgstr "قيمة غير صالحة لـ {param_hint}: {message}"
 
-#: venv/lib/python3.12/site-packages/click/exceptions.py:205
 #: venv/lib/python3.12/site-packages/click/exceptions.py:203
 msgid "Missing argument"
 msgstr "حجة مفقودة"
 
+#: venv/lib/python3.12/site-packages/click/exceptions.py:205
+msgid "Missing option"
+msgstr "أمر مفقود"
 
 #: venv/lib/python3.12/site-packages/click/exceptions.py:207
 msgid "Missing parameter"
@@ -1384,12 +1594,14 @@ msgstr "اضغط على أي مفتاح للمتابعة..."
 
 #: venv/lib/python3.12/site-packages/click/types.py:364
 #, python-brace-format
-msgid "Choose from:\n\t{choices}"
-msgstr "اختر من:\n\t{choices}"
+msgid ""
+"Choose from:\n"
+"\t{choices}"
+msgstr ""
+"اختر من:\n"
+"\t{choices}"
 
 #: venv/lib/python3.12/site-packages/click/types.py:401
-#, fuzzy
-#| msgid "Value %(value)r is not a valid choice."
 msgid "{value!r} is not {choice}."
 msgid_plural "{value!r} is not one of {choices}."
 msgstr[0] "القيمة %(value)r ليست اختياراً صالحاً."
@@ -1598,9 +1810,11 @@ msgstr "تأكد من أن القيمة من مضاعفات الفرق %(limit_v
 
 #: venv/lib/python3.12/site-packages/django/core/validators.py:441
 #, python-format
-msgid "Ensure this value is a multiple of step size %(limit_value)s, starting from "
+msgid ""
+"Ensure this value is a multiple of step size %(limit_value)s, starting from "
 "%(offset)s, e.g. %(offset)s, %(valid_value1)s, %(valid_value2)s, and so on."
-msgstr "تأكد من أن القيمة من مضاعفات %(limit_value)s، بدءاً من %(offset)s، مثلاً "
+msgstr ""
+"تأكد من أن القيمة من مضاعفات %(limit_value)s، بدءاً من %(offset)s، مثلاً "
 "%(offset)s، %(valid_value1)s، %(valid_value2)s، إلخ."
 
 #: venv/lib/python3.12/site-packages/django/core/validators.py:473
@@ -1664,9 +1878,11 @@ msgstr[1] "تأكد من ألا يزيد عدد الأرقام قبل الفاص
 
 #: venv/lib/python3.12/site-packages/django/core/validators.py:597
 #, python-format
-msgid "File extension “%(extension)s” is not allowed. Allowed extensions are: "
+msgid ""
+"File extension “%(extension)s” is not allowed. Allowed extensions are: "
 "%(allowed_extensions)s."
-msgstr "امتداد الملف “%(extension)s” غير مسموح. الامتدادات المسموحة: "
+msgstr ""
+"امتداد الملف “%(extension)s” غير مسموح. الامتدادات المسموحة: "
 "%(allowed_extensions)s."
 
 #: venv/lib/python3.12/site-packages/django/core/validators.py:659
@@ -1710,8 +1926,10 @@ msgstr "%(model_name)s بهذا %(field_label)s موجود مسبقاً."
 #. 'month'. Eg: "Title must be unique for pub_date year"
 #: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:141
 #, python-format
-msgid "%(field_label)s must be unique for %(date_field_label)s %(lookup_type)s."
-msgstr "يجب أن يكون %(field_label)s فريداً لكل %(date_field_label)s %(lookup_type)s."
+msgid ""
+"%(field_label)s must be unique for %(date_field_label)s %(lookup_type)s."
+msgstr ""
+"يجب أن يكون %(field_label)s فريداً لكل %(date_field_label)s %(lookup_type)s."
 
 #: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:180
 #, python-format
@@ -1747,16 +1965,20 @@ msgstr "أعداد صحيحة مفصولة بفواصل"
 
 #: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1426
 #, python-format
-msgid "“%(value)s” value has an invalid date format. It must be in YYYY-MM-DD "
+msgid ""
+"“%(value)s” value has an invalid date format. It must be in YYYY-MM-DD "
 "format."
-msgstr "قيمة “%(value)s” لها تنسيق تاريخ غير صالح. يجب أن تكون بصيغة YYYY-MM-DD."
+msgstr ""
+"قيمة “%(value)s” لها تنسيق تاريخ غير صالح. يجب أن تكون بصيغة YYYY-MM-DD."
 
 #: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1430
 #: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1565
 #, python-format
-msgid "“%(value)s” value has the correct format (YYYY-MM-DD) but it is an invalid "
+msgid ""
+"“%(value)s” value has the correct format (YYYY-MM-DD) but it is an invalid "
 "date."
-msgstr "قيمة “%(value)s” لها التنسيق الصحيح (YYYY-MM-DD) ولكنها تاريخ غير صالح."
+msgstr ""
+"قيمة “%(value)s” لها التنسيق الصحيح (YYYY-MM-DD) ولكنها تاريخ غير صالح."
 
 #: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1434
 msgid "Date (without time)"
@@ -1764,14 +1986,17 @@ msgstr "تاريخ (بدون وقت)"
 
 #: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1561
 #, python-format
-msgid "“%(value)s” value has an invalid format. It must be in YYYY-MM-DD HH:MM[:ss[."
+msgid ""
+"“%(value)s” value has an invalid format. It must be in YYYY-MM-DD HH:MM[:ss[."
 "uuuuuu]][TZ] format."
-msgstr "قيمة “%(value)s” لها تنسيق غير صالح. يجب أن تكون بصيغة YYYY-MM-DD HH:MM[:ss[."
+msgstr ""
+"قيمة “%(value)s” لها تنسيق غير صالح. يجب أن تكون بصيغة YYYY-MM-DD HH:MM[:ss[."
 "uuuuuu]][TZ]."
 
 #: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1569
 #, python-format
-msgid "“%(value)s” value has the correct format (YYYY-MM-DD HH:MM[:ss[.uuuuuu]]"
+msgid ""
+"“%(value)s” value has the correct format (YYYY-MM-DD HH:MM[:ss[.uuuuuu]]"
 "[TZ]) but it is an invalid date/time."
 msgstr "قيمة “%(value)s” لها التنسيق الصحيح ولكنها تاريخ/وقت غير صالح."
 
@@ -1790,14 +2015,12 @@ msgstr "رقم عشري"
 
 #: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1864
 #, python-format
-msgid "“%(value)s” value has an invalid format. It must be in [DD] [[HH:]MM:]ss[."
+msgid ""
+"“%(value)s” value has an invalid format. It must be in [DD] [[HH:]MM:]ss[."
 "uuuuuu] format."
-msgstr "قيمة “%(value)s” لها تنسيق غير صالح. يجب أن تكون بصيغة [DD] [[HH:]MM:]ss[."
+msgstr ""
+"قيمة “%(value)s” لها تنسيق غير صالح. يجب أن تكون بصيغة [DD] [[HH:]MM:]ss[."
 "uuuuuu]."
-
-#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1868
-msgid "Duration"
-msgstr "المدة"
 
 #: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1920
 msgid "Email address"
@@ -1874,9 +2097,11 @@ msgstr "نص"
 
 #: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2526
 #, python-format
-msgid "“%(value)s” value has an invalid format. It must be in HH:MM[:ss[.uuuuuu]] "
+msgid ""
+"“%(value)s” value has an invalid format. It must be in HH:MM[:ss[.uuuuuu]] "
 "format."
-msgstr "قيمة “%(value)s” لها تنسيق غير صالح. يجب أن تكون بصيغة HH:MM[:ss[.uuuuuu]]."
+msgstr ""
+"قيمة “%(value)s” لها تنسيق غير صالح. يجب أن تكون بصيغة HH:MM[:ss[.uuuuuu]]."
 
 #: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2530
 #, python-format
@@ -1909,6 +2134,10 @@ msgstr "معرف فريد عالمي (UUID)"
 #: venv/lib/python3.12/site-packages/django/db/models/fields/files.py:244
 msgid "File"
 msgstr "ملف"
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/files.py:420
+msgid "Image"
+msgstr "صورة"
 
 #: venv/lib/python3.12/site-packages/django/db/models/fields/json.py:24
 msgid "A JSON object"
@@ -2053,9 +2282,11 @@ msgstr "(حقل مخفي %(name)s) %(error)s"
 
 #: venv/lib/python3.12/site-packages/django/forms/formsets.py:61
 #, python-format
-msgid "ManagementForm data is missing or has been tampered with. Missing fields: "
+msgid ""
+"ManagementForm data is missing or has been tampered with. Missing fields: "
 "%(field_names)s. You may need to file a bug report if the issue persists."
-msgstr "بيانات ManagementForm مفقودة أو تم العبث بها. الحقول المفقودة: "
+msgstr ""
+"بيانات ManagementForm مفقودة أو تم العبث بها. الحقول المفقودة: "
 "%(field_names)s. قد تحتاج إلى الإبلاغ عن خطأ إذا استمرت المشكلة."
 
 #: venv/lib/python3.12/site-packages/django/forms/formsets.py:65
@@ -2089,9 +2320,11 @@ msgstr "يرجى تصحيح البيانات المكررة للحقل %(field)s
 
 #: venv/lib/python3.12/site-packages/django/forms/models.py:937
 #, python-format
-msgid "Please correct the duplicate data for %(field_name)s which must be unique "
+msgid ""
+"Please correct the duplicate data for %(field_name)s which must be unique "
 "for the %(lookup)s in %(date_field)s."
-msgstr "يرجى تصحيح البيانات المكررة لـ %(field_name)s التي يجب أن تكون فريدة لكل "
+msgstr ""
+"يرجى تصحيح البيانات المكررة لـ %(field_name)s التي يجب أن تكون فريدة لكل "
 "%(lookup)s في %(date_field)s."
 
 #: venv/lib/python3.12/site-packages/django/forms/models.py:946
@@ -2113,9 +2346,11 @@ msgstr "“%(pk)s” ليس قيمة صالحة."
 
 #: venv/lib/python3.12/site-packages/django/forms/utils.py:229
 #, python-format
-msgid "%(datetime)s couldn’t be interpreted in time zone %(current_timezone)s; it "
+msgid ""
+"%(datetime)s couldn’t be interpreted in time zone %(current_timezone)s; it "
 "may be ambiguous or it may not exist."
-msgstr "تعذر تفسير %(datetime)s في المنطقة الزمنية %(current_timezone)s؛ قد يكون "
+msgstr ""
+"تعذر تفسير %(datetime)s في المنطقة الزمنية %(current_timezone)s؛ قد يكون "
 "غامضاً أو غير موجود."
 
 #: venv/lib/python3.12/site-packages/django/forms/widgets.py:528
@@ -2567,44 +2802,54 @@ msgid "CSRF verification failed. Request aborted."
 msgstr "فشل التحقق من CSRF. تم إلغاء الطلب."
 
 #: venv/lib/python3.12/site-packages/django/views/csrf.py:34
-msgid "You are seeing this message because this HTTPS site requires a “Referer "
+msgid ""
+"You are seeing this message because this HTTPS site requires a “Referer "
 "header” to be sent by your web browser, but none was sent. This header is "
 "required for security reasons, to ensure that your browser is not being "
 "hijacked by third parties."
-msgstr "ترى هذه الرسالة لأن هذا الموقع HTTPS يتطلب إرسال “رأس المُحيل (Referer)” من "
+msgstr ""
+"ترى هذه الرسالة لأن هذا الموقع HTTPS يتطلب إرسال “رأس المُحيل (Referer)” من "
 "متصفحك، ولكن لم يتم إرساله. هذا الرأس مطلوب لأسباب أمنية، للتأكد من عدم "
 "اختطاف متصفحك من قبل أطراف ثالثة."
 
 #: venv/lib/python3.12/site-packages/django/views/csrf.py:40
-msgid "If you have configured your browser to disable “Referer” headers, please re-"
+msgid ""
+"If you have configured your browser to disable “Referer” headers, please re-"
 "enable them, at least for this site, or for HTTPS connections, or for “same-"
 "origin” requests."
-msgstr "إذا كنت قد قمت بتعطيل رؤوس “Referer” في متصفحك، فيرجى إعادة تمكينها، على "
+msgstr ""
+"إذا كنت قد قمت بتعطيل رؤوس “Referer” في متصفحك، فيرجى إعادة تمكينها، على "
 "الأقل لهذا الموقع أو لاتصالات HTTPS أو للطلبات من نفس المصدر."
 
 #: venv/lib/python3.12/site-packages/django/views/csrf.py:45
-msgid "If you are using the <meta name=\"referrer\" content=\"no-referrer\"> tag or "
+msgid ""
+"If you are using the <meta name=\"referrer\" content=\"no-referrer\"> tag or "
 "including the “Referrer-Policy: no-referrer” header, please remove them. The "
 "CSRF protection requires the “Referer” header to do strict referer checking. "
 "If you’re concerned about privacy, use alternatives like <a "
 "rel=\"noreferrer\" …> for links to third-party sites."
-msgstr "إذا كنت تستخدم وسم <meta name=\"referrer\" content=\"no-referrer\"> أو رأس "
+msgstr ""
+"إذا كنت تستخدم وسم <meta name=\"referrer\" content=\"no-referrer\"> أو رأس "
 "“Referrer-Policy: no-referrer”، فيرجى إزالتهما. حماية CSRF تتطلب رأس "
 "“Referer” للتحقق الصارم من المُحيل. إذا كنت قلقاً بشأن الخصوصية، استخدم بدائل "
 "مثل <a rel=\"noreferrer\" …> للروابط إلى مواقع الطرف الثالث."
 
 #: venv/lib/python3.12/site-packages/django/views/csrf.py:54
-msgid "You are seeing this message because this site requires a CSRF cookie when "
+msgid ""
+"You are seeing this message because this site requires a CSRF cookie when "
 "submitting forms. This cookie is required for security reasons, to ensure "
 "that your browser is not being hijacked by third parties."
-msgstr "ترى هذه الرسالة لأن هذا الموقع يتطلب ملف تعريف ارتباط (CSRF cookie) عند "
+msgstr ""
+"ترى هذه الرسالة لأن هذا الموقع يتطلب ملف تعريف ارتباط (CSRF cookie) عند "
 "إرسال النماذج. هذا الملف مطلوب لأسباب أمنية، للتأكد من عدم اختطاف متصفحك من "
 "قبل أطراف ثالثة."
 
 #: venv/lib/python3.12/site-packages/django/views/csrf.py:60
-msgid "If you have configured your browser to disable cookies, please re-enable "
+msgid ""
+"If you have configured your browser to disable cookies, please re-enable "
 "them, at least for this site, or for “same-origin” requests."
-msgstr "إذا كنت قد قمت بتعطيل ملفات تعريف الارتباط في متصفحك، فيرجى إعادة تمكينها، "
+msgstr ""
+"إذا كنت قد قمت بتعطيل ملفات تعريف الارتباط في متصفحك، فيرجى إعادة تمكينها، "
 "على الأقل لهذا الموقع أو للطلبات من نفس المصدر."
 
 #: venv/lib/python3.12/site-packages/django/views/csrf.py:66
@@ -2639,30 +2884,22 @@ msgstr "لم يتم تحديد الأسبوع"
 msgid "No %(verbose_name_plural)s available"
 msgstr "لا توجد %(verbose_name_plural)s متاحة"
 
-#: venv/lib/python3.12/site-packages/django/views/generic/dates.py:680
 # Marketing sub-items
+#: venv/lib/python3.12/site-packages/django/views/generic/dates.py:680
 #, python-format
-
-msgid "Future %(verbose_name_plural)s not available because %(class_name)s."
+msgid ""
+"Future %(verbose_name_plural)s not available because %(class_name)s."
 "allow_future is False."
-msgstr "%(verbose_name_plural)s المستقبلية غير متاحة لأن %(class_name)s.allow_future "
+msgstr ""
+"%(verbose_name_plural)s المستقبلية غير متاحة لأن %(class_name)s.allow_future "
 "هو False."
 
-#: venv/lib/python3.12/site-packages/django/views/generic/dates.py:720
 # static/js/offline.js #templates/core/pos.html:30
-#: venv/lib/python3.12/site-packages/django/views/generic/dates.py:680
 # Marketing sub-items
+#: venv/lib/python3.12/site-packages/django/views/generic/dates.py:720
 #, python-format
 msgid "Invalid date string “%(datestr)s” given format “%(format)s”"
 msgstr "سلسلة تاريخ غير صالحة “%(datestr)s” بالتنسيق “%(format)s”"
-
-#: venv/lib/python3.12/site-packages/django
-msgid "Tiers"
-msgstr "المستويات"
-
-# Marketing sub-items
-msgid "Campaigns"
-msgstr "الحملات"
 
 #: venv/lib/python3.12/site-packages/django/views/generic/detail.py:56
 #, python-format
@@ -2706,18 +2943,22 @@ msgstr "تم التثبيت بنجاح! مبروك!"
 
 #: venv/lib/python3.12/site-packages/django/views/templates/default_urlconf.html:206
 #, python-format
-msgid "View <a href=\"https://docs.djangoproject.com/en/%(version)s/releases/\" "
+msgid ""
+"View <a href=\"https://docs.djangoproject.com/en/%(version)s/releases/\" "
 "target=\"_blank\" rel=\"noopener\">release notes</a> for Django %(version)s"
-msgstr "عرض <a href=\"https://docs.djangoproject.com/en/%(version)s/releases/\" "
+msgstr ""
+"عرض <a href=\"https://docs.djangoproject.com/en/%(version)s/releases/\" "
 "target=\"_blank\" rel=\"noopener\">ملاحظات الإصدار</a> لجانغو %(version)s"
 
 #: venv/lib/python3.12/site-packages/django/views/templates/default_urlconf.html:208
 #, python-format
-msgid "You are seeing this page because <a href=\"https://docs.djangoproject.com/en/"
+msgid ""
+"You are seeing this page because <a href=\"https://docs.djangoproject.com/en/"
 "%(version)s/ref/settings/#debug\" target=\"_blank\" "
 "rel=\"noopener\">DEBUG=True</a> is in your settings file and you have not "
 "configured any URLs."
-msgstr "ترى هذه الصفحة لأن <a href=\"https://docs.djangoproject.com/en/%(version)s/"
+msgstr ""
+"ترى هذه الصفحة لأن <a href=\"https://docs.djangoproject.com/en/%(version)s/"
 "ref/settings/#debug\" target=\"_blank\" rel=\"noopener\">DEBUG=True</a> "
 "موجود في ملف الإعدادات ولم تقم بتكوين أي عناوين URL."
 
@@ -2748,6 +2989,32 @@ msgstr "تواصل، احصل على المساعدة، أو ساهم"
 #: venv/lib/python3.12/site-packages/ipware/apps.py:10
 msgid "ipware app"
 msgstr "تطبيق ipware"
+
+#~ msgid "Super Admin"
+#~ msgstr "المشرف العام"
+
+#~ msgid "SKU"
+#~ msgstr "رمز التخزين"
+
+#~ msgid "Name (EN)"
+#~ msgstr "الاسم (إنجليزي)"
+
+#~ msgid "Name (AR)"
+#~ msgstr "الاسم (عربي)"
+
+#~ msgid "Items"
+#~ msgstr "الأصناف"
+
+# Sales sub-items
+#~ msgid "Invoice #"
+#~ msgstr "رقم الفاتورة"
+
+#~ msgid "Tiers"
+#~ msgstr "المستويات"
+
+# Marketing sub-items
+#~ msgid "Campaigns"
+#~ msgstr "الحملات"
 
 #~ msgid "Manage Items"
 #~ msgstr "إدارة الأصناف"
@@ -2796,19 +3063,19 @@ msgstr "تطبيق ipware"
 #~ msgstr "IP: خطأ"
 
 # static/js/offline.js #templates/core/pos.html:30
-#: venv/lib/python3.12/site-packages/django/views/generic/dates.py:720
-#: venv/lib/python3.12/site-packages/django/views/generic/dates.py:680
 #~ msgid "⚠️ Offline – {pendingCount} sale(s) pending. Last sync: {time}"
 #~ msgstr "⚠️ غير متصل – {pendingCount} عملية معلقة. آخر مزامنة: {time}"
 
 #~ msgid "🔒 Offline limit exceeded. Please reconnect to process sales."
-#~ msgstr "🔒 تجاوز الحد المسموح للعمل دون اتصال. يرجى إعادة الاتصال لإتمام المبيعات."
+#~ msgstr ""
+#~ "🔒 تجاوز الحد المسموح للعمل دون اتصال. يرجى إعادة الاتصال لإتمام المبيعات."
 
 #~ msgid "✅ Online – {pendingCount} sale(s) pending sync."
 #~ msgstr "✅ متصل – {pendingCount} عملية في انتظار المزامنة."
 
 #~ msgid "Offline limit exceeded. Please connect to internet to process sale."
-#~ msgstr "تجاوز الحد المتاح دون اتصال. يرجى الاتصال بالإنترنت لمعالجة عملية البيع."
+#~ msgstr ""
+#~ "تجاوز الحد المتاح دون اتصال. يرجى الاتصال بالإنترنت لمعالجة عملية البيع."
 
 #~ msgid "Cart"
 #~ msgstr "السلة"
@@ -2879,8 +3146,6 @@ msgstr "تطبيق ipware"
 #~ msgid "Rewards"
 #~ msgstr "المكافآت"
 
-
-
 #~ msgid "Email/SMS"
 #~ msgstr "البريد الإلكتروني / الرسائل القصيرة"
 
@@ -2896,3 +3161,4 @@ msgstr "تطبيق ipware"
 
 #~ msgid "Cross‑Location Reports"
 #~ msgstr "تقارير متعددة المواقع"
+

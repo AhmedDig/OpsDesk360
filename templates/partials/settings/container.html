@@ -1,0 +1,51 @@
+{% load i18n %}
+<div class="max-w-4xl mx-auto">
+    <h1 class="text-2xl font-bold mb-4">{% trans "Settings" %}</h1>
+
+    <!-- Tabs -->
+    <div class="border-b border-gray-200 dark:border-gray-700 mb-4">
+        <nav class="flex flex-wrap gap-2" id="settings-tabs">
+            <button
+                class="tab-btn px-4 py-2 text-sm font-medium rounded-t-lg border-b-2 border-transparent hover:border-blue-500 {% if first_tab == 'platform' %}active border-blue-500 text-blue-600{% endif %}"
+                hx-get="{% url 'settings_platform' %}" hx-target="#settings-content" hx-swap="innerHTML"
+                hx-push-url="false">
+                {% trans "Platform" %}
+            </button>
+            <button
+                class="tab-btn px-4 py-2 text-sm font-medium rounded-t-lg border-b-2 border-transparent hover:border-blue-500 {% if first_tab == 'business' %}active border-blue-500 text-blue-600{% endif %}"
+                hx-get="{% url 'settings_business' %}" hx-target="#settings-content" hx-swap="innerHTML"
+                hx-push-url="false">
+                {% trans "Business" %}
+            </button>
+            <button
+                class="tab-btn px-4 py-2 text-sm font-medium rounded-t-lg border-b-2 border-transparent hover:border-blue-500 {% if first_tab == 'account' %}active border-blue-500 text-blue-600{% endif %}"
+                hx-get="{% url 'settings_account' %}" hx-target="#settings-content" hx-swap="innerHTML"
+                hx-push-url="false">
+                {% trans "Account" %}
+            </button>
+        </nav>
+    </div>
+
+    <!-- Content -->
+    <div id="settings-content">
+        <!-- Initial load triggered by HTMX -->
+        <div hx-get="{% if first_tab == 'platform' %}{% url 'settings_platform' %}{% elif first_tab == 'business' %}{% url 'settings_business' %}{% else %}{% url 'settings_account' %}{% endif %}"
+            hx-target="#settings-content" hx-swap="innerHTML" hx-trigger="load" hx-push-url="false">
+            <div class="text-center py-8 text-gray-500">{% trans "Loading..." %}</div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Tab activation (unchanged)
+    document.querySelectorAll('#settings-tabs .tab-btn').forEach(btn => {
+        btn.addEventListener('click', function () {
+            document.querySelectorAll('#settings-tabs .tab-btn').forEach(b => {
+                b.classList.remove('active', 'border-blue-500', 'text-blue-600');
+                b.classList.add('border-transparent');
+            });
+            this.classList.add('active', 'border-blue-500', 'text-blue-600');
+            this.classList.remove('border-transparent');
+        });
+    });
+</script>

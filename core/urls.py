@@ -4,6 +4,23 @@ from . import views
 urlpatterns = [
     # Dashboard
     path("dashboard/", views.dashboard, name="dashboard"),
+    # Profile & Settings
+    path("settings/account/", views.settings_account, name="settings_account"),
+    path(
+        "settings/change-password/",
+        views.change_password_ajax,
+        name="change_password_ajax",
+    ),
+    # Settings
+    path("settings/", views.settings_container, name="settings_container"),
+    path("settings/platform/", views.settings_platform, name="settings_platform"),
+    path("settings/business/", views.settings_business, name="settings_business"),
+    path("settings/account/", views.settings_account, name="settings_account"),
+    path(
+        "settings/change-password/",
+        views.change_password_ajax,
+        name="change_password_ajax",
+    ),
     # Categories
     path("categories/", views.category_list, name="category_list"),
     path("categories/create/", views.category_create, name="category_create"),
@@ -27,6 +44,7 @@ urlpatterns = [
     # Users
     path("users/", views.user_list, name="user_list"),
     path("users/create/", views.user_create, name="user_create"),
+    path("users/<int:pk>/edit/", views.user_edit, name="user_edit"),
     # POS
     path("pos/", views.pos_home, name="pos_home"),
     path("pos/orders/", views.active_orders_list, name="active_orders_list"),
@@ -59,7 +77,11 @@ urlpatterns = [
     path("pos/product-grid/", views.render_product_grid, name="product_grid"),
     path("pos/products/", views.product_grid, name="product_grid"),
     path("pos/services/", views.service_grid, name="service_grid"),
-    path('pos/orders/customer/<int:order_id>/', views.update_order_customer, name='update_order_customer'),
+    path(
+        "pos/orders/customer/<int:order_id>/",
+        views.update_order_customer,
+        name="update_order_customerr",
+    ),
     # Sales (placeholders)
     path("sales/", views.sales_list, name="sales_list"),
     path("sales/<int:sale_id>/", views.sale_detail, name="sale_detail"),
@@ -199,10 +221,14 @@ urlpatterns = [
     ),
     # System & Settings
     path("company-settings/", views.company_settings, name="company_settings"),
-    path("integrations/", views.integrations_home, name="integrations_home"),
+    path("user-management/", views.user_management, name="user_management"),
+    path("integrations/", views.integrations, name="integrations"),
     path("backup-restore/", views.backup_restore, name="backup_restore"),
     # Network utilities
     path("sse/network/", views.network_sse, name="network_sse"),
     path("api/ping/", views.network_ping, name="network_ping"),
     path("api/client-ip/", views.client_ip, name="client_ip"),
+    path("coming-soon/<str:feature>/", views.coming_soon, name="coming_soon"),
+    path('locked/<str:feature>/', views.locked_page, name='locked_page'),
+
 ]

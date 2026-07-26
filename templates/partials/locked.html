@@ -1,0 +1,15 @@
+{% load i18n %}
+<div class="bg-[var(--bg-card)] rounded-xl shadow-md p-4 h-full">
+    <div class="flex flex-col items-center justify-center h-full">
+        <h2 class="text-xl font-bold mb-4 text-[var(--primary-600)] text-center"><i
+                class="fas fa-lock text-6xl"></i><br>{% trans "FEATURE LOCKED" %}</h2>
+        <p class="text-center">
+            {% trans "The " %}
+            <strong class="text-[var(--primary-600)]">
+                {{ feature_name }}
+            </strong>
+            {% trans " feature is <span class='text-[var(--danger-600)]'>Locked.</span>" %}
+        </p>
+        <p>{% trans "Please contact your system administrator to enable it." %}</p>
+    </div>
+</div>

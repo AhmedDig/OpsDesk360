@@ -16,14 +16,6 @@
         <script src="https://unpkg.com/htmx.org@2.0.3"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/js/all.min.js"></script>
         <style>
-            body {
-                font-family: 'Montserrat', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            }
-
-            [dir="rtl"] {
-                font-family: 'Cairo', Tahoma, 'Segoe UI', Arial !important;
-                text-align: right;
-            }
 
             /* Layout container */
             .app-container {
@@ -152,8 +144,7 @@
             </div>
 
             <!-- Footer partial -->
-            <footer
-                class="fixed bottom-0 left-0 right-0 bg-[var(--bg-sidebar)] text-[var(--text-primary)] text-xs p-1
+            <footer class="fixed bottom-0 left-0 right-0 bg-[var(--bg-sidebar)] text-[var(--text-primary)] text-xs p-1
                 flex justify-between items-center z-50 shadow-[var(--modal-shadow)]">
                 {% include 'partials/network_footer.html' %}
             </footer>
@@ -178,6 +169,20 @@
         {% endif %}
 
         <script>
+            document.addEventListener('htmx:afterRequest', function (evt) {
+                const trigger = evt.detail.xhr.getResponseHeader('HX-Trigger');
+                if (trigger) {
+                    try {
+                        const data = JSON.parse(trigger);
+                        if (data.showToast) {
+                            window.showToast(data.showToast.message, data.showToast.type);
+                        }
+                        if (data.showToasts && Array.isArray(data.showToasts)) {
+                            data.showToasts.forEach(t => window.showToast(t.message, t.type));
+                        }
+                    } catch (e) { }
+                }
+            });
 
             window.showToast = function (message, type = 'info') {
                 const container = document.getElementById('toast-container');
@@ -256,6 +261,9 @@
 
             function showUpgradeModal(featureName, description) {
                 window.showToast(`<strong>{% trans "Upgrade Required" %}:</strong> ${featureName}<br><span class="text-xs text-gray-500">${description}</span>`, 'warning');
+            }
+            function showComingSoonModal(featureName, description) {
+                window.showToast(`<strong>{% trans "Coming Soon" %}:</strong> ${featureName}<br><span class="text-xs text-gray-500">${description}</span>`, 'info');
             }
         </script>
     </body>

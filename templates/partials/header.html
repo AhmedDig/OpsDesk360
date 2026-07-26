@@ -32,9 +32,9 @@
                 <div class="px-4 py-2 text-sm font-semibold border-b border-gray-200 dark:border-gray-700">
                     {{ user.username }}
                 </div>
-                <a href="#"
+                <a href="{% url 'settings_account' %}"
                     class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700">{% trans "Profile" %}</a>
-                <a href="#"
+                <a href="{% url 'settings_container' %}"
                     class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700">{% trans "Settings" %}</a>
                 <form action="{% url 'logout' %}" method="post" class="block">
                     {% csrf_token %}

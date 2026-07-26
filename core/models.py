@@ -3,9 +3,12 @@ from django.contrib.auth.models import AbstractUser
 from django.utils.text import slugify
 from super_admin.models import Business
 from .thread_local import get_current_business, get_current_user_is_superuser
-from django.db.models import F
+from django.db.models import F, Sum
 from django.conf import settings
 from django.utils import timezone
+from django.db import models
+from django.core.validators import MinValueValidator
+from super_admin.models import Business
 
 
 class BusinessAwareManager(models.Manager):
@@ -137,6 +140,25 @@ class Sale(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     business = models.ForeignKey(Business, on_delete=models.CASCADE)
     objects = BusinessAwareManager()
+
+    @property
+    def has_returned_items(self):
+        return self.items.filter(returned=True).exists()
+
+    @property
+    def is_fully_returned(self):
+        total = self.items.count()
+        returned = self.items.filter(returned=True).count()
+        return total > 0 and total == returned
+
+    @property
+    def returned_amount(self):
+        total_returned_subtotal = self.items.filter(returned=True).aggregate(
+            total=Sum("total_price")
+        )["total"] or Decimal("0.00")
+        if self.total_amount > 0:
+            return total_returned_subtotal * (self.final_amount / self.total_amount)
+        return Decimal("0.00")
 
     def save(self, *args, **kwargs):
         if not self.sale_id:
@@ -308,30 +330,30 @@ class EmployeeProfile(models.Model):
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
-        related_name='employee_profile'
+        related_name="employee_profile",
     )
     hire_date = models.DateField(null=True, blank=True)
     commission_rate = models.DecimalField(
-        max_digits=5, decimal_places=2, default=0.00,
-        help_text="Commission percentage (e.g., 5.00 = 5%)"
+        max_digits=5,
+        decimal_places=2,
+        default=0.00,
+        help_text="Commission percentage (e.g., 5.00 = 5%)",
     )
-    hourly_rate = models.DecimalField(
-        max_digits=8, decimal_places=2, default=0.00
-    )
+    hourly_rate = models.DecimalField(max_digits=8, decimal_places=2, default=0.00)
     is_active = models.BooleanField(default=True)
     created_by = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
-        related_name='created_employees'
+        related_name="created_employees",
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        db_table = 'core_employee_profile'
-        ordering = ['-created_at']
+        db_table = "core_employee_profile"
+        ordering = ["-created_at"]
 
     def __str__(self):
         return f"{self.user.get_full_name() or self.user.email}"
@@ -343,17 +365,15 @@ class EmployeeProfile(models.Model):
 
 class TimeLog(models.Model):
     employee = models.ForeignKey(
-        EmployeeProfile,
-        on_delete=models.CASCADE,
-        related_name='time_logs'
+        EmployeeProfile, on_delete=models.CASCADE, related_name="time_logs"
     )
     clock_in = models.DateTimeField()
     clock_out = models.DateTimeField(null=True, blank=True)
     date = models.DateField(auto_now_add=True)
 
     class Meta:
-        db_table = 'core_time_log'
-        ordering = ['-clock_in']
+        db_table = "core_time_log"
+        ordering = ["-clock_in"]
 
     def __str__(self):
         return f"{self.employee.full_name} - {self.clock_in.strftime('%Y-%m-%d %H:%M')}"
@@ -363,3 +383,76 @@ class TimeLog(models.Model):
         if self.clock_out:
             return self.clock_out - self.clock_in
         return None
+
+
+class PlatformSettings(models.Model):
+    site_name = models.CharField(max_length=100, default="DeskPro360")
+    allow_business_registration = models.BooleanField(default=True)
+    require_approval = models.BooleanField(default=True)
+    maintenance_mode = models.BooleanField(default=False)
+    default_currency = models.CharField(max_length=3, default="USD")
+    default_timezone = models.CharField(max_length=50, default="UTC")
+    default_language = models.CharField(max_length=5, default="en")
+    feature_flags = models.JSONField(default=dict, blank=True)
+
+    # SMTP settings (system emails)
+    smtp_host = models.CharField(max_length=255, blank=True)
+    smtp_port = models.PositiveIntegerField(default=587)
+    smtp_username = models.CharField(max_length=255, blank=True)
+    smtp_password = models.CharField(max_length=255, blank=True)
+    smtp_use_tls = models.BooleanField(default=True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def save(self, *args, **kwargs):
+        # Enforce singleton (only one instance)
+        if not self.pk and PlatformSettings.objects.exists():
+            raise ValueError("Only one PlatformSettings instance is allowed.")
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return "Platform Settings"
+
+    class Meta:
+        verbose_name_plural = "Platform Settings"
+
+
+class BusinessProfile(models.Model):
+    business = models.OneToOneField(
+        Business, on_delete=models.CASCADE, related_name="profile"
+    )
+
+    # Identity
+    business_name = models.CharField(max_length=255)
+    country = models.CharField(max_length=100, blank=True)
+    industry = models.CharField(max_length=100, blank=True)
+    legal_structure = models.CharField(max_length=50, blank=True)
+    tax_registration_number = models.CharField(max_length=100, blank=True)
+
+    # Configuration
+    currency = models.CharField(max_length=3, default="USD")
+    tax_rate = models.DecimalField(max_digits=5, decimal_places=2, default=0)
+    timezone = models.CharField(max_length=50, default="UTC")
+    address = models.TextField(blank=True)
+    phone = models.CharField(max_length=50, blank=True)
+    logo = models.ImageField(upload_to="business_logos/", null=True, blank=True)
+    receipt_footer = models.TextField(blank=True, help_text="Footer text on receipts")
+
+    # Operational
+    low_stock_threshold = models.PositiveIntegerField(default=5)
+    invoice_prefix = models.CharField(max_length=20, default="INV-")
+
+    # Feature toggles (per business)
+    loyalty_enabled = models.BooleanField(default=False)
+    appointments_enabled = models.BooleanField(default=False)
+    multi_branch_enabled = models.BooleanField(default=False)
+
+    # Approval status (if required by platform)
+    is_approved = models.BooleanField(default=False)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"Profile for {self.business_name or self.business.domain}"

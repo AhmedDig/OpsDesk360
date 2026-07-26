@@ -23,6 +23,7 @@
     --primary-700: #1D4ED8;
     --primary-800: #1E40AF;
     --primary-900: #1E3A8A;
+    --primary: #182264;
 
     /* ------------------------------------------------------
      BACKGROUNDS
@@ -97,6 +98,15 @@
         all .2s ease;
 }
 
+html[lang="ar"] body {
+    font-family: 'Cairo', Tahoma, 'Segoe UI', Arial !important;
+    text-align: right;
+}
+
+html[lang="en"] body {
+    font-family: 'Montserrat', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
 /* ==========================================================
    DARK THEME
    ========================================================== */
@@ -164,7 +174,6 @@
 body {
     background: var(--bg-main);
     color: var(--text-primary);
-    font-family: "Inter", sans-serif;
     transition: var(--transition);
 }
 

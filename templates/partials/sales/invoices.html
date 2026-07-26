@@ -1,36 +1,68 @@
 {% load i18n %}
 <div class="bg-card rounded-xl shadow-md p-4">
-    <h2 class="text-xl font-bold mb-4">{% trans "Sales Invoices" %}</h2>
-    <div class="overflow-x-auto">
-        <table class="min-w-full bg-card border">
-            <thead>
-                <tr>
-                    <th class="py-2 px-4 border">{% trans "Invoice #" %}</th>
-                    <th class="py-2 px-4 border">{% trans "Date" %}</th>
-                    <th class="py-2 px-4 border">{% trans "Customer" %}</th>
-                    <th class="py-2 px-4 border">{% trans "Total" %}</th>
-                    <th class="py-2 px-4 border">{% trans "Actions" %}</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for sale in page_obj %}
-                <tr class="border-t">
-                    <td class="py-2 px-4">{{ sale.sale_id }}</td>
-                    <td class="py-2 px-4">{{ sale.sale_date|date:"Y-m-d H:i" }}</td>
-                    <td class="py-2 px-4">{{ sale.customer|default:_("Walk‑in") }}</td>
-                    <td class="py-2 px-4">{{ sale.final_amount }} ₪</td>
-                    <td class="py-2 px-4">
-                        <a href="{% url 'sale_detail' sale.id %}" class="text-blue-600">{% trans "View" %}</a>
-                        <a href="{% url 'return_sale' sale.id %}" class="text-red-600 ml-2">{% trans "Return" %}</a>
-                    </td>
-                </tr>
-                {% empty %}
-                <tr>
-                    <td colspan="5" class="text-center py-4">{% trans "No sales found" %}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+    <div class="flex justify-between items-center mb-4">
+        <h2 class="text-xl font-bold">{% trans "Sales Invoices" %}</h2>
     </div>
-    <div class="mt-4">{% include 'partials/pagination.html' with page_obj=page_obj %}</div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {% for sale in page_obj %}
+        <div
+            class="bg-[var(--bg-card)] rounded-lg shadow hover:shadow-lg transition-shadow p-4 border border-[var(--border-color)]">
+            <div class="flex justify-between items-start">
+                <div>
+                    <span class="text-sm text-gray-500">{% trans "Invoice" %}</span>
+                    <div class="font-bold text-lg">{{ sale.sale_id }}</div>
+                </div>
+                <span class="text-sm text-gray-500">{{ sale.sale_date|date:"Y-m-d H:i" }}</span>
+            </div>
+
+            <div class="mt-2">
+                <div class="text-sm">
+                    <span class="text-gray-500">{% trans "Customer" %}:</span>
+                    <span class="font-medium">{{ sale.customer|default:_("Walk‑in") }}</span>
+                </div>
+                <div class="text-sm mt-1">
+                    <span class="text-gray-500">{% trans "Total" %}:</span>
+                    <span class="font-bold text-green-600">{{ sale.final_amount }} ₪</span>
+                </div>
+                {% if sale.has_returned_items %}
+                <div class="text-sm mt-1">
+                    <span class="text-gray-500">{% trans "Returned" %}:</span>
+                    <span class="font-bold text-red-600">{{ sale.returned_amount }} ₪</span>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Status Badges -->
+            <div class="mt-2">
+                {% if sale.is_fully_returned %}
+                <span
+                    class="inline-block px-2 py-1 text-xs font-semibold bg-red-100 text-red-800 rounded-full">{% trans "Fully Returned" %}</span>
+                {% elif sale.has_returned_items %}
+                <span
+                    class="inline-block px-2 py-1 text-xs font-semibold bg-yellow-100 text-yellow-800 rounded-full">{% trans "Partial Return" %}</span>
+                {% else %}
+                <span
+                    class="inline-block px-2 py-1 text-xs font-semibold bg-green-100 text-green-800 rounded-full">{% trans "Completed" %}</span>
+                {% endif %}
+            </div>
+
+            <!-- Actions -->
+            <div class="mt-4 flex gap-2">
+                <a href="{% url 'sale_detail' sale.id %}"
+                    class="text-blue-600 hover:underline text-sm">{% trans "View" %}</a>
+                {% if not sale.is_fully_returned %}
+                <a href="{% url 'return_sale' sale.id %}"
+                    class="text-red-600 hover:underline text-sm">{% trans "Return" %}</a>
+                {% endif %}
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-span-full text-center py-8 text-gray-500">{% trans "No sales found" %}</div>
+        {% endfor %}
+    </div>
+
+    <div class="mt-6">
+        {% include 'partials/pagination.html' with page_obj=page_obj %}
+    </div>
 </div>

@@ -1,6 +1,6 @@
 import json
 import time
-from django.db.models import F, Sum, Count, Q
+from django.db.models import F, Sum, Count, Q, Prefetch
 from django.utils import timezone
 from decimal import Decimal
 from .models import Order, OrderItem
@@ -20,7 +20,20 @@ from django.template.loader import render_to_string
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 from .decorators import role_required
-from .forms import CategoryForm, CustomerForm, ItemForm, UserCreateForm, EmployeeForm
+from .forms import (
+    CategoryForm,
+    CustomerForm,
+    ItemForm,
+    UserCreateForm,
+    EmployeeForm,
+    UserProfileForm,
+    CustomPasswordChangeForm,
+    PlatformSettingsForm,
+    BusinessProfileForm,
+    DiscountForm,
+    GiftCardForm,
+
+)
 from .models import (
     Category,
     Customer,
@@ -30,10 +43,17 @@ from .models import (
     Order,
     OrderItem,
     Sale,
+    Return,
     SaleItem,
     User,
     EmployeeProfile,  # <-- add
     TimeLog,
+    PlatformSettings,
+    BusinessProfile,
+    Discount,
+    GiftCard,
+    GiftCard,
+    
 )
 from .utils import htmx_render
 from django.utils.translation import gettext as _
@@ -105,6 +125,148 @@ def dashboard(request):
         }
     )
     return htmx_render(request, "partials/dashboard.html", context)
+
+
+# ==========================================
+# User Profile & Settings
+# ==========================================
+
+
+# Helper to get the first available tab for redirection
+def get_first_available_tab(request):
+    user = request.user
+    if user.role == "super_admin":
+        return "platform"
+    elif user.role in ["dept_admin"]:
+        return "business"
+    else:
+        return "account"
+
+
+@login_required
+def settings_container(request):
+    """Render the settings container with tabs."""
+    first_tab = get_first_available_tab(request)
+    return htmx_render(
+        request, "partials/settings/container.html", {"first_tab": first_tab}
+    )
+
+
+@login_required
+def settings_platform(request):
+    """Platform settings – super admin only."""
+    if request.user.role != "super_admin":
+        return htmx_render(
+            request,
+            "partials/settings/permission_denied.html",
+            {"message": _("You don't have permission to modify platform settings.")},
+        )
+
+    settings = PlatformSettings.objects.first()
+    if not settings:
+        settings = PlatformSettings.objects.create()
+
+    if request.method == "POST":
+        form = PlatformSettingsForm(request.POST, instance=settings)
+        if form.is_valid():
+            # Build feature_flags from checkbox values
+            feature_flags = {
+                "appointments": form.cleaned_data.get("feature_appointments", False),
+                "loyalty": form.cleaned_data.get("feature_loyalty", False),
+                "multi_branch": form.cleaned_data.get("feature_multi_branch", False),
+            }
+            # Update the instance
+            settings.feature_flags = feature_flags
+            # Save all other fields
+            form.save()
+            # Explicitly save the JSON field
+            settings.save(update_fields=["feature_flags"])
+
+            messages.success(request, _("Platform settings updated."))
+
+            # Return the updated partial (no redirect!)
+            return htmx_render(
+                request, "partials/settings/platform.html", {"form": form}
+            )
+        else:
+            # Form invalid – re-render with errors
+            return htmx_render(
+                request, "partials/settings/platform.html", {"form": form}
+            )
+    else:
+        form = PlatformSettingsForm(instance=settings)
+
+    return htmx_render(request, "partials/settings/platform.html", {"form": form})
+
+
+@login_required
+def settings_business(request):
+    if request.user.role not in ["dept_admin", "super_admin"]:
+        return htmx_render(request, "partials/settings/permission_denied.html", {...})
+
+    profile = BusinessProfile.objects.get_or_create(business=request.user.business)[0]
+
+    if request.method == "POST":
+        form = BusinessProfileForm(request.POST, request.FILES, instance=profile)
+        if form.is_valid():
+            form.save()
+            messages.success(request, _("Business settings updated."))
+            # Re-render with the same form (no redirect)
+            return htmx_render(
+                request,
+                "partials/settings/business.html",
+                {"form": form, "profile": profile},
+            )
+    else:
+        form = BusinessProfileForm(instance=profile)
+
+    return htmx_render(
+        request, "partials/settings/business.html", {"form": form, "profile": profile}
+    )
+
+
+@login_required
+def settings_account(request):
+    user = request.user
+    if request.method == "POST":
+        form = UserProfileForm(request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+            if user.language:
+                request.session["django_language"] = user.language
+            messages.success(request, _("Account settings updated."))
+            # Re-render (no redirect)
+            return htmx_render(
+                request,
+                "partials/settings/account.html",
+                {"form": form, "password_form": CustomPasswordChangeForm(user=user)},
+            )
+    else:
+        form = UserProfileForm(instance=user)
+
+    return htmx_render(
+        request,
+        "partials/settings/account.html",
+        {"form": form, "password_form": CustomPasswordChangeForm(user=user)},
+    )
+
+
+@login_required
+def change_password_ajax(request):
+    if request.method != "POST":
+        return HttpResponseForbidden("Method not allowed")
+    form = CustomPasswordChangeForm(user=request.user, data=request.POST)
+    if form.is_valid():
+        form.save()
+        messages.success(request, _("Password changed successfully."))
+        fresh_form = CustomPasswordChangeForm(user=request.user)
+        return htmx_render(
+            request, "partials/settings/password_form.html", {"form": fresh_form}
+        )
+    else:
+        return htmx_render(
+            request, "partials/settings/password_form.html", {"form": form}
+        )
 
 
 # ==========================================
@@ -395,6 +557,25 @@ def user_create(request):
         form = UserCreateForm()
     return htmx_render(
         request, "partials/core/user_form.html", {"form": form, "title": "Create User"}
+    )
+
+@login_required
+@role_required("dept_admin", "super_admin")
+def user_edit(request, pk):
+    user = get_object_or_404(User, pk=pk)
+    if request.method == "POST":
+        form = UserCreateForm(request.POST, instance=user)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.business = request.user.business
+            user.set_password(form.cleaned_data["password"])
+            user.save()
+            messages.success(request, "User updated.")
+            return redirect("user_list")
+    else:
+        form = UserCreateForm(instance=user)
+    return htmx_render(
+        request, "partials/core/user_form.html", {"form": form, "title": "Edit User"}
     )
 
 
@@ -897,7 +1078,13 @@ def sync_offline_sales(request):
 
 @login_required
 def sales_list(request):
-    sales = Sale.objects.filter(business=request.user.business).order_by("-sale_date")
+    sales = (
+        Sale.objects.filter(business=request.user.business)
+        .order_by("-sale_date")
+        .prefetch_related(
+            Prefetch("items", queryset=SaleItem.objects.select_related("item"))
+        )
+    )
     paginator = Paginator(sales, 20)
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
@@ -913,19 +1100,31 @@ def sale_detail(request, sale_id):
 @login_required
 def return_sale(request, sale_id):
     sale = get_object_or_404(Sale, id=sale_id, business=request.user.business)
+
     if request.method == "POST":
-        # Mark items as returned (simplified – create Return record)
-        # Restock items (for products)
         items_to_return = request.POST.getlist("items")
-        refund_amount = Decimal("0")
+        if not items_to_return:
+            messages.error(request, _("Please select at least one item to return."))
+            return redirect("sale_detail", sale_id=sale.id)
+
+        returned_subtotal = Decimal("0")
         for item_id in items_to_return:
             sale_item = get_object_or_404(SaleItem, id=item_id, sale=sale)
+            if sale_item.returned:
+                continue
             if sale_item.item.item_type == "product":
                 sale_item.item.stock_quantity += sale_item.quantity
                 sale_item.item.save()
-            refund_amount += sale_item.total_price
-            sale_item.returned = True  # you need to add a 'returned' field to SaleItem
-        # Create Return record
+            returned_subtotal += sale_item.total_price
+            sale_item.returned = True
+            sale_item.save()
+
+        # Apply proportional discount/tax
+        if sale.total_amount > 0:
+            refund_amount = returned_subtotal * (sale.final_amount / sale.total_amount)
+        else:
+            refund_amount = returned_subtotal
+
         Return.objects.create(
             sale=sale,
             reason=request.POST.get("reason", ""),
@@ -933,9 +1132,15 @@ def return_sale(request, sale_id):
             processed_by=request.user,
             business=request.user.business,
         )
-        messages.success(request, f"Return processed. Refund amount: {refund_amount}")
-        return redirect("sales_list")
-    return htmx_render(request, "partials/sales/return_form.html", {"sale": sale})
+
+        messages.success(
+            request,
+            _("Return processed. Refund amount: %(amount)s ₪")
+            % {"amount": refund_amount},
+        )
+        return redirect("sale_detail", sale_id=sale.id)
+
+    return redirect("sale_detail", sale_id=sale.id)
 
 
 @login_required
@@ -1229,9 +1434,70 @@ def employee_clock(request):
 
 
 # ==========================================
-# 8. System & Placeholders
+# 9. Loyalty & Rewards
 # ==========================================
 
+
+
+# ==========================================
+# 10. business management
+# ==========================================
+@login_required
+def company_settings(request):
+    return htmx_render(request, "partials/system/company_settings.html", {})
+
+@login_required
+@role_required("dept_admin", "super_admin")
+def user_management(request):
+    users = User.objects.filter(business=request.user.business)
+    return htmx_render(request, "partials/system/user_management.html", {"users": users})
+
+@login_required
+def integrations(request):
+    return htmx_render(request, "partials/system/integrations.html",{})
+
+@login_required
+def backup_restore(request):
+    return htmx_render(request, "partials/system/backup_restore.html", {})
+
+
+# ==========================================
+# 8. System & Placeholders
+# ==========================================
+# core/views.py
+from django.utils.translation import gettext as _
+
+# Mapping slug -> display name
+FEATURE_NAMES = {
+    'appointments': _('Appointments'),
+    'loyalty': _('Loyalty Points'),
+    'reports': _('Reports & Analytics'),
+    'marketing': _('Marketing'),
+    'accounting': _('Accounting'),
+    'multi-branch': _('Multi-Branch'),
+    'medical': _('Medical Records'),
+    'field-service': _('Field Service'),
+    'ecommerce': _('E-Commerce'),
+    'rental': _('Rental Management'),
+    'restaurant': _('Restaurant'),
+}
+
+def locked_page(request, feature):
+    feature_name = FEATURE_NAMES.get(feature, feature.replace('-', ' ').title() if '-' in feature and '_' not in feature else feature.replace('_', ' ').title())
+    return htmx_render(
+        request,
+        'partials/locked.html',
+        {'feature_name': feature_name}
+    )
+
+
+def coming_soon(request, feature):
+    feature_name = FEATURE_NAMES.get(feature, feature.replace('-', ' ').title() if '-' in feature and '_' not in feature else feature.replace('_', ' ').title())
+    return htmx_render(
+        request,
+        'partials/coming_soon.html',
+        {'feature_name': feature_name}
+    )
 
 def placeholder(request, template):
     return htmx_render(request, f"partials/{template}", {})
@@ -1243,19 +1509,6 @@ def inventory_home(request):
 
 def sales_home(request):
     return htmx_render(request, "partials/sales/invoices.html", {})
-
-
-def company_settings(request):
-    return htmx_render(request, "partials/system/company_settings.html", {})
-
-
-def integrations_home(request):
-    return htmx_render(request, "partials/system/integrations.html", {})
-
-
-def backup_restore(request):
-    return htmx_render(request, "partials/system/backup_restore.html", {})
-
 
 # ==========================================
 # 9. Network Utilities

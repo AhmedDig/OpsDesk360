@@ -4,6 +4,19 @@
     <p><strong>{% trans "Date" %}:</strong> {{ sale.sale_date|date:"Y-m-d H:i" }}</p>
     <p><strong>{% trans "Customer" %}:</strong> {{ sale.customer|default:_("Walk‑in") }}</p>
     <p><strong>{% trans "Cashier" %}:</strong> {{ sale.user.username }}</p>
+    <!-- Status Badges -->
+    <p><strong>{% trans "Status" %}:</strong>
+        {% if sale.is_fully_returned %}
+        <span
+            class="inline-block px-2 py-1 text-xs font-semibold bg-red-100 text-red-800 rounded-full">{% trans "Fully Returned" %}</span>
+        {% elif sale.has_returned_items %}
+        <span
+            class="inline-block px-2 py-1 text-xs font-semibold bg-yellow-100 text-yellow-800 rounded-full">{% trans "Partial Return" %}</span>
+        {% else %}
+        <span
+            class="inline-block px-2 py-1 text-xs font-semibold bg-green-100 text-green-800 rounded-full">{% trans "Completed" %}</span>
+        {% endif %}
+    </p>
     <hr class="my-2">
     <table class="w-full">
         <thead>
@@ -35,4 +48,37 @@
         <button onclick="window.print()"
             class="bg-blue-500 text-white px-4 py-2 rounded ml-2">{% trans "Print" %}</button>
     </div>
+
+    <!-- Return Section -->
+    <button id="toggle-return" class="bg-red-600 text-white px-4 py-2 rounded">{% trans "Return Items" %}</button>
+    <div id="return-section" class="hidden mt-4 p-4 border rounded bg-gray-50">
+        <form method="post" action="{% url 'return_sale' sale.id %}" hx-post="{% url 'return_sale' sale.id %}"
+            hx-target="#main-content" hx-swap="innerHTML">
+            {% csrf_token %}
+            <p class="font-semibold mb-2">{% trans "Select items to return:" %}</p>
+            <div class="grid grid-cols-1 gap-2">
+                {% for item in sale.items.all %}
+                <label class="flex items-center gap-2">
+                    <input type="checkbox" name="items" value="{{ item.id }}">
+                    {{ item.item.name_en }} × {{ item.quantity }} – {{ item.total_price }} ₪
+                </label>
+                {% empty %}
+                <p>{% trans "No items to return." %}</p>
+                {% endfor %}
+            </div>
+            <div class="mt-4">
+                <label for="reason" class="block text-sm font-medium">{% trans "Reason" %}</label>
+                <textarea name="reason" id="reason" rows="2" class="w-full border rounded p-2"></textarea>
+            </div>
+            <button type="submit"
+                class="mt-4 bg-red-600 text-white px-4 py-2 rounded">{% trans "Process Return" %}</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    document.getElementById('toggle-return').addEventListener('click', function () {
+        document.getElementById('return-section').classList.toggle('hidden');
+    });
+</script>
 </div>
